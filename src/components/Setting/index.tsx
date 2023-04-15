@@ -48,12 +48,10 @@ const Setting = ({
 
   const handleInputChange = (e: any) => {
     const { value: inputValue } = e.target;
-    console.log('iiiiiiiiiiii', inputValue);
     setTextWaterMarker(inputValue);
   };
 
   const handlePickerChange = (value: any) => {
-    console.log('ccccccccccccc', value);
     setHighlightColor(value);
   };
 
@@ -81,7 +79,7 @@ const Setting = ({
               style={{ width: 120 }}
               onChange={handleChange}
               options={[
-                { value: 'vs-light', label: 'ligth' },
+                { value: 'vs-light', label: 'light' },
                 { value: 'vs-dark', label: 'dark' },
               ]}
             />

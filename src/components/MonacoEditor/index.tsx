@@ -56,7 +56,7 @@ const MonacoEditor = ({
 
   const initMonaco = () => {
     const finalValue = value !== null ? value : defaultValue;
-    if (containerElement.current) {
+    if (!editor.current && containerElement.current) {
       const finalOptions = { ...options };
       editor.current = monaco.editor.create(
         containerElement.current,
@@ -86,7 +86,7 @@ const MonacoEditor = ({
 
   return (
     <div
-      //ref={containerElement}
+      ref={containerElement}
       style={style}
       className="react-monaco-editor-container"
     />
