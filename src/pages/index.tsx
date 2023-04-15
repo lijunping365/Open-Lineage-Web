@@ -1,10 +1,12 @@
 import './index.css'
+import LineageLayout from '../components/Layout'
+import React from 'react'
 
 function App () {
   return (
     <div className="App">
-      <div className='flex justify-center items-center'>
-        11111
+      <div>
+        <LineageLayout />
       </div>
     </div>
   )

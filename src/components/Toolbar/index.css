@@ -1,0 +1,10 @@
+.g6-component-toolbar-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.g6-component-toolbar-item {
+  height: 60px;
+  border: none;
+  background: transparent !important;
+}

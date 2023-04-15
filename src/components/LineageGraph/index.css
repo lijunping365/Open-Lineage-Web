@@ -1,0 +1,35 @@
+.g6-component-toolbar {
+  background: rgb(255, 255, 255);
+  position: absolute;
+  left: unset;
+  bottom: unset;
+  top: 10px;
+  right: 24px;
+  padding: 0;
+  text-align: center;
+  box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.g6-component-topbar {
+  position: absolute;
+  left: unset;
+  bottom: unset;
+  top: 10px;
+  right: 200px;
+  padding: 0;
+  text-align: center;
+}
+
+.g6-minimap {
+  width: 200px;
+  height: 120px;
+  position: absolute;
+  bottom: 0px;
+  right: 24px;
+  left: unset;
+  top: unset;
+  background: #fff;
+  box-shadow: 0 8px 10px -5px rgba(0, 0, 0, 0.2),
+    0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12);
+}
