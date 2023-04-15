@@ -7,21 +7,35 @@ import './registerShape';
 import { dataTransform, getLeftRelation, getRightRelation, initData } from '../../utils/common'
 import {
   clearAllStats, handleAutoZoom, handleDownloadImage,
-  handleFieldLineage, handleRealZoom, handleRefreshLayout,
+  handleFieldLineage, handleHighlightColor, handleRealZoom, handleRefreshLayout, handleTextWaterMarker,
   handleWholeLineage, handleZoomIn, handleZoomOut,
   setLeftStats,
   setRightStats
 } from '../../utils/graphUtil'
 
 interface LineageGraphProps {
-  highlightColor: string;
+  /**
+   * 水印文字
+   */
   textWaterMarker: string;
+  /**
+   * 高亮颜色
+   */
+  highlightColor: string;
 }
 
 const LineageGraph = ({highlightColor, textWaterMarker}: LineageGraphProps) => {
   const ref = useRef(null);
   const toolbarRef = useRef(null);
   const graphRef = useRef<any>(null);
+
+  useEffect(() => {
+    handleTextWaterMarker(graphRef.current, textWaterMarker)
+  },[textWaterMarker]);
+
+  useEffect(() => {
+    handleHighlightColor(graphRef.current, highlightColor)
+  },[highlightColor]);
 
   const bindEvents = (graph: any) => {
     // 节点点击

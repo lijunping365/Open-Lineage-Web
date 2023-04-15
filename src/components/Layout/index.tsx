@@ -9,14 +9,6 @@ const LineageLayout = () => {
   const [highlightColor, setHighlightColor] = useState<string>('');
   const [textWaterMarker, setTextWaterMarker] = useState<string>('Open-Lineage');
 
-  const handleTextWaterMarker = (text: string) =>{
-
-  }
-
-  const handleHighlightColor = (color: string) =>{
-
-  }
-
   return (
     <>
       <Header/>
@@ -27,8 +19,8 @@ const LineageLayout = () => {
               <Sidebar
                 textWaterMarker={textWaterMarker}
                 highlightColor={highlightColor}
-                setTextWaterMarker={(text) => handleTextWaterMarker(text)}
-                setHighlightColor={(color) => handleHighlightColor(color)}
+                setTextWaterMarker={(text) => setTextWaterMarker(text)}
+                setHighlightColor={(color) => setHighlightColor(color)}
               />
             </div>
             <div className='layout-content'>

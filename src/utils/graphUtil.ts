@@ -1,6 +1,9 @@
-// 放大
 import { dataTransform, initData } from './common'
 
+/**
+ * 放大
+ * @param graph
+ */
 export const handleZoomOut = (graph: any) => {
   if (!graph) return;
   const current = graph.getZoom();
@@ -24,7 +27,10 @@ export const handleZoomOut = (graph: any) => {
   };
 };
 
-// 缩小
+/**
+ * 缩小
+ * @param graph
+ */
 export const handleZoomIn = (graph: any) => {
   if (!graph) return;
   const current = graph.getZoom();
@@ -49,7 +55,10 @@ export const handleZoomIn = (graph: any) => {
   };
 };
 
-// 实际大小
+/**
+ * 实际大小
+ * @param graph
+ */
 export const handleRealZoom = (graph: any) => {
   if (!graph) return;
   const current = graph.getZoom();
@@ -61,7 +70,9 @@ export const handleRealZoom = (graph: any) => {
   };
 };
 
-// 自适应canvas大小
+/**
+ * 自适应canvas大小
+ */
 export const handleAutoZoom = (graph: any) => {
   if (!graph) return;
   const nodes = graph.getNodes();
@@ -75,13 +86,19 @@ export const handleAutoZoom = (graph: any) => {
   };
 };
 
-// 恢复布局
+/**
+ * 推拽后恢复布局
+ * @param graph
+ */
 export const handleRefreshLayout = (graph: any) => {
   if (!graph) return;
   graph.layout();
 };
 
-// 下载图片
+/**
+ * 下载图片
+ * @param graph
+ */
 export const handleDownloadImage = (graph: any) => {
   if (!graph) return;
   graph.downloadFullImage('open-lineage', 'image/png', {
@@ -129,15 +146,21 @@ export const handleWholeLineage = (graph: any, checked: boolean) => {
   }
 };
 
-// 设置文字水印
+/**
+ * 设置文字水印
+ * @param graph
+ * @param text
+ */
 export const handleTextWaterMarker = (graph: any, text: string) => {
   if (!graph) return;
-  //setTextWaterMarker(text);
-  console.log('', text);
   graph.setTextWaterMarker(text);
 };
 
-// 设置高亮颜色
+/**
+ * 设置高亮颜色
+ * @param graph
+ * @param color
+ */
 export const handleHighlightColor = (graph: any, color: string) => {
   //setHighlightColor(color);
   // graphRef.current.setTextWaterMarker(text || 'beike');
