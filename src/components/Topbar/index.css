@@ -19,4 +19,9 @@
 
 .ant-switch-small {
   width: 32px;
+  background-color: #9ca2ac !important;
+}
+
+.ant-switch-checked {
+  background-color: #4096ff !important;
 }
