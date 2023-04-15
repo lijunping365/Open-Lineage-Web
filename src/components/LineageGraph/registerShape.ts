@@ -208,11 +208,12 @@ G6.registerEdge('dice-er-edge', {
    */
   setState(name, value, item: any) {
     const shape = item.get('keyShape');
-    if (name === 'highlight') {
+    if (name && name.startsWith('highlight')) {
+      const highlightColor = name.split('-')[1];
       if (value) {
         //shape.attr('opacity', 0.2);
 
-        shape.attr('stroke', 'red');
+        shape.attr('stroke', highlightColor);
         shape.attr('lineWidth', 3);
       } else {
         //shape.attr('opacity', 1);

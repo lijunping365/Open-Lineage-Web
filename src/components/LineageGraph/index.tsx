@@ -28,19 +28,23 @@ const LineageGraph = ({highlightColor, textWaterMarker}: LineageGraphProps) => {
   const ref = useRef(null);
   const toolbarRef = useRef(null);
   const graphRef = useRef<any>(null);
+  const [highlight, setHighlight] = useState<boolean>(false);
 
   useEffect(() => {
     handleTextWaterMarker(graphRef.current, textWaterMarker)
   },[textWaterMarker]);
 
   useEffect(() => {
-    handleHighlightColor(graphRef.current, highlightColor)
+    if (highlight){
+      handleHighlightColor(graphRef.current, highlightColor)
+    }
   },[highlightColor]);
 
   const bindEvents = (graph: any) => {
     // 节点点击
     graph.off('node:click').on('node:click', (evt: any) => {
       console.log('node:click');
+      setHighlight(true);
       const { item, target } = evt;
       const name = target.get('name');
       if (!name) return;
@@ -68,10 +72,10 @@ const LineageGraph = ({highlightColor, textWaterMarker}: LineageGraphProps) => {
       graph.setItemState(item, 'highlight-' + sourceIndex, true);
 
       // 设置左关联边及节点状态
-      setLeftStats(graph, leftActiveEdges);
+      setLeftStats(graph, leftActiveEdges, highlightColor);
 
       // 设置右关联边及节点状态
-      setRightStats(graph, rightActiveEdges);
+      setRightStats(graph, rightActiveEdges, highlightColor);
     });
   };
 

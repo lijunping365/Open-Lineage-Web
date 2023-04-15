@@ -6,7 +6,7 @@ import Header from '../Header'
 import Footer from '../Footer'
 
 const LineageLayout = () => {
-  const [highlightColor, setHighlightColor] = useState<string>('');
+  const [highlightColor, setHighlightColor] = useState<string>('red');
   const [textWaterMarker, setTextWaterMarker] = useState<string>('Open-Lineage');
 
   return (

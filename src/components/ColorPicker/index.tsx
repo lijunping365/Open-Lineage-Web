@@ -3,12 +3,13 @@ import reactCSS from 'reactcss';
 import { SketchPicker } from 'react-color';
 
 interface ColorPickerProps {
+  defaultColor?: string;
   onChange?: (value: any) => void;
 }
 
-export const ColorPicker: FC<ColorPickerProps> = ({ onChange }) => {
+export const ColorPicker: FC<ColorPickerProps> = ({ defaultColor,onChange }) => {
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
-  const [color, setColor] = useState('#4A90E2');
+  const [color, setColor] = useState(defaultColor || '#4A90E2');
 
   const handleClick = () => {
     setDisplayColorPicker(!displayColorPicker);

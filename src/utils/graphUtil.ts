@@ -162,8 +162,13 @@ export const handleTextWaterMarker = (graph: any, text: string) => {
  * @param color
  */
 export const handleHighlightColor = (graph: any, color: string) => {
-  //setHighlightColor(color);
-  // graphRef.current.setTextWaterMarker(text || 'beike');
+  // 查询所有选中的元素
+  const edges = graph.findAll('edge', (item: any) => {
+    return (item.getStates().length !== 0 && item.getStates()[0].startsWith("highlight"))
+  })
+  if (edges){
+    edges.forEach((edge: any) => graph.setItemState(edge, `highlight-${color}`, true))
+  }
 };
 
 /**
@@ -188,10 +193,10 @@ export const clearAllStats = (graph: any) => {
  * 设置左边关联节点及边状态
  * @param edges 边
  */
-export const setLeftStats = (graph: any, edges: any[]) => {
+export const setLeftStats = (graph: any, edges: any[], color: string) => {
   if (!graph) return;
   edges.forEach(function (edge: any) {
-    graph.setItemState(edge, 'highlight', true);
+    graph.setItemState(edge, 'highlight-'+ color, true);
     edge.toFront();
 
     const sourceAnchor = edge.getModel()['sourceAnchor'];
@@ -209,10 +214,10 @@ export const setLeftStats = (graph: any, edges: any[]) => {
  * 设置右边关联节点及边状态
  * @param edges 边
  */
-export const setRightStats = (graph: any, edges: any[]) => {
+export const setRightStats = (graph: any, edges: any[], color: string) => {
   if (!graph) return;
   edges.forEach(function (edge: any) {
-    graph.setItemState(edge, 'highlight', true);
+    graph.setItemState(edge, 'highlight-'+ color, true);
     edge.toFront();
 
     const targetAnchor = edge.getModel()['targetAnchor'];

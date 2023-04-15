@@ -97,6 +97,7 @@ const Setting = ({
             name='highlight'
           >
             <ColorPicker
+              defaultColor={highlightColor}
               onChange={(value: string) => handlePickerChange(value)}
             />
           </Form.Item>
