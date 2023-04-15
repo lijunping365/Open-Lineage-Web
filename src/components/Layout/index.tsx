@@ -7,7 +7,7 @@ import Footer from '../Footer'
 
 const LineageLayout = () => {
   const [highlightColor, setHighlightColor] = useState<string>('');
-  const [textWaterMarker, setTextWaterMarker] = useState<string>('BEIKE');
+  const [textWaterMarker, setTextWaterMarker] = useState<string>('Open-Lineage');
 
   const handleTextWaterMarker = (text: string) =>{
 
@@ -23,7 +23,7 @@ const LineageLayout = () => {
       <main>
         <div className="mx-auto py-6 sm:px-6 lg:px-8 bg-gray-100">
           <div className='layout-container'>
-            <div className='layout-side'>
+            <div className='layout-sidebar'>
               <Sidebar
                 textWaterMarker={textWaterMarker}
                 highlightColor={highlightColor}

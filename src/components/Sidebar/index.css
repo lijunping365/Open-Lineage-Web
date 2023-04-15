@@ -1,0 +1,14 @@
+.layout-sidebar-header {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.layout-sidebar-edit {
+    padding: 10px;
+}
+
+.layout-sidebar-header .anticon-setting {
+    vertical-align: 0
+}

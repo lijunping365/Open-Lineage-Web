@@ -3,6 +3,7 @@ import { SearchOutlined, SettingOutlined } from '@ant-design/icons'
 import Setting from '../Setting'
 import MonacoEditor from '../MonacoEditor'
 import { useState } from 'react'
+import './index.css';
 
 interface SidebarProps {
   /**
@@ -47,7 +48,7 @@ const Sidebar = ({
 
   return (
     <>
-      <div className='layout-sider-header'>
+      <div className='layout-sidebar-header'>
         <Select
           defaultValue='Hive'
           style={{ width: 100 }}
@@ -95,7 +96,7 @@ const Sidebar = ({
           />
         </Popover>
       </div>
-      <div className='layout-sider-edit'>
+      <div className='layout-sidebar-edit'>
         <MonacoEditor
           width='340'
           height='600'

@@ -5,22 +5,11 @@
   background: white;
   border-radius: 6px;
 }
-.layout-sider {
+.layout-sidebar {
   min-width: 360px;
   background-color: #edf0f9;
 }
 
-.layout-sider-header {
-  height: 40px;
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.layout-sider-edit {
-  padding: 10px;
-}
 .layout-content {
   width: 100%;
 }

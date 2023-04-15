@@ -84,7 +84,7 @@ export const handleRefreshLayout = (graph: any) => {
 // 下载图片
 export const handleDownloadImage = (graph: any) => {
   if (!graph) return;
-  graph.downloadFullImage('beike-bigdata', 'image/png', {
+  graph.downloadFullImage('open-lineage', 'image/png', {
     padding: [30, 15, 15, 15],
   });
 };

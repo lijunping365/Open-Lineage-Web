@@ -3,13 +3,12 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  border-left-width: 1px;
 }
 
 .g6-component-topbar-item {
   display: flex;
   align-items: center;
-  padding: 5px 10px;
+  padding: 0px 10px;
   line-height: 30px;
 }
 

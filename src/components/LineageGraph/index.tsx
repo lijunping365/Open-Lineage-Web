@@ -75,7 +75,7 @@ const LineageGraph = ({highlightColor, textWaterMarker}: LineageGraphProps) => {
       const grid = new G6.Grid();
       const container: any = ref.current;
       const width = container.scrollWidth;
-      const height = container.scrollHeight || 500;
+      const height = container.scrollHeight || 600;
       // 实例化 Graph
       graphRef.current = new G6.Graph({
         container: container || '',
