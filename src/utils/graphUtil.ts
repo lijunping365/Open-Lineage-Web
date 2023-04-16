@@ -1,5 +1,3 @@
-import { dataTransform, initData } from './common'
-
 /**
  * 放大
  * @param graph
@@ -107,43 +105,33 @@ export const handleDownloadImage = (graph: any) => {
 };
 
 /**
- * 字段血缘
+ * 渲染视图
  */
-export const handleFieldLineage = (graph: any, checked: boolean) => {
+export const renderGraph = (graph: any, lineageData: any) => {
   if (!graph) return;
-  console.log('字段血缘', checked);
-  if (checked) {
-    // 展开
-    const data = dataTransform(initData(100));
-    console.log('datadddddddddddd', data);
-    graph.data(data);
-    graph.render();
-  } else {
-    const data = dataTransform(initData(10));
-    console.log('datadddddddddddd', data);
-    graph.data(data);
-    graph.render();
-  }
+  graph.data(lineageData);
+  graph.render();
+  graph.fitView();
+};
+
+/**
+ * 字段血缘
+ * TODO
+ */
+export const handleFieldLineage = (graph: any, lineageData: any) => {
+  if (!graph) return;
+  graph.data(lineageData);
+  graph.render();
 };
 
 /**
  * 完整血缘
+ * TODO
  */
-export const handleWholeLineage = (graph: any, checked: boolean) => {
+export const handleWholeLineage = (graph: any, lineageData: any) => {
   if (!graph) return;
-  console.log('完整血缘', checked);
-  if (checked) {
-    // 展开
-    const data = dataTransform(initData(100));
-    console.log('datadddddddddddd', data);
-    graph.data(data);
-    graph.render();
-  } else {
-    const data = dataTransform(initData(10));
-    console.log('datadddddddddddd', data);
-    graph.data(data);
-    graph.render();
-  }
+  graph.data(lineageData);
+  graph.render();
 };
 
 /**

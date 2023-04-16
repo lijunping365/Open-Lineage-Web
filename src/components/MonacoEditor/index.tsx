@@ -68,6 +68,9 @@ const MonacoEditor = ({
           ...(theme ? { theme } : {}),
         },
       );
+      editor.current.onDidChangeModelContent((event) => {
+        onChange && onChange(editor.current?.getValue() || '', event);
+      });
     }
   };
 
@@ -76,6 +79,10 @@ const MonacoEditor = ({
     editor.current?.focus();
   }, []);
 
+  // useEffect(() =>{
+  //   editor.current?.setValue(value || '');
+  // }, [value]);
+
   useEffect(() => {
     editor.current?.layout();
   }, [width, height]);
@@ -83,6 +90,13 @@ const MonacoEditor = ({
   useEffect(() => {
     monaco.editor.setTheme(theme || '');
   }, [theme]);
+
+  useEffect(() => {
+    if (editor.current) {
+      const model: any = editor.current.getModel();
+      monaco.editor.setModelLanguage(model, language || '');
+    }
+  }, [language]);
 
   return (
     <div

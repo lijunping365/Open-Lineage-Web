@@ -4,16 +4,20 @@ import Topbar from '../Topbar';
 import G6 from '@antv/g6';
 import './index.css';
 import './registerShape';
-import { dataTransform, getLeftRelation, getRightRelation, initData } from '../../utils/common'
+import { getLeftRelation, getRightRelation } from '../../utils/common'
 import {
   clearAllStats, handleAutoZoom, handleDownloadImage,
   handleFieldLineage, handleHighlightColor, handleRealZoom, handleRefreshLayout, handleTextWaterMarker,
-  handleWholeLineage, handleZoomIn, handleZoomOut,
+  handleWholeLineage, handleZoomIn, handleZoomOut, renderGraph,
   setLeftStats,
   setRightStats
 } from '../../utils/graphUtil'
 
 interface LineageGraphProps {
+  /**
+   * 血缘数据
+   */
+  lineageData: any;
   /**
    * 水印文字
    */
@@ -24,11 +28,17 @@ interface LineageGraphProps {
   highlightColor: string;
 }
 
-const LineageGraph = ({highlightColor, textWaterMarker}: LineageGraphProps) => {
+const LineageGraph = ({lineageData, highlightColor, textWaterMarker}: LineageGraphProps) => {
   const ref = useRef(null);
   const toolbarRef = useRef(null);
   const graphRef = useRef<any>(null);
+  const lineageDataRef = useRef<any>(lineageData);
+  const currentHighlightColorRef = useRef<any>(highlightColor);
   const [highlight, setHighlight] = useState<boolean>(false);
+
+  useEffect(() => {
+    renderGraph(graphRef.current, lineageData)
+  },[lineageData]);
 
   useEffect(() => {
     handleTextWaterMarker(graphRef.current, textWaterMarker)
@@ -36,9 +46,30 @@ const LineageGraph = ({highlightColor, textWaterMarker}: LineageGraphProps) => {
 
   useEffect(() => {
     if (highlight){
+      currentHighlightColorRef.current = highlightColor;
       handleHighlightColor(graphRef.current, highlightColor)
     }
   },[highlightColor]);
+
+  const onFieldLineage = (checked: boolean) =>{
+    if (checked) {
+      const data = lineageDataRef.current?.slice(0, 10)
+      console.log('datadddddddddddd', data);
+      handleFieldLineage(graphRef.current, data)
+    } else {
+      handleFieldLineage(graphRef.current, lineageDataRef.current)
+    }
+  }
+
+  const onWholeLineage = (checked: boolean) =>{
+    if (checked) {
+      const data = lineageDataRef.current?.slice(0, 10)
+      console.log('datadddddddddddd', data);
+      handleWholeLineage(graphRef.current, data)
+    } else {
+      handleWholeLineage(graphRef.current, lineageDataRef.current)
+    }
+  }
 
   const bindEvents = (graph: any) => {
     // 节点点击
@@ -72,10 +103,10 @@ const LineageGraph = ({highlightColor, textWaterMarker}: LineageGraphProps) => {
       graph.setItemState(item, 'highlight-' + sourceIndex, true);
 
       // 设置左关联边及节点状态
-      setLeftStats(graph, leftActiveEdges, highlightColor);
+      setLeftStats(graph, leftActiveEdges, currentHighlightColorRef.current);
 
       // 设置右关联边及节点状态
-      setRightStats(graph, rightActiveEdges, highlightColor);
+      setRightStats(graph, rightActiveEdges, currentHighlightColorRef.current);
     });
   };
 
@@ -146,11 +177,6 @@ const LineageGraph = ({highlightColor, textWaterMarker}: LineageGraphProps) => {
       const graph = graphRef.current;
       // 设置文字水印
       graph.setTextWaterMarker(textWaterMarker);
-      const data = dataTransform(initData(100));
-      console.log('datadddddddddddd', data);
-      graph.data(data);
-      graph.render();
-      graph.fitView();
       bindEvents(graph);
     }
   }, []);
@@ -160,8 +186,8 @@ const LineageGraph = ({highlightColor, textWaterMarker}: LineageGraphProps) => {
       <div ref={ref}>
         <div className='g6-component-topbar'>
           <Topbar
-            handleFieldLineage={(checked)=> handleFieldLineage(graphRef.current, checked)}
-            handleWholeLineage={(checked) => handleWholeLineage(graphRef.current, checked)}
+            handleFieldLineage={(checked)=> onFieldLineage(checked)}
+            handleWholeLineage={(checked) => onWholeLineage(checked)}
           />
         </div>
         <div

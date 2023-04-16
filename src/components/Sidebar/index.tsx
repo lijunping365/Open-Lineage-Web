@@ -22,6 +22,10 @@ interface SidebarProps {
    * 设置线条高亮色
    */
   setHighlightColor: (color: string) => void;
+  /**
+   * 解析 sql
+   */
+  handleParseSql: (sql: string) => void;
 }
 
 const handleChange = (value: string) => {
@@ -33,17 +37,14 @@ const Sidebar = ({
   highlightColor,
   setTextWaterMarker,
   setHighlightColor,
+  handleParseSql
 }: SidebarProps) =>{
   const [open, setOpen] = useState(false);
-  const [theme, setTheme] = useState<string>();
+  const [theme, setTheme] = useState<string>('vs-light');
   const [code, setCode] = useState('select * from ');
 
-  const handleOpenChange = (newOpen: boolean) => {
-    setOpen(newOpen);
-  };
-
-  const handleChangeTheme = (theme: string) => {
-    setTheme(theme);
+  const handleFormatSql = () => {
+    setCode("select * ");
   };
 
   return (
@@ -62,6 +63,7 @@ const Sidebar = ({
           type='primary'
           icon={<SearchOutlined />}
           style={{ padding: '4px 6px' }}
+          onClick={() => handleParseSql(code)}
         >
           解析血缘
         </Button>
@@ -69,6 +71,7 @@ const Sidebar = ({
           type='primary'
           icon={<SearchOutlined />}
           style={{ padding: '4px 6px' }}
+          onClick={() => handleFormatSql()}
         >
           美化SQL
         </Button>
@@ -77,7 +80,7 @@ const Sidebar = ({
             <Setting
               textWaterMarker={textWaterMarker}
               highlightColor={highlightColor}
-              changeTheme={(theme) => handleChangeTheme(theme)}
+              changeTheme={(theme) => setTheme(theme)}
               close={() => setOpen(!open)}
               setTextWaterMarker={(marker) => setTextWaterMarker(marker)}
               setHighlightColor={(color) => setHighlightColor(color)}
@@ -87,7 +90,7 @@ const Sidebar = ({
           placement='rightTop'
           trigger='click'
           open={open}
-          onOpenChange={handleOpenChange}
+          onOpenChange={() => setOpen(!open)}
         >
           <Button
             type='primary'
@@ -101,11 +104,9 @@ const Sidebar = ({
           width='340'
           height='600'
           language='sql'
-          theme={theme || 'vs-light'}
+          theme={theme}
           value={code}
-          // options={options}
-          // onChange={onChange}
-          //editorDidMount={editorDidMount}
+          onChange={(value) => setCode(value)}
         />
       </div>
     </>
