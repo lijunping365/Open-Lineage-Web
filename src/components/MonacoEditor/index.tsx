@@ -79,9 +79,10 @@ const MonacoEditor = ({
     editor.current?.focus();
   }, []);
 
-  // useEffect(() =>{
-  //   editor.current?.setValue(value || '');
-  // }, [value]);
+  useEffect(() =>{
+    console.log("sssssssss", defaultValue)
+    defaultValue && editor.current?.setValue(defaultValue);
+  }, [defaultValue]);
 
   useEffect(() => {
     editor.current?.layout();

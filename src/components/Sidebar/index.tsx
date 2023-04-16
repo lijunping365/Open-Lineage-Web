@@ -42,9 +42,10 @@ const Sidebar = ({
   const [open, setOpen] = useState(false);
   const [theme, setTheme] = useState<string>('vs-light');
   const [code, setCode] = useState('select * from ');
+  const [formatCode, setFormatCode] = useState<string>();
 
   const handleFormatSql = () => {
-    setCode("select * ");
+    setFormatCode("select * ");
   };
 
   return (
@@ -71,7 +72,7 @@ const Sidebar = ({
           type='primary'
           icon={<SearchOutlined />}
           style={{ padding: '4px 6px' }}
-          onClick={() => handleFormatSql()}
+          onClick={handleFormatSql}
         >
           美化SQL
         </Button>
@@ -106,6 +107,7 @@ const Sidebar = ({
           language='sql'
           theme={theme}
           value={code}
+          defaultValue={formatCode}
           onChange={(value) => setCode(value)}
         />
       </div>
