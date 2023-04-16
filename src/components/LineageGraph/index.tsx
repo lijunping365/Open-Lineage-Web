@@ -45,8 +45,8 @@ const LineageGraph = ({lineageData, highlightColor, textWaterMarker}: LineageGra
   },[textWaterMarker]);
 
   useEffect(() => {
+    currentHighlightColorRef.current = highlightColor;
     if (highlight){
-      currentHighlightColorRef.current = highlightColor;
       handleHighlightColor(graphRef.current, highlightColor)
     }
   },[highlightColor]);
