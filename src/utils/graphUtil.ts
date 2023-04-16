@@ -108,7 +108,7 @@ export const handleDownloadImage = (graph: any) => {
  * 渲染视图
  */
 export const renderGraph = (graph: any, lineageData: any) => {
-  if (!graph) return;
+  if (!graph || !lineageData) return;
   graph.data(lineageData);
   graph.render();
   graph.fitView();
@@ -119,7 +119,7 @@ export const renderGraph = (graph: any, lineageData: any) => {
  * TODO
  */
 export const handleFieldLineage = (graph: any, lineageData: any) => {
-  if (!graph) return;
+  if (!graph || !lineageData) return;
   graph.data(lineageData);
   graph.render();
 };
@@ -129,7 +129,7 @@ export const handleFieldLineage = (graph: any, lineageData: any) => {
  * TODO
  */
 export const handleWholeLineage = (graph: any, lineageData: any) => {
-  if (!graph) return;
+  if (!graph || !lineageData) return;
   graph.data(lineageData);
   graph.render();
 };
