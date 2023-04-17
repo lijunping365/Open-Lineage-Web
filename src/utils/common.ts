@@ -1,5 +1,3 @@
-import { string } from 'sql-formatter/lib/src/lexer/regexFactory';
-
 export const initData = (count: number) => {
   const nodeArray = [];
   for (let i = 1; i < count; i++) {
@@ -155,18 +153,35 @@ export const transformData = (data: any) => {
   const nodes: any[] = [];
   const edges: any[] = [];
 
+  const edgeSet: Set<any> = new Set();
   const tableFields: Set<any> = new Set();
   data.forEach((item: any) => {
-    tableFields.add(item.targetField.fieldName);
+    const fieldName = item.targetField.fieldName;
+    tableFields.add(fieldName);
+
     if (!item.refFields) {
       return;
     }
 
+    const array = fieldName.split('.');
+    let targetId = array[1];
+    let targetAnchor = array[2];
+
     item.refFields.forEach((ref: any) => {
-      tableFields.add(ref.fieldName);
+      const fieldName = ref.fieldName;
+      tableFields.add(fieldName);
+      const array = fieldName.split('.');
+      edgeSet.add({
+        source: array[1],
+        target: targetId,
+        sourceAnchor: array[2],
+        targetAnchor: targetAnchor,
+        label: ref.label,
+      });
     });
   });
 
+  edges.push(Array.from(edgeSet));
   //生成表
   const tables: Map<string, string[]> = new Map();
   tableFields.forEach((item: any) => {
@@ -183,55 +198,28 @@ export const transformData = (data: any) => {
   });
 
   let i = 0;
-  tables.forEach((k: any, value: any) => {
+  tables.forEach((value: string[], key: any, map) => {
     i++;
-    console.log('*****', value);
     const attrs: any[] = [];
     value.forEach((attr: any) => {
       attrs.push({
-        nodeId: k,
+        nodeId: key,
         key: attr,
         type: attr,
       });
     });
 
     const obj: any = {
-      id: k,
-      key: k,
-      label: k,
+      id: key,
+      key: key,
+      label: key,
       x: 100 * i,
       y: 100 * i,
       attrs: attrs,
     };
-
     nodes.push(obj);
   });
-
-  console.log('oooooooooo', nodes);
-
-  // TODO:测试node中的定位
-  data.map((node: any) => {
-    nodes.push({
-      ...node,
-    });
-    if (node.attrs) {
-      node.attrs.forEach((attr: any) => {
-        if (attr.relation) {
-          attr.relation.forEach((relation: any) => {
-            edges.push({
-              source: node.id,
-              target: relation.nodeId,
-              sourceAnchor: attr.key,
-              targetAnchor: relation.key,
-              label: relation.label,
-            });
-          });
-        }
-      });
-    }
-  });
-  //console.log('data', nodes, edges);
-
+  console.log('data', nodes, edges);
   return {
     nodes,
     edges,
