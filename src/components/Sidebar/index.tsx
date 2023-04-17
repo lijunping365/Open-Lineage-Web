@@ -4,6 +4,7 @@ import Setting from '../Setting';
 import MonacoEditor from '../MonacoEditor';
 import { useState } from 'react';
 import './index.css';
+import { sql } from './sql';
 
 interface SidebarProps {
   /**
@@ -41,7 +42,7 @@ const Sidebar = ({
 }: SidebarProps) => {
   const [open, setOpen] = useState(false);
   const [theme, setTheme] = useState<string>('vs-light');
-  const [code, setCode] = useState('select * from ');
+  const [code, setCode] = useState(sql());
   const [formatCode, setFormatCode] = useState<string>();
 
   const handleFormatSql = () => {
