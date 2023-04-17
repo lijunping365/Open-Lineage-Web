@@ -115,26 +115,6 @@ export const renderGraph = (graph: any, lineageData: any) => {
 };
 
 /**
- * 字段血缘
- * TODO
- */
-export const handleFieldLineage = (graph: any, lineageData: any) => {
-  if (!graph || !lineageData) return;
-  graph.data(lineageData);
-  graph.render();
-};
-
-/**
- * 完整血缘
- * TODO
- */
-export const handleWholeLineage = (graph: any, lineageData: any) => {
-  if (!graph || !lineageData) return;
-  graph.data(lineageData);
-  graph.render();
-};
-
-/**
  * 设置文字水印
  * @param graph
  * @param text

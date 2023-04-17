@@ -9,12 +9,10 @@ import {
   clearAllStats,
   handleAutoZoom,
   handleDownloadImage,
-  handleFieldLineage,
   handleHighlightColor,
   handleRealZoom,
   handleRefreshLayout,
   handleTextWaterMarker,
-  handleWholeLineage,
   handleZoomIn,
   handleZoomOut,
   renderGraph,
@@ -53,6 +51,7 @@ const LineageGraph = ({
   const topbarRef = useRef<any>(null);
 
   useEffect(() => {
+    lineageDataRef.current = lineageData;
     fieldCheckedRef.current = true;
     wholeCheckedRef.current = true;
     topbarRef?.current?.setFieldChecked(true);
@@ -75,12 +74,16 @@ const LineageGraph = ({
     fieldCheckedRef.current = checked;
     console.log('1111111111111111', fieldCheckedRef.current);
     console.log('2222222222222222', wholeCheckedRef.current);
+    if (!lineageDataRef.current) {
+      return;
+    }
+
     if (checked) {
+      renderGraph(graphRef.current, lineageDataRef.current);
+    } else {
       const data = lineageDataRef.current?.slice(0, 10);
       console.log('datadddddddddddd', data);
-      handleFieldLineage(graphRef.current, data);
-    } else {
-      handleFieldLineage(graphRef.current, lineageDataRef.current);
+      renderGraph(graphRef.current, data);
     }
   };
 
@@ -88,12 +91,16 @@ const LineageGraph = ({
     wholeCheckedRef.current = checked;
     console.log('1111111111111111', fieldCheckedRef.current);
     console.log('2222222222222222', wholeCheckedRef.current);
+    if (!lineageDataRef.current) {
+      return;
+    }
+
     if (checked) {
+      renderGraph(graphRef.current, lineageDataRef.current);
+    } else {
       const data = lineageDataRef.current?.slice(0, 10);
       console.log('datadddddddddddd', data);
-      handleWholeLineage(graphRef.current, data);
-    } else {
-      handleWholeLineage(graphRef.current, lineageDataRef.current);
+      renderGraph(graphRef.current, data);
     }
   };
 
