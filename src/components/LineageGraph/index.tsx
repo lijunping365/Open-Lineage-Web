@@ -5,6 +5,7 @@ import G6 from '@antv/g6';
 import './index.css';
 import './registerShape';
 import { getLeftRelation, getRightRelation } from '../../utils/common';
+import { dataTransform, initData } from '../../utils/common';
 import {
   clearAllStats,
   handleAutoZoom,
@@ -43,20 +44,30 @@ const LineageGraph = ({
   const ref = useRef(null);
   const toolbarRef = useRef(null);
   const graphRef = useRef<any>(null);
-  const lineageDataRef = useRef<any>(lineageData);
+  const topbarRef = useRef<any>(null);
   const fieldCheckedRef = useRef<any>(true);
   const wholeCheckedRef = useRef<any>(true);
   const currentHighlightColorRef = useRef<any>(highlightColor);
   const [highlight, setHighlight] = useState<boolean>(false);
-  const topbarRef = useRef<any>(null);
+  const [lineageWholeData, setLineageWholeData] = useState<any>();
+  const [lineagePartData, setLineagePartData] = useState<any>();
 
   useEffect(() => {
-    lineageDataRef.current = lineageData;
     fieldCheckedRef.current = true;
     wholeCheckedRef.current = true;
     topbarRef?.current?.setFieldChecked(true);
     topbarRef?.current?.setWholeChecked(true);
-    renderGraph(graphRef.current, lineageData);
+
+    if (lineageData) {
+      console.log('hhhhhhhhhhhhhhh', lineageData);
+      const wholeData = lineageData.withProcessData[0];
+      const partData = lineageData.noProcessData[0];
+      const t1 = dataTransform(wholeData);
+      const t2 = dataTransform(partData);
+      setLineageWholeData(t1);
+      setLineagePartData(t2);
+      renderGraph(graphRef.current, t1);
+    }
   }, [lineageData]);
 
   useEffect(() => {
@@ -74,14 +85,14 @@ const LineageGraph = ({
     fieldCheckedRef.current = checked;
     console.log('1111111111111111', fieldCheckedRef.current);
     console.log('2222222222222222', wholeCheckedRef.current);
-    if (!lineageDataRef.current) {
+    if (!lineageWholeData) {
       return;
     }
 
     if (checked) {
-      renderGraph(graphRef.current, lineageDataRef.current);
+      renderGraph(graphRef.current, lineageWholeData);
     } else {
-      const data = lineageDataRef.current?.slice(0, 10);
+      const data = lineageWholeData?.slice(0, 10);
       console.log('datadddddddddddd', data);
       renderGraph(graphRef.current, data);
     }
@@ -91,14 +102,14 @@ const LineageGraph = ({
     wholeCheckedRef.current = checked;
     console.log('1111111111111111', fieldCheckedRef.current);
     console.log('2222222222222222', wholeCheckedRef.current);
-    if (!lineageDataRef.current) {
+    if (!lineagePartData) {
       return;
     }
 
     if (checked) {
-      renderGraph(graphRef.current, lineageDataRef.current);
+      renderGraph(graphRef.current, lineagePartData);
     } else {
-      const data = lineageDataRef.current?.slice(0, 10);
+      const data = lineagePartData?.slice(0, 10);
       console.log('datadddddddddddd', data);
       renderGraph(graphRef.current, data);
     }
