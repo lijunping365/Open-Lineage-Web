@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './index.css';
 import { Switch } from 'antd';
 
 export interface TopBarProps {
+  /**
+   * 字段血缘
+   */
+  fieldChecked: boolean;
+
+  /**
+   * 完整血缘
+   */
+  wholeChecked: boolean;
   /**
    * 字段血缘
    */
@@ -16,20 +25,37 @@ export interface TopBarProps {
 }
 
 const Topbar: React.FC<TopBarProps> = (props: any) => {
-  const { handleFieldLineage, handleWholeLineage } = props;
+  const { fieldChecked, wholeChecked, handleFieldLineage, handleWholeLineage } =
+    props;
+  const [fieldCheckedState, setFieldCheckedState] = useState(fieldChecked);
+  const [wholeCheckedState, setWholeCheckedState] = useState(wholeChecked);
+
+  useEffect(() => {
+    console.log('yyyyyyyyyyyyyyyyyyy', fieldChecked);
+    setFieldCheckedState(fieldChecked);
+  }, [fieldChecked]);
+
+  useEffect(() => {
+    console.log('wwwwwwwwwwwwwwwwwww', wholeChecked);
+    setWholeCheckedState(wholeChecked);
+  }, [wholeChecked]);
 
   const options = [
     {
       key: 'zoomOut',
       name: '字段级血缘关系',
+      value: fieldCheckedState,
       action: (checked: boolean) => {
+        setFieldCheckedState(checked);
         handleFieldLineage(checked);
       },
     },
     {
       key: 'zoomIn',
       name: '完整血缘链路',
+      value: wholeCheckedState,
       action: (checked: boolean) => {
+        setWholeCheckedState(checked);
         handleWholeLineage(checked);
       },
     },
@@ -47,7 +73,7 @@ const Topbar: React.FC<TopBarProps> = (props: any) => {
               <span>{item.name}</span>
               <Switch
                 size='small'
-                defaultChecked
+                checked={item.value}
                 onChange={item.action}
               />
             </div>
