@@ -4,14 +4,23 @@ import Topbar from '../Topbar';
 import G6 from '@antv/g6';
 import './index.css';
 import './registerShape';
-import { getLeftRelation, getRightRelation } from '../../utils/common'
+import { getLeftRelation, getRightRelation } from '../../utils/common';
 import {
-  clearAllStats, handleAutoZoom, handleDownloadImage,
-  handleFieldLineage, handleHighlightColor, handleRealZoom, handleRefreshLayout, handleTextWaterMarker,
-  handleWholeLineage, handleZoomIn, handleZoomOut, renderGraph,
+  clearAllStats,
+  handleAutoZoom,
+  handleDownloadImage,
+  handleFieldLineage,
+  handleHighlightColor,
+  handleRealZoom,
+  handleRefreshLayout,
+  handleTextWaterMarker,
+  handleWholeLineage,
+  handleZoomIn,
+  handleZoomOut,
+  renderGraph,
   setLeftStats,
-  setRightStats
-} from '../../utils/graphUtil'
+  setRightStats,
+} from '../../utils/graphUtil';
 
 interface LineageGraphProps {
   /**
@@ -28,7 +37,11 @@ interface LineageGraphProps {
   highlightColor: string;
 }
 
-const LineageGraph = ({lineageData, highlightColor, textWaterMarker}: LineageGraphProps) => {
+const LineageGraph = ({
+  lineageData,
+  highlightColor,
+  textWaterMarker,
+}: LineageGraphProps) => {
   const ref = useRef(null);
   const toolbarRef = useRef(null);
   const graphRef = useRef<any>(null);
@@ -37,39 +50,39 @@ const LineageGraph = ({lineageData, highlightColor, textWaterMarker}: LineageGra
   const [highlight, setHighlight] = useState<boolean>(false);
 
   useEffect(() => {
-    renderGraph(graphRef.current, lineageData)
-  },[lineageData]);
+    renderGraph(graphRef.current, lineageData);
+  }, [lineageData]);
 
   useEffect(() => {
-    handleTextWaterMarker(graphRef.current, textWaterMarker)
-  },[textWaterMarker]);
+    handleTextWaterMarker(graphRef.current, textWaterMarker);
+  }, [textWaterMarker]);
 
   useEffect(() => {
     currentHighlightColorRef.current = highlightColor;
-    if (highlight){
-      handleHighlightColor(graphRef.current, highlightColor)
+    if (highlight) {
+      handleHighlightColor(graphRef.current, highlightColor);
     }
-  },[highlightColor]);
+  }, [highlightColor]);
 
-  const onFieldLineage = (checked: boolean) =>{
+  const onFieldLineage = (checked: boolean) => {
     if (checked) {
-      const data = lineageDataRef.current?.slice(0, 10)
+      const data = lineageDataRef.current?.slice(0, 10);
       console.log('datadddddddddddd', data);
-      handleFieldLineage(graphRef.current, data)
+      handleFieldLineage(graphRef.current, data);
     } else {
-      handleFieldLineage(graphRef.current, lineageDataRef.current)
+      handleFieldLineage(graphRef.current, lineageDataRef.current);
     }
-  }
+  };
 
-  const onWholeLineage = (checked: boolean) =>{
+  const onWholeLineage = (checked: boolean) => {
     if (checked) {
-      const data = lineageDataRef.current?.slice(0, 10)
+      const data = lineageDataRef.current?.slice(0, 10);
       console.log('datadddddddddddd', data);
-      handleWholeLineage(graphRef.current, data)
+      handleWholeLineage(graphRef.current, data);
     } else {
-      handleWholeLineage(graphRef.current, lineageDataRef.current)
+      handleWholeLineage(graphRef.current, lineageDataRef.current);
     }
-  }
+  };
 
   const bindEvents = (graph: any) => {
     // 节点点击
@@ -186,7 +199,7 @@ const LineageGraph = ({lineageData, highlightColor, textWaterMarker}: LineageGra
       <div ref={ref}>
         <div className='g6-component-topbar'>
           <Topbar
-            handleFieldLineage={(checked)=> onFieldLineage(checked)}
+            handleFieldLineage={(checked) => onFieldLineage(checked)}
             handleWholeLineage={(checked) => onWholeLineage(checked)}
           />
         </div>
@@ -199,8 +212,8 @@ const LineageGraph = ({lineageData, highlightColor, textWaterMarker}: LineageGra
             handleZoomIn={() => handleZoomIn(graphRef.current)}
             handleRealZoom={() => handleRealZoom(graphRef.current)}
             handleAutoZoom={() => handleAutoZoom(graphRef.current)}
-            handleRefreshLayout={() =>handleRefreshLayout(graphRef.current)}
-            handleDownloadImage={() =>handleDownloadImage(graphRef.current)}
+            handleRefreshLayout={() => handleRefreshLayout(graphRef.current)}
+            handleDownloadImage={() => handleDownloadImage(graphRef.current)}
           />
         </div>
       </div>

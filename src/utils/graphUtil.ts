@@ -152,10 +152,15 @@ export const handleTextWaterMarker = (graph: any, text: string) => {
 export const handleHighlightColor = (graph: any, color: string) => {
   // 查询所有选中的元素
   const edges = graph.findAll('edge', (item: any) => {
-    return (item.getStates().length !== 0 && item.getStates()[0].startsWith("highlight"))
-  })
-  if (edges){
-    edges.forEach((edge: any) => graph.setItemState(edge, `highlight-${color}`, true))
+    return (
+      item.getStates().length !== 0 &&
+      item.getStates()[0].startsWith('highlight')
+    );
+  });
+  if (edges) {
+    edges.forEach((edge: any) =>
+      graph.setItemState(edge, `highlight-${color}`, true)
+    );
   }
 };
 
@@ -184,7 +189,7 @@ export const clearAllStats = (graph: any) => {
 export const setLeftStats = (graph: any, edges: any[], color: string) => {
   if (!graph) return;
   edges.forEach(function (edge: any) {
-    graph.setItemState(edge, 'highlight-'+ color, true);
+    graph.setItemState(edge, 'highlight-' + color, true);
     edge.toFront();
 
     const sourceAnchor = edge.getModel()['sourceAnchor'];
@@ -205,7 +210,7 @@ export const setLeftStats = (graph: any, edges: any[], color: string) => {
 export const setRightStats = (graph: any, edges: any[], color: string) => {
   if (!graph) return;
   edges.forEach(function (edge: any) {
-    graph.setItemState(edge, 'highlight-'+ color, true);
+    graph.setItemState(edge, 'highlight-' + color, true);
     edge.toFront();
 
     const targetAnchor = edge.getModel()['targetAnchor'];

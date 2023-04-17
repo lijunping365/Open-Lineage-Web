@@ -1,22 +1,22 @@
 .layout-sidebar-header {
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .layout-sidebar-edit {
-    padding: 10px;
+  padding: 10px;
 }
 
 .layout-sidebar-header .anticon {
-    vertical-align: baseline;
+  vertical-align: baseline;
 }
 
-.layout-sidebar-header .anticon-setting svg{
-    margin-top: -3px;
+.layout-sidebar-header .anticon-setting svg {
+  margin-top: -3px;
 }
 
-.ant-btn-primary{
-    background-color: #1677ff !important;
+.ant-btn-primary {
+  background-color: #1677ff !important;
 }

@@ -1,4 +1,3 @@
-
 export const initData = (count: number) => {
   const nodeArray = [];
   for (let i = 1; i < count; i++) {
@@ -148,7 +147,6 @@ export const initData = (count: number) => {
   }
   return nodeArray;
 };
-
 
 export const dataTransform = (data: any) => {
   const nodes: any[] = [];

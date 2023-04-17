@@ -1,28 +1,32 @@
 import logo from '/logo.svg';
-import metadata from '../../config/metadata'
+import metadata from '../../config/metadata';
 
-const Footer = () =>{
+const Footer = () => {
   return (
     <>
-      <footer className="text-gray-600 body-font">
-        <div className="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">
+      <footer className='text-gray-600 body-font'>
+        <div className='container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col'>
           <a
             href={metadata.website}
-            className="flex title-font font-medium items-center md:justify-start justify-center text-gray-900"
+            className='flex title-font font-medium items-center md:justify-start justify-center text-gray-900'
           >
-            <img src={logo} className="h-10"/>
-            <span className="ml-3 text-xl">Open-Lineage</span>
+            <img
+              src={logo}
+              className='h-10'
+            />
+            <span className='ml-3 text-xl'>Open-Lineage</span>
           </a>
-          <p className="text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4">
+          <p className='text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4'>
             <a
               href={metadata.website}
-              className="text-gray-600 ml-1"
-              rel="noopener noreferrer"
-              target="_blank">
+              className='text-gray-600 ml-1'
+              rel='noopener noreferrer'
+              target='_blank'
+            >
               {metadata.copyright}
             </a>
           </p>
-          <span className="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
+          <span className='inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start'>
             <a
               href={metadata.bilibili}
               target='_blank'
@@ -83,7 +87,7 @@ const Footer = () =>{
         </div>
       </footer>
     </>
-  )
-}
+  );
+};
 
 export default Footer;

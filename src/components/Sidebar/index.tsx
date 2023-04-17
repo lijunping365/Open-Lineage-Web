@@ -1,8 +1,8 @@
-import { Button, Popover, Select } from 'antd'
-import { SearchOutlined, SettingOutlined } from '@ant-design/icons'
-import Setting from '../Setting'
-import MonacoEditor from '../MonacoEditor'
-import { useState } from 'react'
+import { Button, Popover, Select } from 'antd';
+import { SearchOutlined, SettingOutlined } from '@ant-design/icons';
+import Setting from '../Setting';
+import MonacoEditor from '../MonacoEditor';
+import { useState } from 'react';
 import './index.css';
 
 interface SidebarProps {
@@ -37,15 +37,15 @@ const Sidebar = ({
   highlightColor,
   setTextWaterMarker,
   setHighlightColor,
-  handleParseSql
-}: SidebarProps) =>{
+  handleParseSql,
+}: SidebarProps) => {
   const [open, setOpen] = useState(false);
   const [theme, setTheme] = useState<string>('vs-light');
   const [code, setCode] = useState('select * from ');
   const [formatCode, setFormatCode] = useState<string>();
 
   const handleFormatSql = () => {
-    setFormatCode("select * ");
+    setFormatCode('select * ');
   };
 
   return (
@@ -112,7 +112,7 @@ const Sidebar = ({
         />
       </div>
     </>
-  )
-}
+  );
+};
 
 export default Sidebar;

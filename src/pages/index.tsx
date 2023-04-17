@@ -1,15 +1,15 @@
-import './index.css'
-import LineageLayout from '../components/Layout'
-import React from 'react'
+import './index.css';
+import LineageLayout from '../components/Layout';
+import React from 'react';
 
-function App () {
+function App() {
   return (
-    <div className="App">
+    <div className='App'>
       <div>
         <LineageLayout />
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
