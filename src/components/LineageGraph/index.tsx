@@ -50,12 +50,13 @@ const LineageGraph = ({
   const wholeCheckedRef = useRef<any>(true);
   const currentHighlightColorRef = useRef<any>(highlightColor);
   const [highlight, setHighlight] = useState<boolean>(false);
+  const topbarRef = useRef<any>(null);
 
   useEffect(() => {
     fieldCheckedRef.current = true;
     wholeCheckedRef.current = true;
-    console.log('vvvvvvvvvvvvvv', fieldCheckedRef.current);
-    console.log('nnnnnnnnnnnnnn', wholeCheckedRef.current);
+    topbarRef?.current?.setFieldChecked(true);
+    topbarRef?.current?.setWholeChecked(true);
     renderGraph(graphRef.current, lineageData);
   }, [lineageData]);
 
@@ -211,10 +212,9 @@ const LineageGraph = ({
       <div ref={ref}>
         <div className='g6-component-topbar'>
           <Topbar
-            fieldChecked={fieldCheckedRef.current}
-            wholeChecked={wholeCheckedRef.current}
-            handleFieldLineage={(checked) => onFieldLineage(checked)}
-            handleWholeLineage={(checked) => onWholeLineage(checked)}
+            ref={topbarRef}
+            handleFieldLineage={(checked: any) => onFieldLineage(checked)}
+            handleWholeLineage={(checked: any) => onWholeLineage(checked)}
           />
         </div>
         <div

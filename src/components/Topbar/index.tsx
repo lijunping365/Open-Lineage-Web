@@ -1,17 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import './index.css';
 import { Switch } from 'antd';
 
 export interface TopBarProps {
-  /**
-   * 字段血缘
-   */
-  fieldChecked: boolean;
-
-  /**
-   * 完整血缘
-   */
-  wholeChecked: boolean;
   /**
    * 字段血缘
    */
@@ -24,38 +15,34 @@ export interface TopBarProps {
   [key: string]: any;
 }
 
-const Topbar: React.FC<TopBarProps> = (props: any) => {
-  const { fieldChecked, wholeChecked, handleFieldLineage, handleWholeLineage } =
-    props;
-  const [fieldCheckedState, setFieldCheckedState] = useState(fieldChecked);
-  const [wholeCheckedState, setWholeCheckedState] = useState(wholeChecked);
+const Topbar = forwardRef((props: any, ref: any) => {
+  const { handleFieldLineage, handleWholeLineage } = props;
+  const [fieldChecked, setFieldChecked] = useState(true);
+  const [wholeChecked, setWholeChecked] = useState(true);
 
-  useEffect(() => {
-    console.log('yyyyyyyyyyyyyyyyyyy', fieldChecked);
-    setFieldCheckedState(fieldChecked);
-  }, [fieldChecked]);
-
-  useEffect(() => {
-    console.log('wwwwwwwwwwwwwwwwwww', wholeChecked);
-    setWholeCheckedState(wholeChecked);
-  }, [wholeChecked]);
+  useImperativeHandle(ref, () => ({
+    fieldChecked,
+    wholeChecked,
+    setFieldChecked,
+    setWholeChecked,
+  }));
 
   const options = [
     {
       key: 'zoomOut',
       name: '字段级血缘关系',
-      value: fieldCheckedState,
+      value: fieldChecked,
       action: (checked: boolean) => {
-        setFieldCheckedState(checked);
+        setFieldChecked(checked);
         handleFieldLineage(checked);
       },
     },
     {
       key: 'zoomIn',
       name: '完整血缘链路',
-      value: wholeCheckedState,
+      value: wholeChecked,
       action: (checked: boolean) => {
-        setWholeCheckedState(checked);
+        setWholeChecked(checked);
         handleWholeLineage(checked);
       },
     },
@@ -82,6 +69,6 @@ const Topbar: React.FC<TopBarProps> = (props: any) => {
       </div>
     </>
   );
-};
+});
 
 export default Topbar;
