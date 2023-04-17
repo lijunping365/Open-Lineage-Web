@@ -1,3 +1,5 @@
+import { string } from 'sql-formatter/lib/src/lexer/regexFactory';
+
 export const initData = (count: number) => {
   const nodeArray = [];
   for (let i = 1; i < count; i++) {
@@ -146,6 +148,94 @@ export const initData = (count: number) => {
     nodeArray.push(obj);
   }
   return nodeArray;
+};
+
+// 自定义数据转换
+export const transformData = (data: any) => {
+  const nodes: any[] = [];
+  const edges: any[] = [];
+
+  const tableFields: Set<any> = new Set();
+  data.forEach((item: any) => {
+    tableFields.add(item.targetField.fieldName);
+    if (!item.refFields) {
+      return;
+    }
+
+    item.refFields.forEach((ref: any) => {
+      tableFields.add(ref.fieldName);
+    });
+  });
+
+  //生成表
+  const tables: Map<string, string[]> = new Map();
+  tableFields.forEach((item: any) => {
+    const array = item.split('.');
+    let tableName = array[1];
+    let field = array[2];
+    if (!tables.has(tableName)) {
+      tables.set(tableName, [field]);
+    } else {
+      const attrs: any = tables.get(tableName);
+      attrs?.push(field);
+      tables.set(tableName, attrs);
+    }
+  });
+
+  let i = 0;
+  tables.forEach((k: any, value: any) => {
+    i++;
+    console.log('*****', value);
+    const attrs: any[] = [];
+    value.forEach((attr: any) => {
+      attrs.push({
+        nodeId: k,
+        key: attr,
+        type: attr,
+      });
+    });
+
+    const obj: any = {
+      id: k,
+      key: k,
+      label: k,
+      x: 100 * i,
+      y: 100 * i,
+      attrs: attrs,
+    };
+
+    nodes.push(obj);
+  });
+
+  console.log('oooooooooo', nodes);
+
+  // TODO:测试node中的定位
+  data.map((node: any) => {
+    nodes.push({
+      ...node,
+    });
+    if (node.attrs) {
+      node.attrs.forEach((attr: any) => {
+        if (attr.relation) {
+          attr.relation.forEach((relation: any) => {
+            edges.push({
+              source: node.id,
+              target: relation.nodeId,
+              sourceAnchor: attr.key,
+              targetAnchor: relation.key,
+              label: relation.label,
+            });
+          });
+        }
+      });
+    }
+  });
+  //console.log('data', nodes, edges);
+
+  return {
+    nodes,
+    edges,
+  };
 };
 
 export const dataTransform = (data: any) => {

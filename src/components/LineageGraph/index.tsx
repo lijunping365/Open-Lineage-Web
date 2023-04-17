@@ -5,7 +5,7 @@ import G6 from '@antv/g6';
 import './index.css';
 import './registerShape';
 import { getLeftRelation, getRightRelation } from '../../utils/common';
-import { dataTransform, initData } from '../../utils/common';
+import { dataTransform, transformData } from '../../utils/common';
 import {
   clearAllStats,
   handleAutoZoom,
@@ -62,8 +62,8 @@ const LineageGraph = ({
       console.log('hhhhhhhhhhhhhhh', lineageData);
       const wholeData = lineageData.withProcessData[0];
       const partData = lineageData.noProcessData[0];
-      const t1 = dataTransform(wholeData);
-      const t2 = dataTransform(partData);
+      const t1 = transformData(wholeData);
+      const t2 = transformData(partData);
       setLineageWholeData(t1);
       setLineagePartData(t2);
       renderGraph(graphRef.current, t1);
