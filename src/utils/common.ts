@@ -195,7 +195,7 @@ const createEdge = (
     edge.target = targetArray[1];
     edge.targetAnchor = targetArray[2];
     edge.label = ref.label;
-    let key = refFieldName + targetFieldName;
+    let key = refFieldName + '-' + targetFieldName;
     edgeMap.set(key, edge);
   });
 };
@@ -234,6 +234,78 @@ const createNode = (nodes: any[], tableFields: Set<any>) => {
       x: 100 * i,
       y: 100 * i,
       attrs: attrs,
+    };
+    nodes.push(obj);
+  });
+};
+
+export const collapseData = (data: any) => {
+  const nodes: any[] = [];
+  const edgeMap: Map<string, any> = new Map();
+  const tableFields: Set<any> = new Set();
+
+  data.forEach((item: any) => {
+    const targetFieldName = item.targetField.fieldName;
+    tableFields.add(targetFieldName);
+
+    if (!item.refFields) {
+      return;
+    }
+
+    createCollapsedEdge(edgeMap, tableFields, targetFieldName, item.refFields);
+  });
+
+  const edges = Array.from(edgeMap.values());
+  createCollapsedNode(nodes, tableFields);
+
+  console.log('collapseData', nodes, edges);
+  return {
+    nodes,
+    edges,
+  };
+};
+
+const createCollapsedEdge = (
+  edgeMap: Map<string, any>,
+  tableFields: Set<any>,
+  targetFieldName: string,
+  refFields: any[]
+) => {
+  const targetArray = targetFieldName.split('.');
+  refFields.forEach((ref: any) => {
+    const refFieldName = ref.fieldName;
+    tableFields.add(refFieldName);
+    const refArray = refFieldName.split('.');
+    if (targetArray[1] === refArray[1]) {
+      return;
+    }
+    const edge: any = {};
+    edge.source = refArray[1];
+    edge.sourceAnchor = refArray[1];
+    edge.target = targetArray[1];
+    edge.targetAnchor = targetArray[1];
+    edge.label = ref.label;
+    let key = refArray[1] + '-' + targetArray[1];
+    edgeMap.set(key, edge);
+  });
+};
+
+const createCollapsedNode = (nodes: any[], tableFields: Set<any>) => {
+  const tables: Set<string> = new Set();
+  tableFields.forEach((item: any) => {
+    const array = item.split('.');
+    let tableName = array[1];
+    tables.add(tableName);
+  });
+
+  tables.forEach((key: string, value: any) => {
+    const obj: any = {
+      id: key,
+      key: key,
+      label: key,
+      x: 100,
+      y: 100,
+      attrs: [],
     };
     nodes.push(obj);
   });

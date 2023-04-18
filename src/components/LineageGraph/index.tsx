@@ -4,8 +4,14 @@ import Topbar from '../Topbar';
 import G6 from '@antv/g6';
 import './index.css';
 import './registerShape';
-import { getLeftRelation, getRightRelation } from '../../utils/common';
-import { dataTransform, transformData } from '../../utils/common';
+import {
+  collapseData,
+  getLeftRelation,
+  getRightRelation,
+  transformData,
+  dataTransform,
+  initData,
+} from '../../utils/common';
 import {
   clearAllStats,
   handleAutoZoom,
@@ -62,10 +68,10 @@ const LineageGraph = ({
       console.log('hhhhhhhhhhhhhhh', lineageData);
       const wholeData = lineageData.withProcessData[0];
       const partData = lineageData.noProcessData[0];
+      setLineageWholeData(wholeData);
+      setLineagePartData(partData);
       const t1 = transformData(wholeData);
-      const t2 = transformData(partData);
-      setLineageWholeData(t1);
-      setLineagePartData(t2);
+      //renderGraph(graphRef.current, dataTransform(initData(100)));
       renderGraph(graphRef.current, t1);
     }
   }, [lineageData]);
@@ -85,16 +91,26 @@ const LineageGraph = ({
     fieldCheckedRef.current = checked;
     console.log('1111111111111111', fieldCheckedRef.current);
     console.log('2222222222222222', wholeCheckedRef.current);
-    if (!lineageWholeData) {
+    if (!lineageWholeData || !lineagePartData) {
       return;
     }
 
     if (checked) {
-      renderGraph(graphRef.current, lineageWholeData);
+      if (wholeCheckedRef.current) {
+        const t1 = transformData(lineageWholeData);
+        renderGraph(graphRef.current, t1);
+      } else {
+        const t2 = transformData(lineagePartData);
+        renderGraph(graphRef.current, t2);
+      }
     } else {
-      const data = lineageWholeData?.slice(0, 10);
-      console.log('datadddddddddddd', data);
-      renderGraph(graphRef.current, data);
+      if (wholeCheckedRef.current) {
+        const t1 = collapseData(lineageWholeData);
+        renderGraph(graphRef.current, t1);
+      } else {
+        const t2 = collapseData(lineagePartData);
+        renderGraph(graphRef.current, t2);
+      }
     }
   };
 
@@ -102,16 +118,26 @@ const LineageGraph = ({
     wholeCheckedRef.current = checked;
     console.log('1111111111111111', fieldCheckedRef.current);
     console.log('2222222222222222', wholeCheckedRef.current);
-    if (!lineagePartData) {
+    if (!lineageWholeData || !lineagePartData) {
       return;
     }
 
     if (checked) {
-      renderGraph(graphRef.current, lineagePartData);
+      if (fieldCheckedRef.current) {
+        const t1 = transformData(lineageWholeData);
+        renderGraph(graphRef.current, t1);
+      } else {
+        const t1 = collapseData(lineageWholeData);
+        renderGraph(graphRef.current, t1);
+      }
     } else {
-      const data = lineagePartData?.slice(0, 10);
-      console.log('datadddddddddddd', data);
-      renderGraph(graphRef.current, data);
+      if (fieldCheckedRef.current) {
+        const t2 = transformData(lineagePartData);
+        renderGraph(graphRef.current, t2);
+      } else {
+        const t1 = collapseData(lineagePartData);
+        renderGraph(graphRef.current, t1);
+      }
     }
   };
 
