@@ -210,8 +210,10 @@ const createNode = (nodes: any[], tableFields: Set<any>) => {
       tables.set(tableName, [field]);
     } else {
       const attrs: any = tables.get(tableName);
-      attrs?.push(field);
-      tables.set(tableName, attrs);
+      if (!attrs?.includes(field)) {
+        attrs?.push(field);
+        tables.set(tableName, attrs);
+      }
     }
   });
 
