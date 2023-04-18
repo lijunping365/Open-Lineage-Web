@@ -186,6 +186,9 @@ const createEdge = (
     const refFieldName = ref.fieldName;
     tableFields.add(refFieldName);
     const refArray = refFieldName.split('.');
+    if (targetArray[1] === refArray[1]) {
+      return;
+    }
     const edge: any = {};
     edge.source = refArray[1];
     edge.sourceAnchor = refArray[2];
