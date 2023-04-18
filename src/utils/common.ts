@@ -151,8 +151,7 @@ export const initData = (count: number) => {
 // 自定义数据转换
 export const transformData = (data: any) => {
   const nodes: any[] = [];
-  const edges: any[] = [];
-  const edgeSet: Set<any> = new Set();
+  const edgeMap: Map<string, any> = new Map();
   const tableFields: Set<any> = new Set();
 
   data.forEach((item: any) => {
@@ -163,13 +162,13 @@ export const transformData = (data: any) => {
       return;
     }
 
-    createEdge(edgeSet, tableFields, targetFieldName, item.refFields);
+    createEdge(edgeMap, tableFields, targetFieldName, item.refFields);
   });
 
-  edges.push(Array.from(edgeSet));
+  const edges = Array.from(edgeMap.values());
   createNode(nodes, tableFields);
 
-  console.log('data', nodes, edges);
+  console.log('edges', edges);
   return {
     nodes,
     edges,
@@ -177,7 +176,7 @@ export const transformData = (data: any) => {
 };
 
 const createEdge = (
-  edgeSet: Set<any>,
+  edgeMap: Map<string, any>,
   tableFields: Set<any>,
   targetFieldName: string,
   refFields: any[]
@@ -193,7 +192,8 @@ const createEdge = (
     edge.target = targetArray[1];
     edge.targetAnchor = targetArray[2];
     edge.label = ref.label;
-    edgeSet.add(edge);
+    let key = refFieldName + targetFieldName;
+    edgeMap.set(key, edge);
   });
 };
 
