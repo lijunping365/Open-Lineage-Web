@@ -125,7 +125,7 @@ export const handleTextWaterMarker = (graph: any, text: string) => {
 };
 
 /**
- * 设置高亮颜色
+ * 设置连线高亮颜色
  * @param graph
  * @param color
  */
@@ -174,7 +174,7 @@ export const setLeftStats = (
 ) => {
   if (!graph) return;
   edges.forEach(function (edge: any) {
-    graph.setItemState(edge, name + '-' + color, true);
+    graph.setItemState(edge, `highlight-${color}`, true);
     edge.toFront();
 
     const sourceAnchor = edge.getModel()['sourceAnchor'];
@@ -200,7 +200,7 @@ export const setRightStats = (
 ) => {
   if (!graph) return;
   edges.forEach(function (edge: any) {
-    graph.setItemState(edge, name + '-' + color, true);
+    graph.setItemState(edge, `highlight-${color}`, true);
     edge.toFront();
 
     const targetAnchor = edge.getModel()['targetAnchor'];

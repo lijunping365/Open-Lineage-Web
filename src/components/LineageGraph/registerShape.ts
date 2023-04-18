@@ -129,7 +129,6 @@ G6.registerNode('dice-er-box', {
 
     // 表名称高亮
     if (name && name.startsWith('tableHighlight')) {
-      //console.log('ppppppppppppp', selectedIndex);
       const shape = item.get('keyShape');
       // shape.get('parent').get('children')[1] 表示拿到 text
       const label = shape.get('parent').get('children')[1];
@@ -228,24 +227,8 @@ G6.registerEdge('dice-er-edge', {
    */
   setState(name, value, item: any) {
     const shape = item.get('keyShape');
-    // 字段连线高亮
+    // 字段连线高亮或表连线高亮
     if (name && name.startsWith('highlight')) {
-      const highlightColor = name.split('-')[1];
-      if (value) {
-        //shape.attr('opacity', 0.2);
-
-        shape.attr('stroke', highlightColor);
-        shape.attr('lineWidth', 3);
-      } else {
-        //shape.attr('opacity', 1);
-
-        shape.attr('stroke', '#5B8FF9');
-        shape.attr('lineWidth', 1);
-      }
-    }
-
-    // 表连线高亮
-    if (name && name.startsWith('tableHighlight')) {
       const highlightColor = name.split('-')[1];
       if (value) {
         //shape.attr('opacity', 0.2);
