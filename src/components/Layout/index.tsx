@@ -9,8 +9,7 @@ import sourceData from '../../config/data.json';
 const LineageLayout = () => {
   const [lineageData, setLineageData] = useState<any>();
   const [highlightColor, setHighlightColor] = useState<string>('red');
-  const [textWaterMarker, setTextWaterMarker] =
-    useState<string>('Open-Lineage');
+  const [textWaterMarker, setTextWaterMarker] = useState<string>('Antv');
 
   const handleParseSql = (sql: string) => {
     console.log('sql....');
@@ -21,7 +20,7 @@ const LineageLayout = () => {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <main>
         <div className='mx-auto py-6 sm:px-6 lg:px-8 bg-gray-100'>
           <div className='layout-container'>
@@ -44,7 +43,7 @@ const LineageLayout = () => {
           </div>
         </div>
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

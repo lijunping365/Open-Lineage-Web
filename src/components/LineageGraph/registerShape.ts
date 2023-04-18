@@ -21,6 +21,7 @@ G6.registerNode('dice-er-box', {
         radius: [boxStyle.radius, boxStyle.radius, 0, 0],
       },
       draggable: true,
+      name: cfg.label,
     });
 
     let fontLeft = 12; //x 偏移量
@@ -35,6 +36,7 @@ G6.registerNode('dice-er-box', {
         fontSize: 12,
         fontWeight: 500,
       },
+      name: cfg.label,
     });
 
     const offsetY = (0.5 - (startIndex % 1)) * itemHeight + 30;

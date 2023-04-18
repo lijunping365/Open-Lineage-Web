@@ -141,42 +141,87 @@ const LineageGraph = ({
     }
   };
 
+  const handleFieldClick = (graph: any, evt: any) => {
+    const { item, target } = evt;
+    const name = target.get('name');
+    if (!name) return;
+
+    const model = item.getModel();
+    const edges = item.getEdges();
+
+    // 当前节点选中的 下标
+    const sourceIndex = name.split('-')[2];
+    // 当前节点选中的 label
+    const sourceAnchor = model.attrs[sourceIndex]['key'];
+
+    const leftActiveEdges: any[] = [];
+
+    getLeftRelation(edges, model, sourceAnchor, leftActiveEdges);
+
+    const rightActiveEdges: any[] = [];
+
+    getRightRelation(edges, model, sourceAnchor, rightActiveEdges);
+
+    // 清除状态
+    clearAllStats(graph);
+
+    // 设置当前节点状态
+    graph.setItemState(item, 'highlight-' + sourceIndex, true);
+
+    // 设置左关联边及节点状态
+    setLeftStats(graph, leftActiveEdges, currentHighlightColorRef.current);
+
+    // 设置右关联边及节点状态
+    setRightStats(graph, rightActiveEdges, currentHighlightColorRef.current);
+  };
+
+  const handleNodeClick = (graph: any, evt: any) => {
+    const { item, target } = evt;
+
+    console.log(item, target);
+    const name = target.get('name');
+    console.log('............', name);
+    if (!name) return;
+
+    const model = item.getModel();
+    const edges = item.getEdges();
+
+    // 当前节点选中的 下标
+    const sourceIndex = name.split('-')[2];
+    // 当前节点选中的 label
+    const sourceAnchor = model.attrs[sourceIndex]['key'];
+
+    const leftActiveEdges: any[] = [];
+
+    getLeftRelation(edges, model, sourceAnchor, leftActiveEdges);
+
+    const rightActiveEdges: any[] = [];
+
+    getRightRelation(edges, model, sourceAnchor, rightActiveEdges);
+
+    // 清除状态
+    clearAllStats(graph);
+
+    // 设置当前节点状态
+    graph.setItemState(item, 'highlight-' + sourceIndex, true);
+
+    // 设置左关联边及节点状态
+    setLeftStats(graph, leftActiveEdges, currentHighlightColorRef.current);
+
+    // 设置右关联边及节点状态
+    setRightStats(graph, rightActiveEdges, currentHighlightColorRef.current);
+  };
+
   const bindEvents = (graph: any) => {
     // 节点点击
     graph.off('node:click').on('node:click', (evt: any) => {
       console.log('node:click');
       setHighlight(true);
-      const { item, target } = evt;
-      const name = target.get('name');
-      if (!name) return;
-
-      const model = item.getModel();
-      const edges = item.getEdges();
-
-      // 当前节点选中的 下标
-      const sourceIndex = name.split('-')[2];
-      // 当前节点选中的 label
-      const sourceAnchor = model.attrs[sourceIndex]['key'];
-
-      const leftActiveEdges: any[] = [];
-
-      getLeftRelation(edges, model, sourceAnchor, leftActiveEdges);
-
-      const rightActiveEdges: any[] = [];
-
-      getRightRelation(edges, model, sourceAnchor, rightActiveEdges);
-
-      // 清除状态
-      clearAllStats(graph);
-
-      // 设置当前节点状态
-      graph.setItemState(item, 'highlight-' + sourceIndex, true);
-
-      // 设置左关联边及节点状态
-      setLeftStats(graph, leftActiveEdges, currentHighlightColorRef.current);
-
-      // 设置右关联边及节点状态
-      setRightStats(graph, rightActiveEdges, currentHighlightColorRef.current);
+      if (fieldCheckedRef.current) {
+        handleFieldClick(graph, evt);
+      } else {
+        handleNodeClick(graph, evt);
+      }
     });
   };
 
