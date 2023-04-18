@@ -169,10 +169,20 @@ const LineageGraph = ({
     graph.setItemState(item, 'highlight-' + sourceIndex, true);
 
     // 设置左关联边及节点状态
-    setLeftStats(graph, leftActiveEdges, currentHighlightColorRef.current);
+    setLeftStats(
+      graph,
+      leftActiveEdges,
+      currentHighlightColorRef.current,
+      'highlight'
+    );
 
     // 设置右关联边及节点状态
-    setRightStats(graph, rightActiveEdges, currentHighlightColorRef.current);
+    setRightStats(
+      graph,
+      rightActiveEdges,
+      currentHighlightColorRef.current,
+      'highlight'
+    );
   };
 
   const handleNodeClick = (graph: any, evt: any) => {
@@ -180,16 +190,13 @@ const LineageGraph = ({
 
     console.log(item, target);
     const name = target.get('name');
-    console.log('............', name);
     if (!name) return;
 
     const model = item.getModel();
     const edges = item.getEdges();
 
-    // 当前节点选中的 下标
-    const sourceIndex = name.split('-')[2];
     // 当前节点选中的 label
-    const sourceAnchor = model.attrs[sourceIndex]['key'];
+    const sourceAnchor = name;
 
     const leftActiveEdges: any[] = [];
 
@@ -203,13 +210,23 @@ const LineageGraph = ({
     clearAllStats(graph);
 
     // 设置当前节点状态
-    graph.setItemState(item, 'highlight-' + sourceIndex, true);
+    graph.setItemState(item, 'tableHighlight', true);
 
     // 设置左关联边及节点状态
-    setLeftStats(graph, leftActiveEdges, currentHighlightColorRef.current);
+    setLeftStats(
+      graph,
+      leftActiveEdges,
+      currentHighlightColorRef.current,
+      'tableHighlight'
+    );
 
     // 设置右关联边及节点状态
-    setRightStats(graph, rightActiveEdges, currentHighlightColorRef.current);
+    setRightStats(
+      graph,
+      rightActiveEdges,
+      currentHighlightColorRef.current,
+      'tableHighlight'
+    );
   };
 
   const bindEvents = (graph: any) => {

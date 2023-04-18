@@ -166,10 +166,15 @@ export const clearAllStats = (graph: any) => {
  * 设置左边关联节点及边状态
  * @param edges 边
  */
-export const setLeftStats = (graph: any, edges: any[], color: string) => {
+export const setLeftStats = (
+  graph: any,
+  edges: any[],
+  color: string,
+  name: string
+) => {
   if (!graph) return;
   edges.forEach(function (edge: any) {
-    graph.setItemState(edge, 'highlight-' + color, true);
+    graph.setItemState(edge, name + '-' + color, true);
     edge.toFront();
 
     const sourceAnchor = edge.getModel()['sourceAnchor'];
@@ -179,7 +184,7 @@ export const setLeftStats = (graph: any, edges: any[], color: string) => {
       (e: any) => e.key === sourceAnchor
     );
 
-    graph.setItemState(edge.getSource(), 'highlight-' + sourceIndex, true);
+    graph.setItemState(edge.getSource(), name + '-' + sourceIndex, true);
   });
 };
 
@@ -187,10 +192,15 @@ export const setLeftStats = (graph: any, edges: any[], color: string) => {
  * 设置右边关联节点及边状态
  * @param edges 边
  */
-export const setRightStats = (graph: any, edges: any[], color: string) => {
+export const setRightStats = (
+  graph: any,
+  edges: any[],
+  color: string,
+  name: string
+) => {
   if (!graph) return;
   edges.forEach(function (edge: any) {
-    graph.setItemState(edge, 'highlight-' + color, true);
+    graph.setItemState(edge, name + '-' + color, true);
     edge.toFront();
 
     const targetAnchor = edge.getModel()['targetAnchor'];
@@ -200,6 +210,6 @@ export const setRightStats = (graph: any, edges: any[], color: string) => {
       (e: any) => e.key === targetAnchor
     );
 
-    graph.setItemState(edge.getTarget(), 'highlight-' + targetIndex, true);
+    graph.setItemState(edge.getTarget(), name + '-' + targetIndex, true);
   });
 };

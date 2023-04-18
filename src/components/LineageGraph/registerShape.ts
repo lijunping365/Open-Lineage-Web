@@ -107,6 +107,7 @@ G6.registerNode('dice-er-box', {
    * @param item 要改变的节点
    */
   setState(name, value, item: any) {
+    // 字段高亮
     if (name && name.startsWith('highlight')) {
       const selectedIndex = Number(name.split('-')[1]);
       //console.log('ppppppppppppp', selectedIndex);
@@ -119,6 +120,23 @@ G6.registerNode('dice-er-box', {
         //label.attr('fill', '#A3B1BF');
         //label.attr('fill', 'red');
         label.attr('fontWeight', 500);
+      } else {
+        //label.attr('fill', '#A3B1BF');
+        //label.attr('fill', 'red');
+        label.attr('fontWeight', 100);
+      }
+    }
+
+    // 表名称高亮
+    if (name && name.startsWith('tableHighlight')) {
+      //console.log('ppppppppppppp', selectedIndex);
+      const shape = item.get('keyShape');
+      // shape.get('parent').get('children')[1] 表示拿到 text
+      const label = shape.get('parent').get('children')[1];
+      if (value) {
+        //label.attr('fill', '#A3B1BF');
+        //label.attr('fill', 'red');
+        label.attr('fontWeight', 800);
       } else {
         //label.attr('fill', '#A3B1BF');
         //label.attr('fill', 'red');
@@ -210,7 +228,24 @@ G6.registerEdge('dice-er-edge', {
    */
   setState(name, value, item: any) {
     const shape = item.get('keyShape');
+    // 字段连线高亮
     if (name && name.startsWith('highlight')) {
+      const highlightColor = name.split('-')[1];
+      if (value) {
+        //shape.attr('opacity', 0.2);
+
+        shape.attr('stroke', highlightColor);
+        shape.attr('lineWidth', 3);
+      } else {
+        //shape.attr('opacity', 1);
+
+        shape.attr('stroke', '#5B8FF9');
+        shape.attr('lineWidth', 1);
+      }
+    }
+
+    // 表连线高亮
+    if (name && name.startsWith('tableHighlight')) {
       const highlightColor = name.split('-')[1];
       if (value) {
         //shape.attr('opacity', 0.2);
