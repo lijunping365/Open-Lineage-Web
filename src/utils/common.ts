@@ -152,37 +152,52 @@ export const initData = (count: number) => {
 export const transformData = (data: any) => {
   const nodes: any[] = [];
   const edges: any[] = [];
-
   const edgeSet: Set<any> = new Set();
   const tableFields: Set<any> = new Set();
+
   data.forEach((item: any) => {
-    const fieldName = item.targetField.fieldName;
-    tableFields.add(fieldName);
+    const targetFieldName = item.targetField.fieldName;
+    tableFields.add(targetFieldName);
 
     if (!item.refFields) {
       return;
     }
 
-    const array = fieldName.split('.');
-    let targetId = array[1];
-    let targetAnchor = array[2];
-
-    item.refFields.forEach((ref: any) => {
-      const fieldName = ref.fieldName;
-      tableFields.add(fieldName);
-      const array = fieldName.split('.');
-      edgeSet.add({
-        source: array[1],
-        target: targetId,
-        sourceAnchor: array[2],
-        targetAnchor: targetAnchor,
-        label: ref.label,
-      });
-    });
+    createEdge(edgeSet, tableFields, targetFieldName, item.refFields);
   });
 
   edges.push(Array.from(edgeSet));
-  //生成表
+  createNode(nodes, tableFields);
+
+  console.log('data', nodes, edges);
+  return {
+    nodes,
+    edges,
+  };
+};
+
+const createEdge = (
+  edgeSet: Set<any>,
+  tableFields: Set<any>,
+  targetFieldName: string,
+  refFields: any[]
+) => {
+  const targetArray = targetFieldName.split('.');
+  refFields.forEach((ref: any) => {
+    const refFieldName = ref.fieldName;
+    tableFields.add(refFieldName);
+    const refArray = refFieldName.split('.');
+    const edge: any = {};
+    edge.source = refArray[1];
+    edge.sourceAnchor = refArray[2];
+    edge.target = targetArray[1];
+    edge.targetAnchor = targetArray[2];
+    edge.label = ref.label;
+    edgeSet.add(edge);
+  });
+};
+
+const createNode = (nodes: any[], tableFields: Set<any>) => {
   const tables: Map<string, string[]> = new Map();
   tableFields.forEach((item: any) => {
     const array = item.split('.');
@@ -205,7 +220,7 @@ export const transformData = (data: any) => {
       attrs.push({
         nodeId: key,
         key: attr,
-        type: attr,
+        type: '',
       });
     });
 
@@ -219,11 +234,6 @@ export const transformData = (data: any) => {
     };
     nodes.push(obj);
   });
-  console.log('data', nodes, edges);
-  return {
-    nodes,
-    edges,
-  };
 };
 
 export const dataTransform = (data: any) => {
