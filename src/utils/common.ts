@@ -217,9 +217,7 @@ const createNode = (nodes: any[], tableFields: Set<any>) => {
     }
   });
 
-  let i = 0;
   tables.forEach((value: string[], key: any, map) => {
-    i++;
     const attrs: any[] = [];
     value.forEach((attr: any) => {
       attrs.push({
@@ -233,14 +231,19 @@ const createNode = (nodes: any[], tableFields: Set<any>) => {
       id: key,
       key: key,
       label: key,
-      x: 100 * i,
-      y: 100 * i,
+      x: 100,
+      y: 100,
       attrs: attrs,
     };
     nodes.push(obj);
   });
 };
 
+/**
+ * 处理表级数据
+ * @param data 表级数据
+ * @returns 节点和边
+ */
 export const collapseData = (data: any) => {
   const nodes: any[] = [];
   const edgeMap: Map<string, any> = new Map();
