@@ -200,7 +200,7 @@ G6.registerEdge('dice-er-edge', {
     if (sourceNode.id !== targetNode.id) {
       shape = group.addShape('path', {
         attrs: {
-          stroke: '#5B8FF9',
+          stroke: '#C6C6C2',
           path: [
             ['M', startPoint.x, startPoint.y],
             [
