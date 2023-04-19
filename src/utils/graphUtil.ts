@@ -130,6 +130,7 @@ export const handleTextWaterMarker = (graph: any, text: string) => {
  * @param color
  */
 export const handleHighlightColor = (graph: any, color: string) => {
+  if (!graph) return;
   // 查询所有选中的元素
   const edges = graph.findAll('edge', (item: any) => {
     return (

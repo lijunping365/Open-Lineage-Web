@@ -54,7 +54,6 @@ const LineageGraph = ({
   const fieldCheckedRef = useRef<any>(true);
   const wholeCheckedRef = useRef<any>(true);
   const currentHighlightColorRef = useRef<any>(highlightColor);
-  const [highlight, setHighlight] = useState<boolean>(false);
   const [lineageWholeData, setLineageWholeData] = useState<any>();
   const [lineagePartData, setLineagePartData] = useState<any>();
 
@@ -81,9 +80,7 @@ const LineageGraph = ({
 
   useEffect(() => {
     currentHighlightColorRef.current = highlightColor;
-    if (highlight) {
-      handleHighlightColor(graphRef.current, highlightColor);
-    }
+    handleHighlightColor(graphRef.current, highlightColor);
   }, [highlightColor]);
 
   const onFieldLineage = (checked: boolean) => {
@@ -225,15 +222,21 @@ const LineageGraph = ({
   };
 
   const bindEvents = (graph: any) => {
-    // 节点点击
+    // 监听节点点击事件
     graph.off('node:click').on('node:click', (evt: any) => {
       console.log('node:click');
-      setHighlight(true);
       if (fieldCheckedRef.current) {
         handleFieldClick(graph, evt);
       } else {
         handleNodeClick(graph, evt);
       }
+    });
+
+    //监听只在 canvas 空白处点击事件
+    graph.on('canvas:click', (ev: any) => {
+      console.log('dddddddddddd');
+      // 清除状态
+      clearAllStats(graph);
     });
   };
 
