@@ -1,5 +1,9 @@
 import { Button, Popover, Select } from 'antd';
-import { SearchOutlined, SettingOutlined } from '@ant-design/icons';
+import {
+  RocketOutlined,
+  FileDoneOutlined,
+  SettingOutlined,
+} from '@ant-design/icons';
 import Setting from '../Setting';
 import MonacoEditor from '../MonacoEditor';
 import { useState } from 'react';
@@ -63,7 +67,7 @@ const Sidebar = ({
         />
         <Button
           type='primary'
-          icon={<SearchOutlined />}
+          icon={<RocketOutlined />}
           style={{ padding: '4px 6px' }}
           onClick={() => handleParseSql(code)}
         >
@@ -71,7 +75,7 @@ const Sidebar = ({
         </Button>
         <Button
           type='primary'
-          icon={<SearchOutlined />}
+          icon={<FileDoneOutlined />}
           style={{ padding: '4px 6px' }}
           onClick={handleFormatSql}
         >
