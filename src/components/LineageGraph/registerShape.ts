@@ -2,6 +2,10 @@ import G6 from '@antv/g6';
 
 const itemHeight = 30;
 
+const handleLabel = (label: string) => {
+  return (label && label.length) > 32 ? label.slice(0, 32) + '...' : label;
+};
+
 G6.registerNode('dice-er-box', {
   draw: function draw(cfg: any, group: any) {
     // 节点容器size
@@ -32,7 +36,7 @@ G6.registerNode('dice-er-box', {
         y: 22,
         x: fontLeft,
         fill: '#fff',
-        text: cfg.label,
+        text: handleLabel(cfg.label),
         fontSize: 12,
         fontWeight: 500,
       },
@@ -61,7 +65,6 @@ G6.registerNode('dice-er-box', {
         if (type) {
           key += ' - ' + type;
         }
-        const label = key.length > 26 ? key.slice(0, 24) + '...' : key;
 
         // group部分图形控制
         listContainer.addShape('rect', {
@@ -83,7 +86,7 @@ G6.registerNode('dice-er-box', {
           attrs: {
             x: 12,
             y: i * itemHeight + offsetY + 6,
-            text: label,
+            text: handleLabel(key),
             fontSize: 12,
             fill: '#000',
             fontFamily:
