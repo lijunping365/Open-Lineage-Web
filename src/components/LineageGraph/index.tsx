@@ -133,6 +133,9 @@ const LineageGraph = ({
     }
   };
 
+  /**
+   * 处理属性高亮
+   */
   const handleFieldClick = (graph: any, evt: any) => {
     const { item, target } = evt;
     const name = target.get('name');
@@ -142,7 +145,8 @@ const LineageGraph = ({
     const edges = item.getEdges();
 
     // 当前节点选中的 下标
-    const sourceIndex = name.split('-')[2];
+    const startIndex = name.lastIndexOf('-');
+    const sourceIndex = name.slice(startIndex + 1, name.length);
     // 当前节点选中的 label
     const sourceAnchor = model.attrs[sourceIndex]['key'];
 
@@ -177,10 +181,11 @@ const LineageGraph = ({
     );
   };
 
+  /**
+   * 处理表高亮
+   */
   const handleNodeClick = (graph: any, evt: any) => {
     const { item, target } = evt;
-
-    console.log(item, target);
     const name = target.get('name');
     if (!name) return;
 
@@ -189,7 +194,6 @@ const LineageGraph = ({
 
     // 当前节点选中的 label
     const sourceAnchor = name;
-
     const leftActiveEdges: any[] = [];
 
     getLeftRelation(edges, model, sourceAnchor, leftActiveEdges);
