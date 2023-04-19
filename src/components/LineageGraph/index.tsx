@@ -136,11 +136,10 @@ const LineageGraph = ({
   /**
    * 处理属性高亮
    */
-  const handleFieldClick = (graph: any, evt: any) => {
-    const { item, target } = evt;
-    const name = target.get('name');
-    if (!name) return;
-
+  const handleFieldClick = (graph: any, item: any, name: string) => {
+    if (!name.startsWith('item-')) {
+      return;
+    }
     const model = item.getModel();
     const edges = item.getEdges();
 
@@ -184,11 +183,7 @@ const LineageGraph = ({
   /**
    * 处理表高亮
    */
-  const handleNodeClick = (graph: any, evt: any) => {
-    const { item, target } = evt;
-    const name = target.get('name');
-    if (!name) return;
-
+  const handleNodeClick = (graph: any, item: any, name: string) => {
     const model = item.getModel();
     const edges = item.getEdges();
 
@@ -229,16 +224,19 @@ const LineageGraph = ({
     // 监听节点点击事件
     graph.off('node:click').on('node:click', (evt: any) => {
       console.log('node:click');
+      const { item, target } = evt;
+      const name = target.get('name');
+      if (!name) return;
+
       if (fieldCheckedRef.current) {
-        handleFieldClick(graph, evt);
+        handleFieldClick(graph, item, name);
       } else {
-        handleNodeClick(graph, evt);
+        handleNodeClick(graph, item, name);
       }
     });
 
     //监听只在 canvas 空白处点击事件
     graph.off('canvas:click').on('canvas:click', (ev: any) => {
-      console.log('dddddddddddd');
       // 清除状态
       clearAllStats(graph);
     });
