@@ -2,6 +2,11 @@ import G6 from '@antv/g6';
 
 const itemHeight = 30;
 
+const colorMap: any = {
+  '0': { stroke: '#F49722' },
+  last: { stroke: '#50E3C2' },
+};
+
 const handleLabel = (label: string) => {
   return (label && label.length) > 32 ? label.slice(0, 32) + '...' : label;
 };
@@ -12,14 +17,14 @@ G6.registerNode('dice-er-box', {
     const width = 250;
     // 边框、底色控制
     const boxStyle = cfg.boxStyle;
+    const level: string = cfg.level;
     const { attrs, startIndex = 0 } = cfg;
-
     const height = itemHeight * (attrs.length + 1);
-
+    const fillColor = colorMap[level]?.stroke || boxStyle.stroke;
     // 节点顶部矩形
     group.addShape('rect', {
       attrs: {
-        fill: boxStyle.stroke,
+        fill: fillColor,
         height: 30,
         width,
         radius: [boxStyle.radius, boxStyle.radius, 0, 0],

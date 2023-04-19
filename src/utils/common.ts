@@ -265,12 +265,20 @@ const createNode = (nodes: any[], tableFields: Set<any>) => {
       });
     });
 
+    let level = 'last';
+    const endIndex = key.lastIndexOf('-');
+    if (endIndex !== -1) {
+      const startIndex = key.lastIndexOf('_');
+      level = key.slice(startIndex + 1, endIndex);
+    }
+
     const obj: any = {
       id: key,
       key: key,
       label: key,
       x: 100,
       y: 100,
+      level: level,
       attrs: attrs,
     };
     nodes.push(obj);
