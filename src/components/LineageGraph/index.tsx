@@ -233,7 +233,7 @@ const LineageGraph = ({
     });
 
     //监听只在 canvas 空白处点击事件
-    graph.on('canvas:click', (ev: any) => {
+    graph.off('canvas:click').on('canvas:click', (ev: any) => {
       console.log('dddddddddddd');
       // 清除状态
       clearAllStats(graph);
