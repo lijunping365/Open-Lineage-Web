@@ -156,20 +156,11 @@ export const transformData = (data: any) => {
 
   data.forEach((item: any) => {
     const targetField = item.targetField;
-    const targetFieldName = targetField.fieldName;
-    let tableField = '';
-
-    if (item.final) {
-      tableField = targetFieldName;
-    } else {
-      tableField = `${targetField.level}-${targetField.index}:${targetFieldName}`;
-    }
+    const tableField = handleTableField(targetField);
     tableFields.add(tableField);
-
     if (!item.refFields) {
       return;
     }
-
     createEdge(edgeMap, tableFields, tableField, item.refFields);
   });
 
@@ -193,14 +184,7 @@ const createEdge = (
   const targetAnchor = target.tableField;
 
   refFields.forEach((ref: any) => {
-    const refFieldName = ref.fieldName;
-    let tableField = '';
-
-    if (ref.final) {
-      tableField = refFieldName;
-    } else {
-      tableField = `${ref.level}-${ref.index}:${refFieldName}`;
-    }
+    const tableField = handleTableField(ref);
     tableFields.add(tableField);
 
     const source = getTableFieldName(tableField);
@@ -209,6 +193,7 @@ const createEdge = (
     if (targetName === sourceName) {
       return;
     }
+
     const edge: any = {};
     edge.source = sourceName;
     edge.sourceAnchor = sourceAnchor;
@@ -218,6 +203,17 @@ const createEdge = (
     let key = sourceName + sourceAnchor + '-' + targetName + targetAnchor;
     edgeMap.set(key, edge);
   });
+};
+
+const handleTableField = (item: any) => {
+  const fieldName = item.fieldName;
+  let tableField = '';
+  if (item.final) {
+    tableField = fieldName;
+  } else {
+    tableField = `${item.level}-${item.index}:${fieldName}`;
+  }
+  return tableField;
 };
 
 const getTableFieldName = (item: string) => {
