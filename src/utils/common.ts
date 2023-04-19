@@ -155,24 +155,28 @@ export const transformData = (data: any) => {
   const tableFields: Set<any> = new Set();
 
   data.forEach((item: any) => {
-    const targetFieldName = item.targetField.fieldName;
+    const targetField = item.targetField;
+    const targetFieldName = targetField.fieldName;
+    let tableField = '';
+
     if (item.final) {
-      tableFields.add(targetFieldName);
+      tableField = targetFieldName;
     } else {
-      tableFields.add(`${item.level}-${item.index}:${targetFieldName}`);
+      tableField = `${targetField.level}-${targetField.index}:${targetFieldName}`;
     }
+    tableFields.add(tableField);
 
     if (!item.refFields) {
       return;
     }
 
-    createEdge(edgeMap, tableFields, targetFieldName, item.refFields);
+    createEdge(edgeMap, tableFields, tableField, item.refFields);
   });
 
   const edges = Array.from(edgeMap.values());
   createNode(nodes, tableFields);
 
-  console.log('edges', edges);
+  console.log('data', nodes, edges);
   return {
     nodes,
     edges,
@@ -182,30 +186,55 @@ export const transformData = (data: any) => {
 const createEdge = (
   edgeMap: Map<string, any>,
   tableFields: Set<any>,
-  targetFieldName: string,
+  tableField: string,
   refFields: any[]
 ) => {
-  const targetArray = targetFieldName.split('.');
+  const target = getTableFieldName(tableField);
+  const targetName = target.tableName;
+  const targetAnchor = target.tableField;
+
   refFields.forEach((ref: any) => {
     const refFieldName = ref.fieldName;
+    let tableField = '';
+
     if (ref.final) {
-      tableFields.add(refFieldName);
+      tableField = refFieldName;
     } else {
-      tableFields.add(`${ref.level}-${ref.index}:${refFieldName}`);
+      tableField = `${ref.level}-${ref.index}:${refFieldName}`;
     }
-    const refArray = refFieldName.split('.');
-    if (targetArray[1] === refArray[1]) {
+    tableFields.add(tableField);
+
+    const source = getTableFieldName(tableField);
+    const sourceName = source.tableName;
+    const sourceAnchor = source.tableField;
+    if (targetName === sourceName) {
       return;
     }
     const edge: any = {};
-    edge.source = refArray[1];
-    edge.sourceAnchor = refArray[2];
-    edge.target = targetArray[1];
-    edge.targetAnchor = targetArray[2];
+    edge.source = sourceName;
+    edge.sourceAnchor = sourceAnchor;
+    edge.target = targetName;
+    edge.targetAnchor = targetAnchor;
     edge.label = ref.label;
-    let key = refFieldName + '-' + targetFieldName;
+    let key = sourceName + '-' + targetName;
     edgeMap.set(key, edge);
   });
+};
+
+const getTableFieldName = (item: string) => {
+  const names: string[] = item.split(':');
+  let tableName = '';
+  let tableField = '';
+  if (names.length === 1) {
+    const array = names[0].split('.');
+    tableName = array[1];
+    tableField = array[2];
+  } else {
+    const array = names[1].split('.');
+    tableName = array[1] + '_' + names[0];
+    tableField = array[2];
+  }
+  return { tableName, tableField };
 };
 
 const createNode = (nodes: any[], tableFields: Set<any>) => {
