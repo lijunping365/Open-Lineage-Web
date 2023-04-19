@@ -97,7 +97,7 @@ G6.registerNode('dice-er-box', {
             fontFamily:
               'Avenir,-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol',
             full: e,
-            fontWeight: 100,
+            fontWeight: 500,
             cursor: 'pointer',
           },
           name: `item-${cfg.id}-${Math.floor(startIndex) + i}`,
@@ -127,11 +127,11 @@ G6.registerNode('dice-er-box', {
       if (value) {
         //label.attr('fill', '#A3B1BF');
         //label.attr('fill', 'red');
-        label.attr('fontWeight', 500);
+        label.attr('fontWeight', 800);
       } else {
         //label.attr('fill', '#A3B1BF');
         //label.attr('fill', 'red');
-        label.attr('fontWeight', 100);
+        label.attr('fontWeight', 500);
       }
     }
 
@@ -147,7 +147,7 @@ G6.registerNode('dice-er-box', {
       } else {
         //label.attr('fill', '#A3B1BF');
         //label.attr('fill', 'red');
-        label.attr('fontWeight', 100);
+        label.attr('fontWeight', 500);
       }
     }
   },
@@ -246,7 +246,7 @@ G6.registerEdge('dice-er-edge', {
       } else {
         //shape.attr('opacity', 1);
 
-        shape.attr('stroke', '#5B8FF9');
+        shape.attr('stroke', '#C6C6C2');
         shape.attr('lineWidth', 1);
       }
     }
