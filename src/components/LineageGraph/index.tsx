@@ -270,10 +270,12 @@ const LineageGraph = ({
         layout: {
           type: 'dagre',
           rankdir: 'LR',
-          align: 'UL',
+          align: undefined,
           controlPoints: true,
-          nodesepFunc: () => 0.2,
-          ranksepFunc: () => 0.5,
+          nodesep: 100,
+          ranksep: 200,
+          // nodesepFunc: () => 0.2,
+          // ranksepFunc: () => 0.5,
         },
         defaultNode: {
           size: [300, 400],
