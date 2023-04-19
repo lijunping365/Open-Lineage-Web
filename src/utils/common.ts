@@ -240,18 +240,9 @@ const getTableFieldName = (item: string) => {
 const createNode = (nodes: any[], tableFields: Set<any>) => {
   const tables: Map<string, string[]> = new Map();
   tableFields.forEach((item: any) => {
-    const names = item.split(':');
-    let tableName = '';
-    let tableField = '';
-    if (names.length === 1) {
-      const array = names[0].split('.');
-      tableName = array[1];
-      tableField = array[2];
-    } else {
-      const array = names[1].split('.');
-      tableName = array[1] + '_' + names[0];
-      tableField = array[2];
-    }
+    const table = getTableFieldName(item);
+    const tableName = table.tableName;
+    const tableField = table.tableField;
 
     if (!tables.has(tableName)) {
       tables.set(tableName, [tableField]);
