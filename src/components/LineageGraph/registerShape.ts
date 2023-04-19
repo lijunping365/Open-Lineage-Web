@@ -205,7 +205,7 @@ G6.registerEdge('dice-er-edge', {
     if (sourceNode.id !== targetNode.id) {
       shape = group.addShape('path', {
         attrs: {
-          stroke: '#C6C6C2',
+          stroke: '#6C6B6B',
           path: [
             ['M', startPoint.x, startPoint.y],
             [
@@ -246,7 +246,7 @@ G6.registerEdge('dice-er-edge', {
       } else {
         //shape.attr('opacity', 1);
 
-        shape.attr('stroke', '#C6C6C2');
+        shape.attr('stroke', '#6C6B6B');
         shape.attr('lineWidth', 1);
       }
     }

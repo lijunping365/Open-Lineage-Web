@@ -71,8 +71,8 @@ const LineageGraph = ({
       setLineageWholeData(wholeData);
       setLineagePartData(partData);
       const t1 = transformData(wholeData);
-      //renderGraph(graphRef.current, dataTransform(initData(100)));
       renderGraph(graphRef.current, t1);
+      //renderGraph(graphRef.current, dataTransform(initData(100)));
     }
   }, [lineageData]);
 
