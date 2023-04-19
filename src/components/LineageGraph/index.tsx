@@ -65,7 +65,6 @@ const LineageGraph = ({
     topbarRef?.current?.setWholeChecked(true);
 
     if (lineageData) {
-      console.log('hhhhhhhhhhhhhhh', lineageData);
       const wholeData = lineageData.withProcessData[0];
       const partData = lineageData.noProcessData[0];
       setLineageWholeData(wholeData);
@@ -89,8 +88,6 @@ const LineageGraph = ({
 
   const onFieldLineage = (checked: boolean) => {
     fieldCheckedRef.current = checked;
-    console.log('1111111111111111', fieldCheckedRef.current);
-    console.log('2222222222222222', wholeCheckedRef.current);
     if (!lineageWholeData || !lineagePartData) {
       return;
     }
@@ -116,8 +113,6 @@ const LineageGraph = ({
 
   const onWholeLineage = (checked: boolean) => {
     wholeCheckedRef.current = checked;
-    console.log('1111111111111111', fieldCheckedRef.current);
-    console.log('2222222222222222', wholeCheckedRef.current);
     if (!lineageWholeData || !lineagePartData) {
       return;
     }

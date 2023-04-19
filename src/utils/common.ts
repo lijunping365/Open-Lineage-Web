@@ -176,7 +176,6 @@ export const transformData = (data: any) => {
   const edges = Array.from(edgeMap.values());
   createNode(nodes, tableFields);
 
-  console.log('data', nodes, edges);
   return {
     nodes,
     edges,
@@ -386,7 +385,6 @@ export const dataTransform = (data: any) => {
       });
     }
   });
-  //console.log('data', nodes, edges);
 
   return {
     nodes,
