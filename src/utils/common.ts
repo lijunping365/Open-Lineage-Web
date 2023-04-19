@@ -156,7 +156,11 @@ export const transformData = (data: any) => {
 
   data.forEach((item: any) => {
     const targetFieldName = item.targetField.fieldName;
-    tableFields.add(targetFieldName);
+    if (item.final) {
+      tableFields.add(targetFieldName);
+    } else {
+      tableFields.add(`${item.level}-${item.index}:${targetFieldName}`);
+    }
 
     if (!item.refFields) {
       return;
@@ -184,7 +188,11 @@ const createEdge = (
   const targetArray = targetFieldName.split('.');
   refFields.forEach((ref: any) => {
     const refFieldName = ref.fieldName;
-    tableFields.add(refFieldName);
+    if (ref.final) {
+      tableFields.add(refFieldName);
+    } else {
+      tableFields.add(`${ref.level}-${ref.index}:${refFieldName}`);
+    }
     const refArray = refFieldName.split('.');
     if (targetArray[1] === refArray[1]) {
       return;
@@ -203,15 +211,25 @@ const createEdge = (
 const createNode = (nodes: any[], tableFields: Set<any>) => {
   const tables: Map<string, string[]> = new Map();
   tableFields.forEach((item: any) => {
-    const array = item.split('.');
-    let tableName = array[1];
-    let field = array[2];
+    const names = item.split(':');
+    let tableName = '';
+    let tableField = '';
+    if (names.length === 1) {
+      const array = names[0].split('.');
+      tableName = array[1];
+      tableField = array[2];
+    } else {
+      const array = names[1].split('.');
+      tableName = array[1] + '_' + names[0];
+      tableField = array[2];
+    }
+
     if (!tables.has(tableName)) {
-      tables.set(tableName, [field]);
+      tables.set(tableName, [tableField]);
     } else {
       const attrs: any = tables.get(tableName);
-      if (!attrs?.includes(field)) {
-        attrs?.push(field);
+      if (!attrs?.includes(tableField)) {
+        attrs?.push(tableField);
         tables.set(tableName, attrs);
       }
     }
