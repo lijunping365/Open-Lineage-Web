@@ -216,7 +216,7 @@ const createEdge = (
     edge.target = targetName;
     edge.targetAnchor = targetAnchor;
     edge.label = ref.label;
-    let key = sourceName + '-' + targetName;
+    let key = sourceName + sourceAnchor + '-' + targetName + targetAnchor;
     edgeMap.set(key, edge);
   });
 };
