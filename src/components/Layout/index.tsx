@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import Header from '../Header';
 import Footer from '../Footer';
 import sourceData from '../../config/data.json';
+import { getLineageData } from '../../services/api';
 
 const LineageLayout = () => {
   const [lineageData, setLineageData] = useState<any>();
@@ -12,10 +13,16 @@ const LineageLayout = () => {
   const [textWaterMarker, setTextWaterMarker] = useState<string>('Antv');
 
   const handleParseSql = (sql: string) => {
-    console.log('sql....');
-    // 模拟发请求，处理数据
-    const { data } = sourceData;
-    setLineageData(data);
+    console.log('sql....', sql);
+    if (!sql) return;
+
+    getLineageData('hive', sql)
+      .then((data: any) => {
+        setLineageData(data);
+      })
+      .catch((e: any) => {
+        console.log('接口出错了', e);
+      });
   };
 
   return (
