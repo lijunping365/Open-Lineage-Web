@@ -6,8 +6,10 @@ import Header from '../Header';
 import Footer from '../Footer';
 import sourceData from '../../config/data.json';
 import { getLineageData } from '../../services/api';
+import { Spin } from 'antd';
 
 const LineageLayout = () => {
+  const [loading, setLoading] = useState(false);
   const [lineageData, setLineageData] = useState<any>();
   const [highlightColor, setHighlightColor] = useState<string>('red');
   const [textWaterMarker, setTextWaterMarker] = useState<string>('Antv');
@@ -16,13 +18,15 @@ const LineageLayout = () => {
     console.log('sql....', sql);
     if (!sql) return;
 
+    setLoading(true);
     getLineageData('hive', sql)
       .then((data: any) => {
         setLineageData(data);
       })
       .catch((e: any) => {
         console.log('接口出错了', e);
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -41,11 +45,13 @@ const LineageLayout = () => {
               />
             </div>
             <div className='layout-content'>
-              <LineageGraph
-                lineageData={lineageData}
-                highlightColor={highlightColor}
-                textWaterMarker={textWaterMarker}
-              />
+              <Spin spinning={loading}>
+                <LineageGraph
+                  lineageData={lineageData}
+                  highlightColor={highlightColor}
+                  textWaterMarker={textWaterMarker}
+                />
+              </Spin>
             </div>
           </div>
         </div>
