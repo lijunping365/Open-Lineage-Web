@@ -7,6 +7,7 @@ import {
 import Setting from '../Setting';
 import MonacoEditor from '../MonacoEditor';
 import { useState } from 'react';
+import { format } from 'sql-formatter';
 import './index.css';
 import { sql } from './sql';
 
@@ -47,11 +48,8 @@ const Sidebar = ({
   const [open, setOpen] = useState(false);
   const [theme, setTheme] = useState<string>('vs-light');
   const [code, setCode] = useState(sql());
-  const [formatCode, setFormatCode] = useState<string>();
 
-  const handleFormatSql = () => {
-    setFormatCode('select * ');
-  };
+  const handleFormatSql = () => {};
 
   return (
     <>
@@ -112,7 +110,6 @@ const Sidebar = ({
           language='sql'
           theme={theme}
           value={code}
-          defaultValue={formatCode}
           onChange={(value) => setCode(value)}
         />
       </div>

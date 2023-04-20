@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import * as monaco from 'monaco-editor';
-import { format } from 'sql-formatter';
 import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
 import JsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
 import CssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker';
@@ -75,11 +74,6 @@ const MonacoEditor = ({
     initMonaco();
     editor.current?.focus();
   }, []);
-
-  useEffect(() => {
-    console.log('sssssssss', defaultValue);
-    defaultValue && editor.current?.setValue(defaultValue);
-  }, [defaultValue]);
 
   useEffect(() => {
     editor.current?.layout();
