@@ -49,7 +49,9 @@ const Sidebar = ({
   const [theme, setTheme] = useState<string>('vs-light');
   const [code, setCode] = useState(sql());
 
-  const handleFormatSql = () => {};
+  const handleFormatSql = () => {
+    code && setCode(format(code));
+  };
 
   return (
     <>
