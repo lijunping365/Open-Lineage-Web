@@ -1,6 +1,13 @@
 import G6 from '@antv/g6';
 
-const itemHeight = 30;
+// 行高
+const itemHeight = 40;
+// 字体大小
+const fontSize = 20;
+// 文字 X 轴偏移量
+const fontOffsetX = 12;
+// 文字 Y 轴偏移量
+const fontOffsetY = itemHeight / 2 + fontSize / 2;
 
 const colorMap: any = {
   '0': { stroke: '#F49722' },
@@ -8,28 +15,29 @@ const colorMap: any = {
 };
 
 const handleLabel = (label: string) => {
-  return (label && label.length) > 32 ? label.slice(0, 32) + '...' : label;
+  return (label && label.length) > 25 ? label.slice(0, 24) + '...' : label;
 };
 
 G6.registerNode('dice-er-box', {
   draw: function draw(cfg: any, group: any) {
     // 节点容器size
-    const width = 250;
+    const width = 300;
     // 边框、底色控制
     const boxStyle = cfg.boxStyle;
     const level: string = cfg.level;
-    const { attrs, startIndex = 0 } = cfg;
+    const { attrs } = cfg;
     const height = itemHeight * (attrs.length + 1);
     const fillColor = colorMap[level]?.stroke || boxStyle.stroke;
     const radius =
       attrs.length > 0
         ? [boxStyle.radius, boxStyle.radius, 0, 0]
         : boxStyle.radius;
+
     // 节点顶部矩形
     group.addShape('rect', {
       attrs: {
         fill: fillColor,
-        height: 30,
+        height: itemHeight,
         width,
         radius: radius,
       },
@@ -37,22 +45,18 @@ G6.registerNode('dice-er-box', {
       name: cfg.label,
     });
 
-    let fontLeft = 12; //x 偏移量
-
     // 节点顶部文本
     group.addShape('text', {
       attrs: {
-        y: 22,
-        x: fontLeft,
+        y: fontOffsetY,
+        x: fontOffsetX,
         fill: '#fff',
         text: handleLabel(cfg.label),
-        fontSize: 12,
+        fontSize: fontSize,
         fontWeight: 500,
       },
       name: cfg.label,
     });
-
-    const offsetY = (0.5 - (startIndex % 1)) * itemHeight + 30;
 
     // 边框
     const keyshape = group.addShape('rect', {
@@ -79,7 +83,7 @@ G6.registerNode('dice-er-box', {
         listContainer.addShape('rect', {
           attrs: {
             x: 1,
-            y: i * itemHeight - itemHeight / 2 + offsetY,
+            y: i * itemHeight + itemHeight,
             width: width,
             height: itemHeight,
             radius: 2,
@@ -93,10 +97,10 @@ G6.registerNode('dice-er-box', {
         // group文本控制
         listContainer.addShape('text', {
           attrs: {
-            x: 12,
-            y: i * itemHeight + offsetY + 6,
+            x: fontOffsetX,
+            y: (i + 1) * itemHeight + fontOffsetY,
             text: handleLabel(key),
-            fontSize: 12,
+            fontSize: fontSize,
             fill: '#000',
             full: e,
             fontWeight: 500,
@@ -182,7 +186,8 @@ G6.registerEdge('dice-er-edge', {
     let sourceY = 15;
 
     if (sourceIndex > sourceStartIndex - 1) {
-      sourceY = 30 + (sourceIndex - sourceStartIndex + 0.5) * 30;
+      sourceY =
+        itemHeight + (sourceIndex - sourceStartIndex + 0.5) * itemHeight;
     }
 
     const targetIndex = targetNode.attrs.findIndex(
@@ -194,7 +199,8 @@ G6.registerEdge('dice-er-edge', {
     let targetY = 15;
 
     if (targetIndex > targetStartIndex - 1) {
-      targetY = (targetIndex - targetStartIndex + 0.5) * 30 + 30;
+      targetY =
+        (targetIndex - targetStartIndex + 0.5) * itemHeight + itemHeight;
     }
 
     const startPoint = {
