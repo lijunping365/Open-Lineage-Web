@@ -352,7 +352,6 @@ export const collapseData = (data: any) => {
   const edges = Array.from(edgeMap.values());
   createCollapsedNode(nodes, tableFields);
 
-  console.log('collapseData', nodes, edges);
   return {
     nodes,
     edges,

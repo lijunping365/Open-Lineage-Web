@@ -134,34 +134,37 @@ const LineageGraph = ({
   };
 
   /**
-   * 处理属性高亮
+   * 处理节点点击事件
    */
-  const handleFieldClick = (graph: any, item: any, name: string) => {
+  const handleNodeClick = (
+    graph: any,
+    item: any,
+    currentAnchor: string,
+    name: string
+  ) => {
     const model = item.getModel();
     const edges = item.getEdges();
-    // 当前节点选中的 label
-    const sourceAnchor = name;
 
     const leftActiveEdges: any[] = [];
 
-    getLeftRelation(edges, model, sourceAnchor, leftActiveEdges);
+    getLeftRelation(edges, model, currentAnchor, leftActiveEdges);
 
     const rightActiveEdges: any[] = [];
 
-    getRightRelation(edges, model, sourceAnchor, rightActiveEdges);
+    getRightRelation(edges, model, currentAnchor, rightActiveEdges);
 
     // 清除状态
     clearAllStats(graph);
 
     // 设置当前节点状态
-    graph.setItemState(item, 'highlight-' + sourceAnchor, true);
+    graph.setItemState(item, name + '-' + currentAnchor, true);
 
     // 设置左关联边及节点状态
     setLeftStats(
       graph,
       leftActiveEdges,
       currentHighlightColorRef.current,
-      'highlight'
+      name
     );
 
     // 设置右关联边及节点状态
@@ -169,62 +172,21 @@ const LineageGraph = ({
       graph,
       rightActiveEdges,
       currentHighlightColorRef.current,
-      'highlight'
-    );
-  };
-
-  /**
-   * 处理表高亮
-   */
-  const handleNodeClick = (graph: any, item: any, name: string) => {
-    const model = item.getModel();
-    const edges = item.getEdges();
-
-    // 当前节点选中的 label
-    const sourceAnchor = name;
-    const leftActiveEdges: any[] = [];
-
-    getLeftRelation(edges, model, sourceAnchor, leftActiveEdges);
-
-    const rightActiveEdges: any[] = [];
-
-    getRightRelation(edges, model, sourceAnchor, rightActiveEdges);
-
-    // 清除状态
-    clearAllStats(graph);
-
-    // 设置当前节点状态
-    graph.setItemState(item, 'tableHighlight', true);
-
-    // 设置左关联边及节点状态
-    setLeftStats(
-      graph,
-      leftActiveEdges,
-      currentHighlightColorRef.current,
-      'tableHighlight'
-    );
-
-    // 设置右关联边及节点状态
-    setRightStats(
-      graph,
-      rightActiveEdges,
-      currentHighlightColorRef.current,
-      'tableHighlight'
+      name
     );
   };
 
   const bindEvents = (graph: any) => {
     // 监听节点点击事件
     graph.off('node:click').on('node:click', (evt: any) => {
-      console.log('node:click');
       const { item, target } = evt;
-      const name = target.get('name');
-      if (!name) return;
+      const currentAnchor = target.get('name');
+      if (!currentAnchor) return;
 
       if (fieldCheckedRef.current) {
-        handleFieldClick(graph, item, name);
+        handleNodeClick(graph, item, currentAnchor, 'highlight');
       } else {
-        handleNodeClick(graph, item, name);
+        handleNodeClick(graph, item, currentAnchor, 'tableHighlight');
       }
     });
 
