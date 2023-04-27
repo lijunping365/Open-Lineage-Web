@@ -87,6 +87,7 @@ G6.registerNode('dice-er-box', {
           attrs: {
             x: 0,
             y: i * itemHeight + itemHeight,
+            fill: '#ffffff',
             width: width,
             height: itemHeight,
             cursor: 'pointer',
