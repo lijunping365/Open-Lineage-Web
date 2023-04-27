@@ -98,8 +98,6 @@ G6.registerNode('dice-er-box', {
             text: handleLabel(key),
             fontSize: 12,
             fill: '#000',
-            fontFamily:
-              'Avenir,-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol',
             full: e,
             fontWeight: 500,
             cursor: 'pointer',
