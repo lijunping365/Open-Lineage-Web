@@ -57,7 +57,9 @@ G6.registerNode('dice-er-box', {
         y: 0,
         width,
         height: height,
-        ...boxStyle,
+        stroke: fillColor,
+        lineWidth: 2,
+        boxStyle: { ...boxStyle },
       },
       draggable: true,
     });
