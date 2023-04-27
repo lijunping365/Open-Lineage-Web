@@ -15,17 +15,18 @@ const App = () => {
   const [textWaterMarker, setTextWaterMarker] = useState<string>('OpenLineage');
 
   const handleParseSql = (sql: string) => {
-    if (!sql) return;
-
-    setLoading(true);
-    getLineageData('hive', sql)
-      .then((data: any) => {
-        setLineageData(data);
-      })
-      .catch((e: any) => {
-        message.error('处理异常！' + e);
-      })
-      .finally(() => setLoading(false));
+    setLineageData(sourceData.data);
+    // if (!sql) return;
+    //
+    // setLoading(true);
+    // getLineageData('hive', sql)
+    //   .then((data: any) => {
+    //     setLineageData(data);
+    //   })
+    //   .catch((e: any) => {
+    //     message.error('处理异常！' + e);
+    //   })
+    //   .finally(() => setLoading(false));
   };
 
   return (
