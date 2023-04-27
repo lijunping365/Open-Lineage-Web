@@ -1,9 +1,9 @@
 import G6 from '@antv/g6';
 
 // 行高
-const itemHeight = 40;
+const itemHeight = 42;
 // 字体大小
-const fontSize = 20;
+const fontSize = 24;
 // 文字 X 轴偏移量
 const fontOffsetX = 12;
 // 文字 Y 轴偏移量
@@ -15,13 +15,13 @@ const colorMap: any = {
 };
 
 const handleLabel = (label: string) => {
-  return (label && label.length) > 25 ? label.slice(0, 24) + '...' : label;
+  return (label && label.length) > 26 ? label.slice(0, 26) + '...' : label;
 };
 
 G6.registerNode('dice-er-box', {
   draw: function draw(cfg: any, group: any) {
     // 节点容器size
-    const width = 300;
+    const width = 400;
     // 边框、底色控制
     const boxStyle = cfg.boxStyle;
     const level: string = cfg.level;
@@ -82,12 +82,10 @@ G6.registerNode('dice-er-box', {
         // group部分图形控制
         listContainer.addShape('rect', {
           attrs: {
-            x: 1,
+            x: 0,
             y: i * itemHeight + itemHeight,
             width: width,
             height: itemHeight,
-            radius: 2,
-            lineWidth: 1,
             cursor: 'pointer',
           },
           name: key,
@@ -102,7 +100,6 @@ G6.registerNode('dice-er-box', {
             text: handleLabel(key),
             fontSize: fontSize,
             fill: '#000',
-            full: e,
             fontWeight: 500,
             cursor: 'pointer',
           },
