@@ -293,7 +293,7 @@ const LineageGraph = ({
         defaultEdge: {
           type: 'dice-er-edge',
           style: {
-            stroke: '#5B8FF9',
+            stroke: '#6C6B6B',
             lineWidth: 2,
             endArrow: true,
           },

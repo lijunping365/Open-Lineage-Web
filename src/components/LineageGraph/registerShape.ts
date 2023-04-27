@@ -8,6 +8,8 @@ const fontSize = 24;
 const fontOffsetX = 12;
 // 文字 Y 轴偏移量
 const fontOffsetY = itemHeight / 2 + fontSize / 2;
+// 边框线框
+const lineWidth = 6;
 
 const colorMap: any = {
   '0': { fill: '#F49722' },
@@ -67,7 +69,7 @@ G6.registerNode('dice-er-box', {
         width,
         height: height,
         stroke: fillColor,
-        lineWidth: boxStyle.lineWidth,
+        lineWidth: lineWidth,
         radius: boxStyle.radius,
         boxStyle: { ...boxStyle },
       },
@@ -172,6 +174,7 @@ G6.registerNode('dice-er-box', {
 G6.registerEdge('dice-er-edge', {
   draw: function draw(cfg: any, group: any) {
     const edge = group.cfg.item;
+    const style = cfg.style;
     const sourceNode = edge.getSource().getModel();
     const targetNode = edge.getTarget().getModel();
 
@@ -181,7 +184,7 @@ G6.registerEdge('dice-er-edge', {
 
     const sourceStartIndex = sourceNode.startIndex || 0;
 
-    let sourceY = 15;
+    let sourceY = itemHeight / 2 + lineWidth / 2;
 
     if (sourceIndex > sourceStartIndex - 1) {
       sourceY =
@@ -194,7 +197,7 @@ G6.registerEdge('dice-er-edge', {
 
     const targetStartIndex = targetNode.startIndex || 0;
 
-    let targetY = 15;
+    let targetY = itemHeight / 2 + lineWidth / 2;
 
     if (targetIndex > targetStartIndex - 1) {
       targetY =
@@ -216,7 +219,8 @@ G6.registerEdge('dice-er-edge', {
     if (sourceNode.id !== targetNode.id) {
       shape = group.addShape('path', {
         attrs: {
-          stroke: '#6C6B6B',
+          stroke: style.stroke,
+          lineWidth: style.lineWidth,
           path: [
             ['M', startPoint.x, startPoint.y],
             [
@@ -258,7 +262,7 @@ G6.registerEdge('dice-er-edge', {
         //shape.attr('opacity', 1);
 
         shape.attr('stroke', '#6C6B6B');
-        shape.attr('lineWidth', 1);
+        shape.attr('lineWidth', 2);
       }
     }
   },
