@@ -21,13 +21,17 @@ G6.registerNode('dice-er-box', {
     const { attrs, startIndex = 0 } = cfg;
     const height = itemHeight * (attrs.length + 1);
     const fillColor = colorMap[level]?.stroke || boxStyle.stroke;
+    const radius =
+      attrs.length > 0
+        ? [boxStyle.radius, boxStyle.radius, 0, 0]
+        : boxStyle.radius;
     // 节点顶部矩形
     group.addShape('rect', {
       attrs: {
         fill: fillColor,
         height: 30,
         width,
-        radius: [boxStyle.radius, boxStyle.radius, 0, 0],
+        radius: radius,
       },
       draggable: true,
       name: cfg.label,
@@ -59,6 +63,7 @@ G6.registerNode('dice-er-box', {
         height: height,
         stroke: fillColor,
         lineWidth: 2,
+        radius: boxStyle.radius,
         boxStyle: { ...boxStyle },
       },
       draggable: true,
