@@ -274,18 +274,18 @@ const LineageGraph = ({
         defaultNode: {
           size: [300, 800],
           type: 'dice-er-box',
-          color: '#5B8FF9',
+          color: '#096DD9',
           boxStyle: {
             stroke: '#096DD9',
+            lineWidth: 6,
             radius: 4,
           },
           style: {
-            fill: '#9EC9FF',
-            lineWidth: 3,
+            fill: '#096DD9',
           },
           labelCfg: {
             style: {
-              fill: 'black',
+              fill: '#ffffff',
               fontSize: 20,
             },
           },

@@ -10,11 +10,11 @@ const fontOffsetX = 12;
 const fontOffsetY = itemHeight / 2 + fontSize / 2;
 
 const colorMap: any = {
-  '0': { stroke: '#F49722' },
-  last: { stroke: '#50E3C2' },
+  '0': { fill: '#F49722' },
+  last: { fill: '#50E3C2' },
 };
 
-const handleLabel = (label: string) => {
+const handleLabelLength = (label: string) => {
   return (label && label.length) > 26 ? label.slice(0, 26) + '...' : label;
 };
 
@@ -22,12 +22,13 @@ G6.registerNode('dice-er-box', {
   draw: function draw(cfg: any, group: any) {
     // 节点容器size
     const width = 400;
+    const style = cfg.style;
     // 边框、底色控制
     const boxStyle = cfg.boxStyle;
     const level: string = cfg.level;
     const { attrs } = cfg;
     const height = itemHeight * (attrs.length + 1);
-    const fillColor = colorMap[level]?.stroke || boxStyle.stroke;
+    const fillColor = colorMap[level]?.fill || style.fill;
     const radius =
       attrs.length > 0
         ? [boxStyle.radius, boxStyle.radius, 0, 0]
@@ -51,7 +52,7 @@ G6.registerNode('dice-er-box', {
         y: fontOffsetY,
         x: fontOffsetX,
         fill: '#fff',
-        text: handleLabel(cfg.label),
+        text: handleLabelLength(cfg.label),
         fontSize: fontSize,
         fontWeight: 500,
       },
@@ -66,7 +67,7 @@ G6.registerNode('dice-er-box', {
         width,
         height: height,
         stroke: fillColor,
-        lineWidth: 2,
+        lineWidth: boxStyle.lineWidth,
         radius: boxStyle.radius,
         boxStyle: { ...boxStyle },
       },
@@ -97,7 +98,7 @@ G6.registerNode('dice-er-box', {
           attrs: {
             x: fontOffsetX,
             y: (i + 1) * itemHeight + fontOffsetY,
-            text: handleLabel(key),
+            text: handleLabelLength(key),
             fontSize: fontSize,
             fill: '#000',
             fontWeight: 500,
