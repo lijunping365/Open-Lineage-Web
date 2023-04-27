@@ -94,7 +94,6 @@ const MonacoEditor = ({
     <div
       ref={containerElement}
       style={style}
-      className='react-monaco-editor-container'
     />
   );
 };
