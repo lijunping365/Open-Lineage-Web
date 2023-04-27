@@ -47,10 +47,10 @@ const LineageGraph = ({
   highlightColor,
   textWaterMarker,
 }: LineageGraphProps) => {
-  const ref = useRef(null);
-  const toolbarRef = useRef(null);
-  const graphRef = useRef<any>(null);
-  const topbarRef = useRef<any>(null);
+  const ref = useRef<any>();
+  const toolbarRef = useRef<any>();
+  const graphRef = useRef<any>();
+  const topBarRef = useRef<any>();
   const fieldCheckedRef = useRef<any>(true);
   const wholeCheckedRef = useRef<any>(true);
   const currentHighlightColorRef = useRef<any>(highlightColor);
@@ -60,8 +60,8 @@ const LineageGraph = ({
   useEffect(() => {
     fieldCheckedRef.current = true;
     wholeCheckedRef.current = true;
-    topbarRef?.current?.setFieldChecked(true);
-    topbarRef?.current?.setWholeChecked(true);
+    topBarRef?.current?.setFieldChecked(true);
+    topBarRef?.current?.setWholeChecked(true);
 
     if (lineageData) {
       const wholeData = lineageData.withProcessData[0];
@@ -263,6 +263,7 @@ const LineageGraph = ({
         width: width,
         height: height,
         plugins: [grid, minimap, toolbar],
+        fitView: true,
         modes: {
           default: ['drag-canvas', 'zoom-canvas', 'drag-node'],
         },
@@ -320,7 +321,7 @@ const LineageGraph = ({
       <div ref={ref}>
         <div className='g6-component-topbar'>
           <Topbar
-            ref={topbarRef}
+            ref={topBarRef}
             handleFieldLineage={(checked: any) => onFieldLineage(checked)}
             handleWholeLineage={(checked: any) => onWholeLineage(checked)}
           />
