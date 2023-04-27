@@ -179,13 +179,7 @@ export const setLeftStats = (
     edge.toFront();
 
     const sourceAnchor = edge.getModel()['sourceAnchor'];
-    const sourceNode = edge.getSource().getModel();
-
-    const sourceIndex = sourceNode.attrs.findIndex(
-      (e: any) => e.key === sourceAnchor
-    );
-
-    graph.setItemState(edge.getSource(), name + '-' + sourceIndex, true);
+    graph.setItemState(edge.getSource(), name + '-' + sourceAnchor, true);
   });
 };
 
@@ -205,12 +199,6 @@ export const setRightStats = (
     edge.toFront();
 
     const targetAnchor = edge.getModel()['targetAnchor'];
-    const targetNode = edge.getTarget().getModel();
-
-    const targetIndex = targetNode.attrs.findIndex(
-      (e: any) => e.key === targetAnchor
-    );
-
-    graph.setItemState(edge.getTarget(), name + '-' + targetIndex, true);
+    graph.setItemState(edge.getTarget(), name + '-' + targetAnchor, true);
   });
 };

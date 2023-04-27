@@ -73,10 +73,7 @@ G6.registerNode('dice-er-box', {
 
     if (attrs) {
       attrs.forEach((e: any, i: any) => {
-        let { key = '', type } = e;
-        if (type) {
-          key += ' - ' + type;
-        }
+        const { key } = e;
 
         // group部分图形控制
         listContainer.addShape('rect', {
@@ -89,7 +86,7 @@ G6.registerNode('dice-er-box', {
             lineWidth: 1,
             cursor: 'pointer',
           },
-          name: `item-${Math.floor(startIndex) + i}-content`,
+          name: key,
           draggable: true,
         });
 
@@ -107,7 +104,7 @@ G6.registerNode('dice-er-box', {
             fontWeight: 500,
             cursor: 'pointer',
           },
-          name: `item-${cfg.id}-${Math.floor(startIndex) + i}`,
+          name: key,
         });
       });
     }
@@ -124,13 +121,18 @@ G6.registerNode('dice-er-box', {
   setState(name, value, item: any) {
     // 字段高亮
     if (name && name.startsWith('highlight')) {
-      const selectedIndex = Number(name.split('-')[1]);
-      //console.log('ppppppppppppp', selectedIndex);
+      const anchor = name.split('-')[1];
+
       const shape = item.get('keyShape');
-      // shape.get('parent').get('children')[3] 表示拿到 group，我们的字段就在 group 中
+      // 查找 label 下标
+      const anchorIndex = item
+        .getModel()
+        .attrs.findIndex((e: any) => e.key === anchor);
+      // 查找 label 元素，通过下标来找
       const label = shape.get('parent').get('children')[3].get('children')[
-        selectedIndex * 2 + 1
+        anchorIndex * 2 + 1
       ];
+
       if (value) {
         //label.attr('fill', '#A3B1BF');
         //label.attr('fill', 'red');

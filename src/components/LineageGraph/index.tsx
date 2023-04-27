@@ -137,17 +137,10 @@ const LineageGraph = ({
    * 处理属性高亮
    */
   const handleFieldClick = (graph: any, item: any, name: string) => {
-    if (!name.startsWith('item-')) {
-      return;
-    }
     const model = item.getModel();
     const edges = item.getEdges();
-
-    // 当前节点选中的 下标
-    const startIndex = name.lastIndexOf('-');
-    const sourceIndex = name.slice(startIndex + 1, name.length);
     // 当前节点选中的 label
-    const sourceAnchor = model.attrs[sourceIndex]['key'];
+    const sourceAnchor = name;
 
     const leftActiveEdges: any[] = [];
 
@@ -161,7 +154,7 @@ const LineageGraph = ({
     clearAllStats(graph);
 
     // 设置当前节点状态
-    graph.setItemState(item, 'highlight-' + sourceIndex, true);
+    graph.setItemState(item, 'highlight-' + sourceAnchor, true);
 
     // 设置左关联边及节点状态
     setLeftStats(
