@@ -118,17 +118,9 @@ class CustomDagreLayout extends Base {
    */
   public execute() {
     const self = this;
-    const {
-      nodes,
-      nodeSize,
-      rankdir,
-      combos,
-      begin,
-      radial,
-      comboEdges = [],
-      vedges = [],
-    } = self;
+    const { nodes, nodeSize, rankdir, combos, begin } = self;
     if (!nodes) return;
+
     const edges = (self.edges as any[]) || [];
     const g = new DagreGraph({
       multigraph: true,
@@ -137,12 +129,8 @@ class CustomDagreLayout extends Base {
 
     // collect the nodes in their combo, to create virtual edges for comboEdges
     self.nodeMap = {};
-    const nodeComboMap = {} as any;
     nodes.forEach((node) => {
       self.nodeMap[node.id] = node;
-      if (!node.comboId) return;
-      nodeComboMap[node.comboId] = nodeComboMap[node.comboId] || [];
-      nodeComboMap[node.comboId].push(node.id);
     });
 
     let nodeSizeFunc: (d?: any) => number[];
@@ -176,8 +164,6 @@ class CustomDagreLayout extends Base {
     g.setDefaultEdgeLabel(() => ({}));
     g.setGraph(self);
 
-    const comboMap: { [key: string]: any } = {};
-
     nodes
       .filter((node) => node.layout !== false)
       .forEach((node) => {
@@ -192,14 +178,6 @@ class CustomDagreLayout extends Base {
           g.setNode(node.id, { width, height, layer });
         } else {
           g.setNode(node.id, { width, height });
-        }
-
-        if (this.sortByCombo && node.comboId) {
-          if (!comboMap[node.comboId]) {
-            comboMap[node.comboId] = { id: node.comboId };
-            g.setNode(node.comboId, {});
-          }
-          g.setParent(node.id, node.comboId);
         }
       });
 
@@ -331,7 +309,7 @@ class CustomDagreLayout extends Base {
   }
 
   public getType() {
-    return 'dagre';
+    return 'lineageLayout';
   }
 }
 
