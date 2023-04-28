@@ -409,6 +409,7 @@ const createCollapsedNode = (nodes: any[], tableFields: Set<any>) => {
       y: 100,
       level: level,
       attrs: [],
+      size: [400, itemHeight],
     };
     nodes.push(obj);
   });

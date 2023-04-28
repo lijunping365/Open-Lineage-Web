@@ -136,16 +136,7 @@ class CustomDagreLayout extends Base {
     let nodeSizeFunc: (d?: any) => number[];
     if (!nodeSize) {
       nodeSizeFunc = (d: any) => {
-        if (d.size) {
-          if (isArray(d.size)) {
-            return d.size;
-          }
-          if (isObject(d.size)) {
-            return [d.size.width || 40, d.size.height || 40];
-          }
-          return [d.size, d.size];
-        }
-        return [40, 40];
+        return d.size;
       };
     } else if (isArray(nodeSize)) {
       nodeSizeFunc = () => nodeSize;
