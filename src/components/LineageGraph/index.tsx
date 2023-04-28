@@ -4,6 +4,7 @@ import Topbar from '../Topbar';
 import G6 from '@antv/g6';
 import './index.css';
 import './registerShape';
+import './registerLayout';
 import {
   collapseData,
   getLeftRelation,
@@ -224,7 +225,7 @@ const LineageGraph = ({
         },
         // 布局配置
         layout: {
-          type: 'dagre',
+          type: 'lineageLayout',
           rankdir: 'LR',
           align: undefined,
           controlPoints: true,
