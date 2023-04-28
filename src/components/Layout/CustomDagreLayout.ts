@@ -30,7 +30,7 @@ class CustomDagreLayout extends Base {
   public align: undefined | 'UL' | 'UR' | 'DL' | 'DR';
 
   /** 布局的起始（左上角）位置 */
-  public begin: PointTuple;
+  public begin: PointTuple | undefined;
 
   /** 节点大小 */
   public nodeSize: number | number[] | undefined;
@@ -60,13 +60,15 @@ class CustomDagreLayout extends Base {
   public radial: boolean = false;
 
   /** 给定的节点顺序，配合keepNodeOrder使用 */
-  public nodeOrder: string[];
+  public nodeOrder: string[] = [];
 
   /** 上次的布局结果 */
-  public preset: {
-    nodes: OutNode[];
-    edges: any[];
-  };
+  public preset:
+    | {
+        nodes: OutNode[];
+        edges: any[];
+      }
+    | undefined;
 
   public nodes: OutNode[] = [];
 
@@ -75,6 +77,7 @@ class CustomDagreLayout extends Base {
   /** 迭代结束的回调函数 */
   public onLayoutEnd: () => void = () => {};
 
+  // @ts-ignore
   private nodeMap: {
     [id: string]: OutNode;
   };
