@@ -234,7 +234,7 @@ const LineageGraph = ({
           // ranksepFunc: () => 0.5,
         },
         defaultNode: {
-          size: [300, 800],
+          // size: [300, 800],
           type: 'dice-er-box',
           color: '#096DD9',
           boxStyle: {

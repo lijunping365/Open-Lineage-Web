@@ -1,7 +1,7 @@
 import G6 from '@antv/g6';
 
 // 行高
-const itemHeight = 42;
+export const itemHeight = 42;
 // 字体大小
 const fontSize = 24;
 // 文字 X 轴偏移量

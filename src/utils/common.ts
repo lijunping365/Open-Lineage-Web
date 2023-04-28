@@ -1,3 +1,5 @@
+import { itemHeight } from '../components/LineageGraph/registerShape';
+
 export const initData = (count: number) => {
   const nodeArray = [];
   for (let i = 1; i < count; i++) {
@@ -318,6 +320,7 @@ const createNode = (nodes: any[], tableFields: Set<any>) => {
     });
 
     const level = getTableLevel(key);
+    const height = itemHeight * (attrs.length + 1);
     const obj: any = {
       id: key,
       key: key,
@@ -326,6 +329,7 @@ const createNode = (nodes: any[], tableFields: Set<any>) => {
       y: 100,
       level: level,
       attrs: attrs,
+      size: [400, height],
     };
     nodes.push(obj);
   });
