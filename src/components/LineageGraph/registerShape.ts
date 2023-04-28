@@ -81,7 +81,6 @@ G6.registerNode('dice-er-box', {
     if (attrs) {
       attrs.forEach((e: any, i: any) => {
         const { key } = e;
-
         // group部分图形控制
         listContainer.addShape('rect', {
           attrs: {
