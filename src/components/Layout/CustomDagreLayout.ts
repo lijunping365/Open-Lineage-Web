@@ -59,9 +59,6 @@ class CustomDagreLayout extends Base {
   /** 是否基于 dagre 进行辐射布局，若是，第一层节点将被放置在最内环上，其余层依次向外辐射 */
   public radial: boolean = false;
 
-  /** radial 下生效，中心节点，被指定的节点及其同层节点将被放置在最内环上 */
-  public focusNode: string | Node | null;
-
   /** 给定的节点顺序，配合keepNodeOrder使用 */
   public nodeOrder: string[];
 
@@ -178,26 +175,6 @@ class CustomDagreLayout extends Base {
 
     const comboMap: { [key: string]: any } = {};
 
-    if (this.sortByCombo && combos) {
-      combos.forEach((combo) => {
-        comboMap[combo.id] = combo;
-        // regard the collapsed combo as a node
-        if (combo.collapsed) {
-          const size = nodeSizeFunc(combo);
-          const verti = vertisep(combo);
-          const hori = horisep(combo);
-          const width = size[0] + 2 * hori;
-          const height = size[1] + 2 * verti;
-          g.setNode(combo.id, { width, height });
-        }
-        if (!combo.parentId) return;
-        if (!comboMap[combo.parentId]) {
-          g.setNode(combo.parentId, {});
-        }
-        g.setParent(combo.id, combo.parentId);
-      });
-    }
-
     nodes
       .filter((node) => node.layout !== false)
       .forEach((node) => {
@@ -232,24 +209,6 @@ class CustomDagreLayout extends Base {
           weight: edge.weight || 1,
         });
       }
-    });
-
-    // create virtual edges from node to node for comboEdges
-    comboEdges?.concat(vedges || [])?.forEach((comboEdge: any) => {
-      const { source, target } = comboEdge;
-      const sources = comboMap[source]?.collapsed
-        ? [source]
-        : nodeComboMap[source] || [source];
-      const targets = comboMap[target]?.collapsed
-        ? [target]
-        : nodeComboMap[target] || [target];
-      sources.forEach((s: string) => {
-        targets.forEach((t: string) => {
-          g.setEdge(s, t, {
-            weight: comboEdge.weight || 1,
-          });
-        });
-      });
     });
 
     // 考虑增量图中的原始图
@@ -292,323 +251,79 @@ class CustomDagreLayout extends Base {
     }
 
     const isHorizontal = rankdir === 'LR' || rankdir === 'RL';
-    // 变形为辐射
-    if (radial) {
-      const { focusNode, ranksep, getRadialPos } = this;
-      const focusId = isString(focusNode) ? focusNode : focusNode?.id;
-      const focusLayer = focusId ? g.node(focusId)?._rank : 0;
-      const layers: any[] = [];
-      const dim = isHorizontal ? 'y' : 'x';
-      const sizeDim = isHorizontal ? 'height' : 'width';
-      // 找到整个图作为环的坐标维度（dim）的最大、最小值，考虑节点宽度
-      let min = Infinity;
-      let max = -Infinity;
-      g.nodes().forEach((node: any) => {
-        const coord = g.node(node)! as any;
-        const i = nodes.findIndex((it) => it.id === node);
-        if (!nodes[i]) return;
-        const currentNodesep = nodesepfunc(nodes[i]);
 
-        if (focusLayer === 0) {
-          if (!layers[coord._rank]) {
-            layers[coord._rank] = {
-              nodes: [],
-              totalWidth: 0,
-              maxSize: -Infinity,
-            };
-          }
-          layers[coord._rank].nodes.push(node);
-          layers[coord._rank].totalWidth += currentNodesep * 2 + coord[sizeDim];
-          if (
-            layers[coord._rank].maxSize < Math.max(coord.width, coord.height)
-          ) {
-            layers[coord._rank].maxSize = Math.max(coord.width, coord.height);
-          }
-        } else {
-          const diffLayer = coord._rank - focusLayer!;
-          if (diffLayer === 0) {
-            if (!layers[diffLayer]) {
-              layers[diffLayer] = {
-                nodes: [],
-                totalWidth: 0,
-                maxSize: -Infinity,
-              };
-            }
-            layers[diffLayer].nodes.push(node);
-            layers[diffLayer].totalWidth += currentNodesep * 2 + coord[sizeDim];
-            if (
-              layers[diffLayer].maxSize < Math.max(coord.width, coord.height)
-            ) {
-              layers[diffLayer].maxSize = Math.max(coord.width, coord.height);
-            }
-          } else {
-            const diffLayerAbs = Math.abs(diffLayer);
-            if (!layers[diffLayerAbs]) {
-              layers[diffLayerAbs] = {
-                left: [],
-                right: [],
-                totalWidth: 0,
-                maxSize: -Infinity,
-              };
-            }
-            layers[diffLayerAbs].totalWidth +=
-              currentNodesep * 2 + coord[sizeDim];
-            if (
-              layers[diffLayerAbs].maxSize < Math.max(coord.width, coord.height)
-            ) {
-              layers[diffLayerAbs].maxSize = Math.max(
-                coord.width,
-                coord.height
-              );
-            }
-            if (diffLayer < 0) {
-              layers[diffLayerAbs].left.push(node);
-            } else {
-              layers[diffLayerAbs].right.push(node);
-            }
-          }
+    const layerCoords: Set<number> = new Set();
+    const isInvert = rankdir === 'BT' || rankdir === 'RL';
+    const layerCoordSort = isInvert
+      ? (a: number, b: number) => b - a
+      : (a: number, b: number) => a - b;
+    g.nodes().forEach((node: any) => {
+      const coord = g.node(node)!;
+      if (!coord) return;
+      let ndata: any = this.nodeMap[node];
+      if (!ndata) {
+        ndata = combos?.find((it) => it.id === node);
+      }
+      if (!ndata) return;
+      ndata.x = coord.x! + dBegin[0];
+      ndata.y = coord.y! + dBegin[1];
+      // @ts-ignore: pass layer order to data for increment layout use
+      ndata._order = coord._order;
+      layerCoords.add(isHorizontal ? ndata.x : ndata.y);
+    });
+    const layerCoordsArr = Array.from(layerCoords).sort(layerCoordSort);
+
+    // pre-define the isHorizontal related functions to avoid redundant calc in interations
+    const isDifferentLayer = isHorizontal
+      ? (point1: Point, point2: Point) => point1.x !== point2.x
+      : (point1: Point, point2: Point) => point1.y !== point2.y;
+    const filterControlPointsOutOfBoundary = isHorizontal
+      ? (ps: Point[], point1: Point, point2: Point) => {
+          const max = Math.max(point1.y, point2.y);
+          const min = Math.min(point1.y, point2.y);
+          return ps.filter((point) => point.y <= max && point.y >= min);
         }
-        const leftPos = coord[dim] - coord[sizeDim] / 2 - currentNodesep;
-        const rightPos = coord[dim] + coord[sizeDim] / 2 + currentNodesep;
-        if (leftPos < min) min = leftPos;
-        if (rightPos > max) max = rightPos;
+      : (ps: Point[], point1: Point, point2: Point) => {
+          const max = Math.max(point1.x, point2.x);
+          const min = Math.min(point1.x, point2.x);
+          return ps.filter((point) => point.x <= max && point.x >= min);
+        };
+
+    g.edges().forEach((edge: any) => {
+      const coord = g.edge(edge);
+      const i = edges.findIndex((it) => {
+        const source = getEdgeTerminal(it, 'source');
+        const target = getEdgeTerminal(it, 'target');
+        return source === edge.v && target === edge.w;
       });
-      // const padding = (max - min) * 0.1; // TODO
-      // 初始化为第一圈的半径，后面根据每层 ranksep 叠加
-      let radius = ranksep || 50; // TODO;
-      const radiusMap: any = {};
-
-      // 扩大最大最小值范围，以便为环上留出接缝处的空隙
-      const rangeLength = (max - min) / 0.9;
-      const range = [
-        (min + max - rangeLength) * 0.5,
-        (min + max + rangeLength) * 0.5,
-      ];
-
-      // 根据半径、分布比例，计算节点在环上的位置，并返回该组节点中最大的 ranksep 值
-      const processNodes = (
-        layerNodes: any,
-        radius: number,
-        propsMaxRanksep = -Infinity,
-        arcRange = [0, 1]
-      ) => {
-        let maxRanksep = propsMaxRanksep;
-        layerNodes.forEach((node: any) => {
-          const coord = g.node(node);
-          radiusMap[node] = radius;
-          // 获取变形为 radial 后的直角坐标系坐标
-          const { x: newX, y: newY } = getRadialPos(
-            coord![dim]!,
-            range,
-            rangeLength,
-            radius,
-            arcRange
-          );
-          // 将新坐标写入源数据
-          const i = nodes.findIndex((it) => it.id === node);
-          if (!nodes[i]) return;
-          nodes[i].x = newX + dBegin[0];
-          nodes[i].y = newY + dBegin[1];
-          // @ts-ignore: pass layer order to data for increment layout use
-          nodes[i]._order = coord._order;
-
-          // 找到本层最大的一个 ranksep，作为下一层与本层的间隙，叠加到下一层的半径上
-          const currentNodeRanksep = ranksepfunc(nodes[i]);
-          if (maxRanksep < currentNodeRanksep) maxRanksep = currentNodeRanksep;
+      if (i <= -1) return;
+      if (
+        self.edgeLabelSpace &&
+        self.controlPoints &&
+        edges[i].type !== 'loop'
+      ) {
+        const sourceNode = self.nodeMap[edge.v];
+        const targetNode = self.nodeMap[edge.w];
+        edges[i].controlPoints = getControlPoints(
+          coord?.points,
+          sourceNode,
+          targetNode,
+          layerCoordsArr,
+          isHorizontal,
+          isDifferentLayer,
+          filterControlPointsOutOfBoundary
+        );
+        edges[i].controlPoints.forEach((point: any) => {
+          point.x += dBegin[0];
+          point.y += dBegin[1];
         });
-        return maxRanksep;
-      };
-
-      let isFirstLevel = true;
-      const lastLayerMaxNodeSize = 0;
-      layers.forEach((layerNodes) => {
-        if (
-          !layerNodes?.nodes?.length &&
-          !layerNodes?.left?.length &&
-          !layerNodes?.right?.length
-        ) {
-          return;
-        }
-        // 第一层只有一个节点，直接放在圆心，初始半径设定为 0
-        if (isFirstLevel && layerNodes.nodes.length === 1) {
-          // 将新坐标写入源数据
-          const i = nodes.findIndex((it) => it.id === layerNodes.nodes[0]);
-          if (i <= -1) return;
-          nodes[i].x = dBegin[0];
-          nodes[i].y = dBegin[1];
-          radiusMap[layerNodes.nodes[0]] = 0;
-          radius = ranksepfunc(nodes[i]);
-          isFirstLevel = false;
-          return;
-        }
-
-        // 为接缝留出空隙，半径也需要扩大
-        radius = Math.max(radius, layerNodes.totalWidth / (2 * Math.PI)); // / 0.9;
-
-        let maxRanksep = -Infinity;
-        if (focusLayer === 0 || layerNodes.nodes?.length) {
-          maxRanksep = processNodes(
-            layerNodes.nodes,
-            radius,
-            maxRanksep,
-            [0, 1]
-          ); // 0.8
-        } else {
-          const leftRatio =
-            layerNodes.left?.length /
-            (layerNodes.left?.length + layerNodes.right?.length);
-          maxRanksep = processNodes(layerNodes.left, radius, maxRanksep, [
-            0,
-            leftRatio,
-          ]); // 接缝留出 0.05 的缝隙
-          maxRanksep = processNodes(layerNodes.right, radius, maxRanksep, [
-            leftRatio + 0.05,
-            1,
-          ]); // 接缝留出 0.05 的缝隙
-        }
-        radius += maxRanksep;
-        isFirstLevel = false;
-        lastLayerMaxNodeSize - layerNodes.maxSize;
-      });
-      g.edges().forEach((edge: any) => {
-        const coord = g.edge(edge);
-        const i = edges.findIndex((it) => {
-          const source = getEdgeTerminal(it, 'source');
-          const target = getEdgeTerminal(it, 'target');
-          return source === edge.v && target === edge.w;
-        });
-        if (i <= -1) return;
-        if (
-          self.edgeLabelSpace &&
-          self.controlPoints &&
-          edges[i].type !== 'loop'
-        ) {
-          const otherDim = dim === 'x' ? 'y' : 'x';
-          const controlPoints = coord?.points?.slice(
-            1,
-            coord.points.length - 1
-          );
-          const newControlPoints: Point[] = [];
-          const sourceOtherDimValue = g.node(edge.v)?.[otherDim]!;
-          const otherDimDist =
-            sourceOtherDimValue - g.node(edge.w)?.[otherDim]!;
-          const sourceRadius = radiusMap[edge.v];
-          const radiusDist = sourceRadius - radiusMap[edge.w];
-          controlPoints?.forEach((point: any) => {
-            // 根据该边的起点、终点半径，及起点、终点、控制点位置关系，确定该控制点的半径
-            const cRadius =
-              ((point[otherDim] - sourceOtherDimValue) / otherDimDist) *
-                radiusDist +
-              sourceRadius;
-            // 获取变形为 radial 后的直角坐标系坐标
-            const newPos = getRadialPos(
-              point[dim],
-              range,
-              rangeLength,
-              cRadius
-            );
-            newControlPoints.push({
-              x: newPos.x + dBegin[0],
-              y: newPos.y + dBegin[1],
-            });
-          });
-          edges[i].controlPoints = newControlPoints;
-        }
-      });
-    } else {
-      const layerCoords: Set<number> = new Set();
-      const isInvert = rankdir === 'BT' || rankdir === 'RL';
-      const layerCoordSort = isInvert
-        ? (a: number, b: number) => b - a
-        : (a: number, b: number) => a - b;
-      g.nodes().forEach((node: any) => {
-        const coord = g.node(node)!;
-        if (!coord) return;
-        let ndata: any = this.nodeMap[node];
-        if (!ndata) {
-          ndata = combos?.find((it) => it.id === node);
-        }
-        if (!ndata) return;
-        ndata.x = coord.x! + dBegin[0];
-        ndata.y = coord.y! + dBegin[1];
-        // @ts-ignore: pass layer order to data for increment layout use
-        ndata._order = coord._order;
-        layerCoords.add(isHorizontal ? ndata.x : ndata.y);
-      });
-      const layerCoordsArr = Array.from(layerCoords).sort(layerCoordSort);
-
-      // pre-define the isHorizontal related functions to avoid redundant calc in interations
-      const isDifferentLayer = isHorizontal
-        ? (point1: Point, point2: Point) => point1.x !== point2.x
-        : (point1: Point, point2: Point) => point1.y !== point2.y;
-      const filterControlPointsOutOfBoundary = isHorizontal
-        ? (ps: Point[], point1: Point, point2: Point) => {
-            const max = Math.max(point1.y, point2.y);
-            const min = Math.min(point1.y, point2.y);
-            return ps.filter((point) => point.y <= max && point.y >= min);
-          }
-        : (ps: Point[], point1: Point, point2: Point) => {
-            const max = Math.max(point1.x, point2.x);
-            const min = Math.min(point1.x, point2.x);
-            return ps.filter((point) => point.x <= max && point.x >= min);
-          };
-
-      g.edges().forEach((edge: any) => {
-        const coord = g.edge(edge);
-        const i = edges.findIndex((it) => {
-          const source = getEdgeTerminal(it, 'source');
-          const target = getEdgeTerminal(it, 'target');
-          return source === edge.v && target === edge.w;
-        });
-        if (i <= -1) return;
-        if (
-          self.edgeLabelSpace &&
-          self.controlPoints &&
-          edges[i].type !== 'loop'
-        ) {
-          const sourceNode = self.nodeMap[edge.v];
-          const targetNode = self.nodeMap[edge.w];
-          edges[i].controlPoints = getControlPoints(
-            coord?.points,
-            sourceNode,
-            targetNode,
-            layerCoordsArr,
-            isHorizontal,
-            isDifferentLayer,
-            filterControlPointsOutOfBoundary
-          );
-          edges[i].controlPoints.forEach((point: any) => {
-            point.x += dBegin[0];
-            point.y += dBegin[1];
-          });
-        }
-      });
-    }
+      }
+    });
 
     if (self.onLayoutEnd) self.onLayoutEnd();
     return {
       nodes,
       edges,
-    };
-  }
-
-  private getRadialPos(
-    dimValue: number,
-    range: number[],
-    rangeLength: number,
-    radius: number,
-    arcRange: number[] = [0, 1]
-  ) {
-    // dimRatio 占圆弧的比例
-    let dimRatio = (dimValue - range[0]) / rangeLength;
-    // 再进一步归一化到指定的范围上
-    dimRatio = dimRatio * (arcRange[1] - arcRange[0]) + arcRange[0];
-    // 使用最终归一化后的范围计算角度
-    const angle = dimRatio * 2 * Math.PI; // 弧度
-    // 将极坐标系转换为直角坐标系
-    return {
-      x: Math.cos(angle) * radius,
-      y: Math.sin(angle) * radius,
     };
   }
 
