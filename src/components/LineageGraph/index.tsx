@@ -83,54 +83,54 @@ const LineageGraph = ({
     handleHighlightColor(graphRef.current, highlightColor);
   }, [highlightColor]);
 
+  /**
+   * 处理字段血缘切换
+   */
   const onFieldLineage = (checked: boolean) => {
     fieldCheckedRef.current = checked;
     if (!lineageWholeData || !lineagePartData) {
       return;
     }
-
+    let data: any;
     if (checked) {
       if (wholeCheckedRef.current) {
-        const t1 = transformData(lineageWholeData);
-        renderGraph(graphRef.current, t1);
+        data = transformData(lineageWholeData);
       } else {
-        const t2 = transformData(lineagePartData);
-        renderGraph(graphRef.current, t2);
+        data = transformData(lineagePartData);
       }
     } else {
       if (wholeCheckedRef.current) {
-        const t1 = collapseData(lineageWholeData);
-        renderGraph(graphRef.current, t1);
+        data = collapseData(lineageWholeData);
       } else {
-        const t2 = collapseData(lineagePartData);
-        renderGraph(graphRef.current, t2);
+        data = collapseData(lineagePartData);
       }
     }
+    renderGraph(graphRef.current, data);
   };
 
+  /**
+   * 处理完整血缘链路切换
+   */
   const onWholeLineage = (checked: boolean) => {
     wholeCheckedRef.current = checked;
     if (!lineageWholeData || !lineagePartData) {
       return;
     }
-
+    let data: any;
     if (checked) {
       if (fieldCheckedRef.current) {
-        const t1 = transformData(lineageWholeData);
-        renderGraph(graphRef.current, t1);
+        data = transformData(lineageWholeData);
       } else {
-        const t1 = collapseData(lineageWholeData);
-        renderGraph(graphRef.current, t1);
+        data = collapseData(lineageWholeData);
       }
     } else {
       if (fieldCheckedRef.current) {
-        const t2 = transformData(lineagePartData);
-        renderGraph(graphRef.current, t2);
+        data = transformData(lineagePartData);
       } else {
-        const t1 = collapseData(lineagePartData);
-        renderGraph(graphRef.current, t1);
+        data = collapseData(lineagePartData);
       }
     }
+    renderGraph(graphRef.current, data);
   };
 
   /**
