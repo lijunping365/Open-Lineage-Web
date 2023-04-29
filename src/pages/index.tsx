@@ -4,7 +4,7 @@ import LineageGraph from '../components/LineageGraph';
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import sourceData from '../config/data.json';
+import sourceData from '../test/data.json';
 import { getLineageData } from '../services/api';
 import { message, Spin } from 'antd';
 

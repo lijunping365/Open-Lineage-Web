@@ -10,8 +10,6 @@ import {
   getLeftRelation,
   getRightRelation,
   transformData,
-  dataTransform,
-  initData,
 } from '../../utils/common';
 import {
   clearAllStats,
@@ -27,6 +25,7 @@ import {
   setLeftStats,
   setRightStats,
 } from '../../utils/graphUtil';
+import { dataTransform, initData } from '../../test/test';
 
 interface LineageGraphProps {
   /**
