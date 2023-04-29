@@ -21,6 +21,7 @@ const Header = () => {
             {metadata.navLinks.map((item) => {
               return (
                 <a
+                  key={item.href}
                   href={item.href}
                   target='_blank'
                   className='mr-5 hover:text-gray-900'
@@ -55,9 +56,9 @@ const Header = () => {
             <svg
               fill='none'
               stroke='currentColor'
-              stroke-linecap='round'
-              stroke-linejoin='round'
-              stroke-width='2'
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              strokeWidth='2'
               className='ml-1 h-4 w-4'
               viewBox='0 0 24 24'
             >
