@@ -9,7 +9,7 @@ import {
   Node,
 } from '@antv/layout/lib/layout/types';
 
-import dagre from '@antv/layout/lib/layout/dagre/index';
+import dagre from './dagre';
 
 import {
   isArray,
