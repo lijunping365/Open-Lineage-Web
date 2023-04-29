@@ -211,7 +211,7 @@ const LineageGraph = ({
       const grid = new G6.Grid();
       const container: any = ref.current;
       const width = container.scrollWidth;
-      const height = container.scrollHeight || 600;
+      const height = container.scrollHeight || 672;
       // 实例化 Graph
       graphRef.current = new G6.Graph({
         container: container || '',
