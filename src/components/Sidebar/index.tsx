@@ -9,7 +9,7 @@ import MonacoEditor from '../MonacoEditor';
 import { useState } from 'react';
 import { format } from 'sql-formatter';
 import './index.css';
-import { sql } from './sql';
+import { sql } from '../../test/sql';
 
 interface SidebarProps {
   /**
