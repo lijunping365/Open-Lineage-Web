@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Tour, TourProps } from 'antd';
+import tour1 from '/tour1.gif';
+import tour2 from '/tour2.png';
 
 const ITour = ({ ref1, ref2 }: any) => {
   const [open, setOpen] = useState<boolean>(false);
@@ -15,8 +17,8 @@ const ITour = ({ ref1, ref2 }: any) => {
       description: '编辑完SQL之后点击解析血缘按钮即可看到效果',
       cover: (
         <img
-          alt='tour.png'
-          src='/product/img1.gif'
+          alt='tour1.gif'
+          src={tour1}
         />
       ),
       target: () => ref1.current,
@@ -27,8 +29,8 @@ const ITour = ({ ref1, ref2 }: any) => {
       description: '根据你的SQL生成的血缘图将会在这里展示',
       cover: (
         <img
-          alt='tour.png'
-          src='/product/img2.png'
+          alt='tour2.png'
+          src={tour2}
         />
       ),
       target: () => ref2.current,
