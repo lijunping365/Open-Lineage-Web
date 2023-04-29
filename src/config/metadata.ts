@@ -8,25 +8,7 @@ const metadata = {
   zhihu: 'https://www.zhihu.com/people/jun-jun-1-31-24',
   bilibili: 'https://space.bilibili.com/383654866',
   theme: 'system', // system, dark or light
-  navLinks: [
-    { href: 'http://www.openbytecode.com/openJob/front', title: 'Open-Job' },
-    {
-      href: 'http://www.openbytecode.com/openCache/front',
-      title: 'Open-Cache',
-    },
-    {
-      href: 'http://www.openbytecode.com/openCrawler/front',
-      title: 'Open-Crawler',
-    },
-    {
-      href: 'http://www.openbytecode.com/openLottery/front',
-      title: 'Open-Lottery',
-    },
-    {
-      href: 'http://www.openbytecode.com/openAdmin/front',
-      title: 'Open-Admin',
-    },
-  ],
+  navLinks: [{ href: 'https://g6.antv.antgroup.com/', title: 'Antv G6' }],
 };
 
 export default metadata;

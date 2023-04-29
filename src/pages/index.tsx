@@ -31,7 +31,7 @@ const App = () => {
 
   return (
     <>
-      {/* <Header /> */}
+      <Header />
       <main>
         <div className='mx-auto bg-gray-100 py-6 sm:px-6 lg:px-8'>
           <div className='layout-container'>
@@ -56,7 +56,7 @@ const App = () => {
           </div>
         </div>
       </main>
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 };
