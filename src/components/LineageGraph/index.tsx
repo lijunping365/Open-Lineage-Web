@@ -225,7 +225,7 @@ const LineageGraph = ({
         },
         // 布局配置
         layout: {
-          type: 'lineageLayout',
+          type: 'dagre',
           rankdir: 'LR',
           align: undefined,
           controlPoints: true,
