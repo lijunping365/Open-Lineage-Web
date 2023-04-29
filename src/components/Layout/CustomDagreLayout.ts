@@ -195,6 +195,7 @@ class CustomDagreLayout extends Base {
       });
     }
 
+    self.nodeOrder = handleNodeOrder(nodes);
     dagre.layout(g, {
       prevGraph,
       edgeLabelSpace: self.edgeLabelSpace,
@@ -412,6 +413,13 @@ const getControlPoints = (
     }
   }
   return controlPoints;
+};
+
+const handleNodeOrder = (nodes: Node[]) => {
+  nodes.sort((n1: any, n2: any) => {
+    return n1.level + n1.order - (n2.level + n2.order);
+  });
+  return nodes.map((n) => n.id);
 };
 
 export default CustomDagreLayout;

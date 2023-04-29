@@ -22,7 +22,6 @@ import { Graph, Node } from '@antv/layout/lib/layout/dagre/graph';
 
 const layout = (g: Graph, opts?: any) => {
   const time = opts && opts.debugTiming ? usetime : notime;
-  debugger;
   time('layout', () => {
     // 如果在原图基础上修改，继承原图的order结果
     if (opts && !opts.keepNodeOrder && opts.prevGraph) {
