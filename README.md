@@ -505,6 +505,10 @@ attrs.forEach((e: any, i: any) => {
 
 欢迎大家提交 issues 和 pr，欢迎 star，本项目将会持续更新，感谢大家的支持
 
+## 交流群
+
+![](docs/qun.png)
+
 ## License
 
 [MIT](LICENSE)
