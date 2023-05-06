@@ -12,6 +12,8 @@ const fontOffsetY = itemHeight / 2 + fontSize / 2;
 const lineWidth = 6;
 // 最外层层级大小
 export const maxLevel = 1000;
+// 节点宽度
+export const width = 400;
 
 const colorMap: any = {
   '0': { fill: '#F49722' },
@@ -24,8 +26,6 @@ const handleLabelLength = (label: string) => {
 
 G6.registerNode('dice-er-box', {
   draw: function draw(cfg: any, group: any) {
-    // 节点容器size
-    const width = 400;
     const style = cfg.style;
     // 边框、底色控制
     const boxStyle = cfg.boxStyle;
