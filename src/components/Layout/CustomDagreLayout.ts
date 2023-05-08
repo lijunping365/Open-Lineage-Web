@@ -8,7 +8,7 @@ import {
   Point,
   Node,
 } from '@antv/layout/lib/layout/types';
-import { maxLevel, width } from '../LineageGraph/registerShape'
+import { maxLevel, width } from '../LineageGraph/registerShape';
 
 /**
  * 默认从左到右（maxLayer--->minLayer)
