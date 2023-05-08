@@ -13,7 +13,7 @@ const lineWidth = 6;
 // 最外层层级大小
 export const maxLevel = -1;
 // 节点宽度
-export const width = 400;
+export const nodeWidth = 400;
 
 const colorMap: any = {
   '0': { fill: '#F49722' },
@@ -43,7 +43,7 @@ G6.registerNode('dice-er-box', {
       attrs: {
         fill: fillColor,
         height: itemHeight,
-        width,
+        width: nodeWidth,
         radius: radius,
       },
       draggable: true,
@@ -68,7 +68,7 @@ G6.registerNode('dice-er-box', {
       attrs: {
         x: 0,
         y: 0,
-        width,
+        width: nodeWidth,
         height: height,
         stroke: fillColor,
         lineWidth: lineWidth,
@@ -89,7 +89,7 @@ G6.registerNode('dice-er-box', {
             x: 0,
             y: i * itemHeight + itemHeight,
             fill: '#ffffff',
-            width: width,
+            width: nodeWidth,
             height: itemHeight,
             cursor: 'pointer',
           },

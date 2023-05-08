@@ -1,7 +1,7 @@
 import {
   itemHeight,
   maxLevel,
-  width,
+  nodeWidth,
 } from '../components/LineageGraph/registerShape';
 import { LineageData, LineageItem } from '../types';
 
@@ -156,7 +156,7 @@ const createNode = (nodes: any[], tableFields: Set<any>) => {
       level: level,
       order: order,
       attrs: attrs,
-      size: [width, height],
+      size: [nodeWidth, height],
     };
     nodes.push(obj);
   });
@@ -237,7 +237,7 @@ const createCollapsedNode = (nodes: any[], tableFields: Set<any>) => {
       level: level,
       order: order,
       attrs: [],
-      size: [width, itemHeight],
+      size: [nodeWidth, itemHeight],
     };
     nodes.push(obj);
   });

@@ -282,14 +282,11 @@ const LineageGraph = ({
         },
         // 布局配置
         layout: {
-          type: 'dagre',
-          rankdir: 'LR',
-          align: undefined,
+          type: 'lineageLayout',
           controlPoints: true,
           nodesep: 100,
           ranksep: 200,
-          // nodesepFunc: () => 0.2,
-          // ranksepFunc: () => 0.5,
+          begin: [1000, 1000],
         },
         defaultNode: {
           // size: [300, 800],

@@ -1,14 +1,7 @@
 import { Base } from '@antv/layout/lib/layout/base';
 
-import {
-  Edge,
-  OutNode,
-  DagreLayoutOptions,
-  PointTuple,
-  Point,
-  Node,
-} from '@antv/layout/lib/layout/types';
-import { maxLevel, width } from '../LineageGraph/registerShape';
+import { DagreLayoutOptions, Node } from '@antv/layout/lib/layout/types';
+import { maxLevel, nodeWidth } from '../LineageGraph/registerShape';
 
 /**
  * 默认从左到右（maxLayer--->minLayer)
@@ -16,22 +9,13 @@ import { maxLevel, width } from '../LineageGraph/registerShape';
  */
 class CustomDagreLayout extends Base {
   /** 布局的起始（左上角）位置 */
-  public begin: PointTuple | undefined;
+  public begin: number[] = [0, 0];
 
   /** 节点水平间距(px) */
   public nodesep: number = 50;
 
   /** 每一层节点之间间距 */
   public ranksep: number = 50;
-
-  /** 每层数据 */
-  private layerMap: Map<number, Node[]> = new Map();
-
-  /** 图的最大宽度 */
-  private maxWidth: number = 0;
-
-  /** 图的最大高度 */
-  private maxHeight: number = 0;
 
   constructor(options?: DagreLayoutOptions) {
     super();
@@ -42,6 +26,7 @@ class CustomDagreLayout extends Base {
     return {
       nodesep: 50, // 节点水平间距(px)
       ranksep: 50, // 每一层节点之间间距
+      begin: [0, 0], // 布局的起点位置
     };
   }
 
@@ -52,30 +37,48 @@ class CustomDagreLayout extends Base {
     const self = this;
     const { nodes, edges, ranksep, nodesep, begin } = self;
     if (!nodes) return;
+    const layerMap: Map<number, Node[]> = new Map();
     nodes.forEach((item: any, index, arr) => {
-      if (!self.layerMap.has(item.level)) {
-        self.layerMap.set(
+      if (!layerMap.has(item.level)) {
+        layerMap.set(
           item.level,
           arr.filter((node: any) => node.level === item.level)
         );
       }
     });
 
-    // key = maxLevel => self.layerMap.size -1
-    const layers = self.layerMap.size;
-    self.maxWidth = layers * width + (layers - 1) * ranksep;
+    // TODO 重新调整层级
+    const startX = begin[0];
+    const startY = begin[1];
+    const size = layerMap.size;
+    const maxWidth = size * nodeWidth + (size - 1) * ranksep;
+    const hr = Array.from(layerMap.values()).map((list: any[]) => {
+      const sum = list.reduce((pre: any, curr: any) => {
+        return pre + curr.size[1];
+      }, 0);
+      return sum + (list.length - 1) * nodesep;
+    });
+    const maxHeight = Math.max(...hr);
+    const offsetX = startX + maxWidth;
+    const offsetY = startY + maxHeight;
 
-    self.layerMap.forEach((value, key) => {
-      value.forEach((e: any, index) => {
+    layerMap.forEach((value, key) => {
+      let d = 0;
+      if (key === maxLevel) {
+        d = size - 1;
+      } else {
+        d = key;
+      }
+      const x = offsetX - d * (nodeWidth + ranksep);
+      const y = offsetY - maxHeight / 2 + hr[d] / 2;
+      const sortNodes = value.sort((x: any, y: any) => y.order - x.order);
+      let preY = y;
+      sortNodes.forEach((e: any, index) => {
         const { size } = e;
-        if (key === maxLevel) {
-          const d = self.layerMap.size - 1;
-          e.x = self.maxWidth - d * (width + ranksep);
-          e.y = 0;
-        } else {
-          e.x = self.maxWidth - key * (width + ranksep);
-          e.y = 0;
-        }
+        const margin = index === 0 ? 0 : nodesep;
+        preY = preY - size[1] - margin;
+        e.x = x;
+        e.y = preY;
       });
     });
     if (self.onLayoutEnd) self.onLayoutEnd();
