@@ -498,8 +498,89 @@ attrs.forEach((e: any, i: any) => {
 
 最后通过在 AntV 官方交流群交流之后确定，这应该是我们数据的问题，这里再次感谢他们的解答，也就是说应该是接口返回的数据中同一层级有多个相同的 index 导致
 
-一些表局部有重叠和间距不一致现象。所以后面尝试了下自定义布局，针对目前的数据探索解决方案，目前自定义布局还在开发中
+一些表局部有重叠和间距不一致现象。所以后面尝试了下自定义布局，针对目前的数据探索解决方案，目前自定义布局已完成
 
+先看下效果图：
+
+![](docs/img3.png)
+
+特点：
+
+1. 层次布局
+
+2. 整体居中对齐，以中线上下等距
+
+3. 节点之间没有重叠
+
+4. 节点之间距离相等
+
+5. 层次之间距离相等
+
+## 自定义布局
+
+未居中对齐时：
+
+![](docs/img4.png)
+
+居中对齐后：
+
+![](docs/img5.png)
+
+主要代码：
+
+```typescript
+/**
+   * 执行布局
+   */
+public execute() {
+  const self = this;
+  const { nodes, edges, ranksep, nodesep, begin } = self;
+  if (!nodes) return;
+  const layerMap: Map<number, Node[]> = new Map();
+  nodes.forEach((item: any, index, arr) => {
+    if (!layerMap.has(item.level)) {
+      layerMap.set(
+        item.level,
+        arr.filter((node: any) => node.level === item.level)
+      );
+    }
+  });
+
+  // TODO 重新调整层级
+  const startX = begin[0];
+  const startY = begin[1];
+  const size = layerMap.size;
+  const maxWidth = size * nodeWidth + (size - 1) * ranksep;
+  const hr = Array.from(layerMap.values()).map((list: any[]) => {
+    const sum = list.reduce((pre: any, curr: any) => {
+      return pre + curr.size[1];
+    }, 0);
+    return sum + (list.length - 1) * nodesep;
+  });
+  const maxHeight = Math.max(...hr);
+  const offsetX = startX + maxWidth;
+  const offsetY = startY + maxHeight;
+  const centerLine = offsetY - maxHeight / 2;
+
+  layerMap.forEach((value, key) => {
+    let d = key === maxLevel ? size - 1 : key;
+    const x = offsetX - d * (nodeWidth + ranksep);
+    const y = centerLine + hr[d] / 2;
+    const sortNodes = value.sort((x: any, y: any) => y.order - x.order);
+    let preY = y;
+    sortNodes.forEach((e: any, index) => {
+      const { size } = e;
+      const margin = index === 0 ? 0 : nodesep;
+      preY = preY - size[1] - margin;
+      e.x = x;
+      e.y = preY;
+    });
+  });
+  if (self.onLayoutEnd) self.onLayoutEnd();
+}
+```
+
+完整代码路径：/src/components/Layout/
 
 ## 🎉 贡献指南
 
