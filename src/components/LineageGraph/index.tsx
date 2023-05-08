@@ -284,8 +284,8 @@ const LineageGraph = ({
         layout: {
           type: 'lineageLayout',
           controlPoints: true,
-          nodesep: 100,
-          ranksep: 200,
+          nodesep: 200,
+          ranksep: 600,
           begin: [1000, 1000],
         },
         defaultNode: {
