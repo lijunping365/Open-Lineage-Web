@@ -11,13 +11,13 @@ const fontOffsetY = itemHeight / 2 + fontSize / 2;
 // 边框线框
 const lineWidth = 6;
 // 最外层层级大小
-export const maxLevel = 1000;
+export const maxLevel = -1;
 // 节点宽度
 export const width = 400;
 
 const colorMap: any = {
   '0': { fill: '#F49722' },
-  '1000': { fill: '#50E3C2' },
+  '-1': { fill: '#50E3C2' },
 };
 
 const handleLabelLength = (label: string) => {

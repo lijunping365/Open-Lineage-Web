@@ -8,7 +8,7 @@ import {
   Point,
   Node,
 } from '@antv/layout/lib/layout/types';
-import { width } from '../LineageGraph/registerShape';
+import { maxLevel, width } from '../LineageGraph/registerShape'
 
 /**
  * 默认从左到右（maxLayer--->minLayer)
@@ -61,14 +61,21 @@ class CustomDagreLayout extends Base {
       }
     });
 
+    // key = maxLevel => self.layerMap.size -1
     const layers = self.layerMap.size;
     self.maxWidth = layers * width + (layers - 1) * ranksep;
 
     self.layerMap.forEach((value, key) => {
       value.forEach((e: any, index) => {
         const { size } = e;
-        e.x = 0;
-        e.y = 0;
+        if (key === maxLevel) {
+          const d = self.layerMap.size - 1;
+          e.x = self.maxWidth - d * (width + ranksep);
+          e.y = 0;
+        } else {
+          e.x = self.maxWidth - key * (width + ranksep);
+          e.y = 0;
+        }
       });
     });
     if (self.onLayoutEnd) self.onLayoutEnd();
