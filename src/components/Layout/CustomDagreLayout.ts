@@ -64,12 +64,7 @@ class CustomDagreLayout extends Base {
     const centerLine = offsetY - maxHeight / 2;
 
     layerMap.forEach((value, key) => {
-      let d = 0;
-      if (key === maxLevel) {
-        d = size - 1;
-      } else {
-        d = key;
-      }
+      let d = key === maxLevel ? size - 1 : key;
       const x = offsetX - d * (nodeWidth + ranksep);
       const y = centerLine + hr[d] / 2;
       const sortNodes = value.sort((x: any, y: any) => y.order - x.order);
