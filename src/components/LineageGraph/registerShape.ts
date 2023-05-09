@@ -60,6 +60,7 @@ G6.registerNode('dice-er-box', {
         fontSize: fontSize,
         fontWeight: 500,
       },
+      draggable: true,
       name: cfg.label,
     });
 
@@ -109,6 +110,7 @@ G6.registerNode('dice-er-box', {
             cursor: 'pointer',
           },
           name: key,
+          draggable: true,
         });
       });
     }
