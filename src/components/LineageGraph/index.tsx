@@ -176,6 +176,54 @@ const LineageGraph = ({
     );
   };
 
+  /**
+   * 处理连线点击事件
+   */
+  const handleEdgeClick = (graph: any, item: any, name: string) => {
+    const sourceNode = item.getSource();
+    const sourceModel = sourceNode.getModel();
+    const sourceEdges = sourceNode.getInEdges();
+
+    // 获取当前连线的 source 节点
+    const sourceAnchor = item.getModel()['sourceAnchor'];
+
+    const leftActiveEdges: any[] = [];
+    leftActiveEdges.push(item);
+
+    getLeftRelation(sourceEdges, sourceModel, sourceAnchor, leftActiveEdges);
+
+    const targetNode = item.getTarget();
+    const targetModel = targetNode.getModel();
+    const targetEdges = targetNode.getOutEdges();
+
+    // 获取当前连线的 target 节点
+    const targetAnchor = item.getModel()['targetAnchor'];
+
+    const rightActiveEdges: any[] = [];
+    rightActiveEdges.push(item);
+
+    getRightRelation(targetEdges, targetModel, targetAnchor, rightActiveEdges);
+
+    // 清除状态
+    clearAllStats(graph);
+
+    // 设置左关联边及节点状态
+    setLeftStats(
+      graph,
+      leftActiveEdges,
+      currentHighlightColorRef.current,
+      name
+    );
+
+    // 设置右关联边及节点状态
+    setRightStats(
+      graph,
+      rightActiveEdges,
+      currentHighlightColorRef.current,
+      name
+    );
+  };
+
   const bindEvents = (graph: any) => {
     // 监听节点点击事件
     graph.off('node:click').on('node:click', (evt: any) => {
@@ -187,6 +235,16 @@ const LineageGraph = ({
         handleNodeClick(graph, item, currentAnchor, 'highlight');
       } else {
         handleNodeClick(graph, item, currentAnchor, 'tableHighlight');
+      }
+    });
+
+    // 监听连线点击事件
+    graph.off('edge:click').on('edge:click', (evt: any) => {
+      const { item } = evt;
+      if (fieldCheckedRef.current) {
+        handleEdgeClick(graph, item, 'highlight');
+      } else {
+        handleEdgeClick(graph, item, 'tableHighlight');
       }
     });
 
@@ -224,14 +282,11 @@ const LineageGraph = ({
         },
         // 布局配置
         layout: {
-          type: 'dagre',
-          rankdir: 'LR',
-          align: undefined,
+          type: 'lineageLayout',
           controlPoints: true,
-          nodesep: 100,
-          ranksep: 200,
-          // nodesepFunc: () => 0.2,
-          // ranksepFunc: () => 0.5,
+          nodesep: 200,
+          ranksep: 600,
+          begin: [1000, 1000],
         },
         defaultNode: {
           // size: [300, 800],

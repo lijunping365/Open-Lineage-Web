@@ -1,4 +1,8 @@
-import { itemHeight, maxLevel } from '../components/LineageGraph/registerShape';
+import {
+  itemHeight,
+  maxLevel,
+  nodeWidth,
+} from '../components/LineageGraph/registerShape';
 import { LineageData, LineageItem } from '../types';
 
 // 自定义数据转换
@@ -98,8 +102,8 @@ const getTableFieldName = (item: string) => {
 /**
  * 获取表层级及order
  */
-const getTableLevelAndOrder = (max: number, tableField: string) => {
-  let level = max;
+const getTableLevelAndOrder = (tableField: string) => {
+  let level = maxLevel;
   let order = 0;
   const endIndex = tableField.lastIndexOf('-');
   if (endIndex !== -1) {
@@ -141,7 +145,7 @@ const createNode = (nodes: any[], tableFields: Set<any>) => {
       });
     });
 
-    const { level, order } = getTableLevelAndOrder(maxLevel, key);
+    const { level, order } = getTableLevelAndOrder(key);
     const height = itemHeight * (attrs.length + 1);
     const obj: any = {
       id: key,
@@ -152,7 +156,7 @@ const createNode = (nodes: any[], tableFields: Set<any>) => {
       level: level,
       order: order,
       attrs: attrs,
-      size: [400, height],
+      size: [nodeWidth, height],
     };
     nodes.push(obj);
   });
@@ -223,7 +227,7 @@ const createCollapsedNode = (nodes: any[], tableFields: Set<any>) => {
   });
 
   tables.forEach((key: string, value: any) => {
-    const { level, order } = getTableLevelAndOrder(maxLevel, key);
+    const { level, order } = getTableLevelAndOrder(key);
     const obj: any = {
       id: key,
       key: key,
@@ -233,7 +237,7 @@ const createCollapsedNode = (nodes: any[], tableFields: Set<any>) => {
       level: level,
       order: order,
       attrs: [],
-      size: [400, itemHeight],
+      size: [nodeWidth, itemHeight],
     };
     nodes.push(obj);
   });

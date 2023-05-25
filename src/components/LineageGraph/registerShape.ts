@@ -11,11 +11,13 @@ const fontOffsetY = itemHeight / 2 + fontSize / 2;
 // 边框线框
 const lineWidth = 6;
 // 最外层层级大小
-export const maxLevel = 1000;
+export const maxLevel = -1;
+// 节点宽度
+export const nodeWidth = 400;
 
 const colorMap: any = {
   '0': { fill: '#F49722' },
-  '1000': { fill: '#50E3C2' },
+  '-1': { fill: '#50E3C2' },
 };
 
 const handleLabelLength = (label: string) => {
@@ -24,8 +26,6 @@ const handleLabelLength = (label: string) => {
 
 G6.registerNode('dice-er-box', {
   draw: function draw(cfg: any, group: any) {
-    // 节点容器size
-    const width = 400;
     const style = cfg.style;
     // 边框、底色控制
     const boxStyle = cfg.boxStyle;
@@ -43,7 +43,7 @@ G6.registerNode('dice-er-box', {
       attrs: {
         fill: fillColor,
         height: itemHeight,
-        width,
+        width: nodeWidth,
         radius: radius,
       },
       draggable: true,
@@ -60,6 +60,7 @@ G6.registerNode('dice-er-box', {
         fontSize: fontSize,
         fontWeight: 500,
       },
+      draggable: true,
       name: cfg.label,
     });
 
@@ -68,7 +69,7 @@ G6.registerNode('dice-er-box', {
       attrs: {
         x: 0,
         y: 0,
-        width,
+        width: nodeWidth,
         height: height,
         stroke: fillColor,
         lineWidth: lineWidth,
@@ -89,7 +90,7 @@ G6.registerNode('dice-er-box', {
             x: 0,
             y: i * itemHeight + itemHeight,
             fill: '#ffffff',
-            width: width,
+            width: nodeWidth,
             height: itemHeight,
             cursor: 'pointer',
           },
@@ -109,6 +110,7 @@ G6.registerNode('dice-er-box', {
             cursor: 'pointer',
           },
           name: key,
+          draggable: true,
         });
       });
     }

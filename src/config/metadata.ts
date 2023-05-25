@@ -8,7 +8,7 @@ const metadata = {
   zhihu: 'https://www.zhihu.com/people/jun-jun-1-31-24',
   bilibili: 'https://space.bilibili.com/383654866',
   theme: 'system', // system, dark or light
-  navLinks: [{ href: 'https://g6.antv.antgroup.com/', title: 'AntV G6' }],
+  navLinks: [{ href: 'https://openbytecode.com/', title: 'OpenByteCode' }],
 };
 
 export default metadata;
