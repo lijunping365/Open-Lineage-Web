@@ -1,7 +1,80 @@
 import logo from '/logo.svg';
 import metadata from '../../config/metadata';
+import { Button, Form, Input, Popover, Select } from 'antd';
+import {
+  FileDoneOutlined,
+  RocketOutlined,
+  SettingOutlined,
+} from '@ant-design/icons';
+import React, { useState } from 'react';
+import { sql } from '../../test/sql';
+import { format } from 'sql-formatter';
+import ColorPicker from '../ColorPicker';
+import clsx from 'classnames';
+import { IconFullScreen } from '../Icon/IconFullScreen';
+import { IconExitScreen } from '../Icon/IconExitScreen';
 
-const Header = () => {
+interface HeaderProps {
+  /**
+   * 编辑器主题色
+   */
+  theme: string;
+  /**
+   * 布局方式
+   */
+  layout: string;
+  /**
+   * 水印文字
+   */
+  textWaterMarker: string;
+  /**
+   * 高亮颜色
+   */
+  highlightColor: string;
+  /**
+   * 设置编辑器主题色
+   */
+  setTheme: (value: string) => void;
+  /**
+   * 设置布局方式
+   */
+  setLayout: (value: string) => void;
+  /**
+   * 设置水印文字
+   */
+  setTextWaterMarker: (text: string) => void;
+  /**
+   * 设置线条高亮色
+   */
+  setHighlightColor: (color: string) => void;
+  /**
+   * 解析 sql
+   */
+  handleParseSql: () => void;
+}
+
+const Header = ({
+  theme,
+  layout,
+  setLayout,
+  setTheme,
+  textWaterMarker,
+  highlightColor,
+  setTextWaterMarker,
+  setHighlightColor,
+  handleParseSql,
+}: HeaderProps) => {
+  const [open, setOpen] = useState(false);
+
+  const [code, setCode] = useState(sql());
+  const handleFormatSql = () => {
+    code && setCode(format(code));
+  };
+
+  const handleChange = (value: string) => {
+    console.log(`selected ${value}`);
+  };
+
   return (
     <>
       <header className='body-font text-gray-600'>
@@ -11,60 +84,114 @@ const Header = () => {
             href={metadata.website}
             target='_blank'
           >
-            <img
-              src={logo}
-              className='h-10'
+            {/*<img*/}
+            {/*  src={logo}*/}
+            {/*  className='h-10'*/}
+            {/*/>*/}
+            <span className='ml-3 text-xl'>Lineage-Project</span>
+          </a>
+          <nav className='flex flex-wrap items-center justify-center space-x-2 text-base md:ml-4	md:mr-auto md:border-l md:border-gray-400 md:py-1 md:pl-4'>
+            <Select
+              defaultValue='Hive'
+              style={{ width: 100 }}
+              onChange={handleChange}
+              options={[
+                { value: 'hive', label: 'Hive' },
+                { value: 'mysql', label: 'Mysql' },
+              ]}
             />
-            <span className='ml-3 text-xl'>Open-Lineage</span>
-          </a>
-          <nav className='flex flex-wrap items-center justify-center text-base md:ml-4	md:mr-auto md:border-l md:border-gray-400 md:py-1 md:pl-4'>
-            {metadata.navLinks.map((item) => {
-              return (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  target='_blank'
-                  className='mr-5 hover:text-gray-900'
-                >
-                  {item.title}
-                </a>
-              );
-            })}
+            <Button
+              type='primary'
+              icon={<RocketOutlined />}
+              className='bg-[#1677ff]'
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              onClick={() => handleParseSql()}
+            >
+              解析血缘
+            </Button>
+            <Button
+              type='primary'
+              icon={<FileDoneOutlined />}
+              className='bg-[#1677ff]'
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              onClick={handleFormatSql}
+            >
+              美化SQL
+            </Button>
           </nav>
-          <a
-            href={metadata.github}
-            target='_blank'
-            rel='noopener'
-            aria-label='OpenByteCode on Github'
-            className='hover:text-primary dark:text-primary-dark mr-3'
-          >
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              width='1.6em'
-              height='1.6em'
-              viewBox='0 -2 24 24'
-              fill='currentColor'
+          <Setting
+            textWaterMarker={textWaterMarker}
+            highlightColor={highlightColor}
+            changeTheme={(theme) => setTheme(theme)}
+            close={() => setOpen(!open)}
+            setTextWaterMarker={(marker) => setTextWaterMarker(marker)}
+            setHighlightColor={(color) => setHighlightColor(color)}
+          />
+          <div className='dark:shadow-highlight/4 ml-2 hidden items-center rounded-md shadow-sm ring-1 ring-gray-900/5 dark:bg-gray-800 dark:ring-0 lg:flex'>
+            <HeaderButton
+              isActive={layout === 'vertical'}
+              label='Switch to vertical split layout'
+              onClick={() => setLayout('vertical')}
             >
-              <path d='M10 0a10 10 0 0 0-3.16 19.49c.5.1.68-.22.68-.48l-.01-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.1.39-1.99 1.03-2.69a3.6 3.6 0 0 1 .1-2.64s.84-.27 2.75 1.02a9.58 9.58 0 0 1 5 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.37.2 2.4.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85l-.01 2.75c0 .26.18.58.69.48A10 10 0 0 0 10 0'></path>
-            </svg>
-          </a>
-          <a
-            href={metadata.website}
-            className='mt-4 inline-flex items-center rounded border-0 bg-gray-100 px-3 py-1 text-base hover:bg-gray-200 focus:outline-none md:mt-0'
-          >
-            官网
-            <svg
-              fill='none'
-              stroke='currentColor'
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              strokeWidth='2'
-              className='ml-1 h-4 w-4'
-              viewBox='0 0 24 24'
+              <path
+                d='M12 3h9a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-9'
+                fill='none'
+              />
+              <path d='M3 17V5a2 2 0 0 1 2-2h7a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a2 2 0 0 1-2-2Z' />
+            </HeaderButton>
+            <HeaderButton
+              isActive={layout === 'editor'}
+              label='Switch to preview-only layout'
+              onClick={() => setLayout('editor')}
             >
-              <path d='M5 12h14M12 5l7 7-7 7'></path>
-            </svg>
-          </a>
+              <path
+                fill='none'
+                d='M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z'
+              />
+            </HeaderButton>
+            <HeaderButton
+              isActive={layout === 'preview'}
+              label='Switch to preview-only layout'
+              onClick={() => setLayout('preview')}
+            >
+              <path
+                d='M23 17V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2Z'
+                fill='none'
+              />
+            </HeaderButton>
+          </div>
+
+          <div className='ml-2 block dark:hidden'>
+            <button
+              type='button'
+              aria-label='Enter Full Screen Mode'
+              onClick={() => {}}
+              style={{ width: '36px', height: '36px' }}
+              className='hidden h-full items-center justify-center rounded-md border border-solid dark:bg-gray-800 lg:flex'
+            >
+              <IconFullScreen />
+            </button>
+          </div>
+
+          <div className='ml-2 hidden dark:block'>
+            <button
+              type='button'
+              aria-label='Exit Full Screen Mode'
+              onClick={() => {}}
+              style={{ width: '36px', height: '36px' }}
+              className='hidden h-full items-center justify-center rounded-md border border-solid dark:border-none dark:bg-gray-800 lg:flex'
+            >
+              <IconExitScreen />
+            </button>
+          </div>
         </div>
       </header>
     </>
@@ -72,3 +199,218 @@ const Header = () => {
 };
 
 export default Header;
+
+interface SettingProps {
+  /**
+   * 水印文字
+   */
+  textWaterMarker: string;
+  /**
+   * 高亮颜色
+   */
+  highlightColor: string;
+  /**
+   * 修改主题色
+   */
+  changeTheme: (theme: string) => void;
+  /**
+   * 设置文字水印
+   */
+  setTextWaterMarker: (waterMarker: string) => void;
+  /**
+   * 设置线条高亮色
+   */
+  setHighlightColor: (color: string) => void;
+  /**
+   * 关闭设置框
+   */
+  close: () => void;
+}
+const Setting = ({
+  textWaterMarker,
+  highlightColor,
+  changeTheme,
+  setTextWaterMarker,
+  setHighlightColor,
+  close,
+}: SettingProps) => {
+  const [open, setOpen] = useState(false);
+  const handleChange = (value: string) => {
+    console.log(`selected ${value}`);
+    changeTheme(value);
+  };
+
+  const handleInputChange = (e: any) => {
+    const { value: inputValue } = e.target;
+    setTextWaterMarker(inputValue);
+  };
+
+  const handlePickerChange = (value: any) => {
+    setHighlightColor(value);
+  };
+
+  const onFinish = (values: any) => {
+    console.log('Success:', values);
+  };
+
+  return (
+    <Popover
+      title='设置'
+      placement='rightTop'
+      trigger='click'
+      open={open}
+      onOpenChange={() => setOpen(!open)}
+      content={
+        <Form
+          name='basic'
+          labelCol={{ span: 12 }}
+          wrapperCol={{ span: 12 }}
+          style={{ width: 240 }}
+          initialValues={{
+            codeTheme: 'vs-light',
+            waterMaker: textWaterMarker,
+            highlight: highlightColor,
+          }}
+          onFinish={onFinish}
+          autoComplete='off'
+        >
+          <Form.Item
+            label='设置代码主题颜色'
+            name='codeTheme'
+          >
+            <Select
+              style={{ width: 120 }}
+              onChange={handleChange}
+              options={[
+                { value: 'vs-light', label: 'light' },
+                { value: 'vs-dark', label: 'dark' },
+              ]}
+            />
+          </Form.Item>
+
+          <Form.Item
+            label='支持设置水印文字：'
+            name='waterMaker'
+          >
+            <Input onChange={handleInputChange} />
+          </Form.Item>
+
+          <Form.Item
+            label='选择线条高亮颜色'
+            name='highlight'
+          >
+            <ColorPicker
+              defaultColor={highlightColor}
+              onChange={(value: string) => handlePickerChange(value)}
+            />
+          </Form.Item>
+
+          <Form.Item wrapperCol={{ span: 16 }}>
+            <Button
+              type='primary'
+              htmlType='submit'
+              onClick={close}
+            >
+              确定
+            </Button>
+
+            <Button
+              htmlType='button'
+              onClick={close}
+            >
+              取消
+            </Button>
+          </Form.Item>
+        </Form>
+      }
+    >
+      <button
+        className={clsx(
+          'dark:shadow-highlight/4 block shadow-sm ring-1 ring-gray-900/5 hover:bg-gray-50 dark:bg-gray-800 dark:ring-0 dark:hover:bg-gray-700',
+          'group rounded-md focus:outline-none focus-visible:ring-2',
+
+          open
+            ? 'focus-visible:ring-sky-500 dark:focus-visible:ring-sky-400'
+            : 'focus-visible:ring-gray-400/70 dark:focus-visible:ring-gray-500'
+        )}
+      >
+        <span className='sr-only'>设置</span>
+        <svg
+          width={36}
+          height={36}
+          viewBox='-6 -6 36 36'
+          strokeWidth='2'
+          strokeLinecap='round'
+          strokeLinejoin='round'
+          className={
+            open
+              ? 'fill-sky-100 stroke-sky-500 dark:fill-sky-400/50 dark:stroke-sky-400'
+              : 'fill-gray-100 stroke-gray-400/70 hover:fill-gray-200 hover:stroke-gray-400 dark:fill-gray-400/20 dark:stroke-gray-500 dark:hover:fill-gray-400/30 dark:hover:stroke-gray-400'
+          }
+        >
+          <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            strokeWidth={2}
+            d='M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z'
+          />
+          <path
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            strokeWidth={2}
+            d='M15 12a3 3 0 11-6 0 3 3 0 016 0z'
+          />
+        </svg>
+      </button>
+    </Popover>
+  );
+};
+
+export function HeaderButton({
+  isActive = false,
+  label,
+  onClick,
+  width = 42,
+  height = 36,
+  naturalWidth = 26,
+  naturalHeight = 22,
+  className,
+  children,
+  iconClassName,
+  ringClassName,
+}: any) {
+  return (
+    <button
+      type='button'
+      className={clsx(
+        className,
+        'group rounded-md focus:outline-none focus-visible:ring-2',
+        ringClassName ||
+          (isActive
+            ? 'focus-visible:ring-sky-500 dark:focus-visible:ring-sky-400'
+            : 'focus-visible:ring-gray-400/70 dark:focus-visible:ring-gray-500')
+      )}
+      onClick={onClick}
+    >
+      <span className='sr-only'>{label}</span>
+      <svg
+        width={width}
+        height={height}
+        viewBox={`${(width - naturalWidth) / -2} ${
+          (height - naturalHeight) / -2
+        } ${width} ${height}`}
+        strokeWidth='2'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        className={
+          iconClassName ||
+          (isActive
+            ? 'fill-sky-100 stroke-sky-500 dark:fill-sky-400/50 dark:stroke-sky-400'
+            : 'fill-gray-100 stroke-gray-400/70 hover:fill-gray-200 hover:stroke-gray-400 dark:fill-gray-400/20 dark:stroke-gray-500 dark:hover:fill-gray-400/30 dark:hover:stroke-gray-400')
+        }
+      >
+        {children}
+      </svg>
+    </button>
+  );
+}
