@@ -95,10 +95,10 @@ const App = () => {
         setHighlightColor={setHighlightColor}
         handleParseSql={handleParseSql}
       />
-      <main className='border-border dark:border-border-dark flex-auto overflow-hidden border-t'>
+      <main className='flex-auto overflow-hidden border-t border-gray-200'>
         <SplitPane {...splitPaneProps}>
           <div
-            className='flex flex-auto border-t border-gray-200 dark:border-white/10'
+            className='flex flex-auto'
             ref={ref1}
           >
             {(layout === 'editor' || layout === 'vertical') && (
@@ -113,7 +113,7 @@ const App = () => {
             )}
           </div>
           <div
-            className='bg-wash dark:bg-wash-dark absolute inset-0 w-full overflow-auto border-t border-gray-200 p-6 dark:border-white/10 md:h-full lg:top-0 lg:border-0'
+            className='absolute inset-0 w-full overflow-auto md:h-full'
             ref={ref2}
           >
             <Spin spinning={loading}>
