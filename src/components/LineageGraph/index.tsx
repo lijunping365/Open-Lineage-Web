@@ -255,6 +255,12 @@ const LineageGraph = ({
     });
   };
 
+  // 更改canvas宽高
+  const handleWidGei = (width: any, height: any) => {
+    // graphRef.current.changeSize(width, height);
+    // graphRef.current.fitView();
+  };
+
   useEffect(() => {
     if (!graphRef.current) {
       // 实例化 Minimap
@@ -268,7 +274,7 @@ const LineageGraph = ({
       //网格画布
       const grid = new G6.Grid();
       const container: any = ref.current;
-      const width = container.scrollWidth;
+      const width = container.scrollWidth - 340;
       const height = container.scrollHeight || 672;
       // 实例化 Graph
       graphRef.current = new G6.Graph({
@@ -328,7 +334,10 @@ const LineageGraph = ({
 
   return (
     <div>
-      <div ref={ref}>
+      <div
+        ref={ref}
+        className='canvas-wrapper'
+      >
         <div className='g6-component-topbar'>
           <Topbar
             ref={topBarRef}
@@ -341,6 +350,8 @@ const LineageGraph = ({
           className='g6-component-toolbar'
         >
           <Toolbar
+            canvasRef={ref}
+            handleWidGei={handleWidGei}
             handleZoomOut={() => handleZoomOut(graphRef.current)}
             handleZoomIn={() => handleZoomIn(graphRef.current)}
             handleRealZoom={() => handleRealZoom(graphRef.current)}

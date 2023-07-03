@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './index.css';
 import {
   BorderOuterOutlined,
@@ -7,6 +7,8 @@ import {
   ZoomInOutlined,
   ZoomOutOutlined,
   FileImageOutlined,
+  FullscreenOutlined,
+  FullscreenExitOutlined,
 } from '@ant-design/icons';
 import { Button, Tooltip } from 'antd';
 
@@ -43,6 +45,7 @@ export interface ToolBarProps {
 }
 
 const Toolbar: React.FC<ToolBarProps> = (props: any) => {
+  const [isFull, setIsFull] = useState(true); // 判断显示全屏，退出全屏
   const {
     handleZoomOut,
     handleZoomIn,
@@ -50,9 +53,30 @@ const Toolbar: React.FC<ToolBarProps> = (props: any) => {
     handleAutoZoom,
     handleRefreshLayout,
     handleDownloadImage,
+    handleWidGei,
+    canvasRef,
   } = props;
 
   const options = [
+    isFull
+      ? {
+          key: 'fullscreenOutlined',
+          name: <FullscreenOutlined />,
+          description: '全屏查看',
+          action: () => {
+            setIsFull(!isFull);
+            enterFullscreen();
+          },
+        }
+      : {
+          key: 'fullscreenExitOutlined',
+          name: <FullscreenExitOutlined />,
+          description: '退出全屏',
+          action: () => {
+            setIsFull(!isFull);
+            exitFullscreen();
+          },
+        },
     {
       key: 'zoomOut',
       name: <ZoomInOutlined />,
@@ -102,6 +126,74 @@ const Toolbar: React.FC<ToolBarProps> = (props: any) => {
       },
     },
   ];
+
+  useEffect(() => {
+    // 监听退出全屏事件 --- chrome 用 esc 退出全屏并不会触发 keyup 事件
+    document.addEventListener('webkitfullscreenchange', checkFull);
+    document.addEventListener('mozfullscreenchange', checkFull);
+    document.addEventListener('fullscreenchange', checkFull);
+    document.addEventListener('MSFullscreenChange', checkFull);
+
+    return () => {
+      // 移除按键监听器
+      document.removeEventListener('webkitfullscreenchange', checkFull);
+      document.removeEventListener('mozfullscreenchange', checkFull);
+      document.removeEventListener('fullscreenchange', checkFull);
+      document.removeEventListener('MSFullscreenChange', checkFull);
+    };
+  }, []);
+
+  const checkFull = () => {
+    if (
+      !document?.webkitIsFullScreen &&
+      !document?.mozFullScreen &&
+      !document?.msFullscreenElement
+    ) {
+      setIsFull(true);
+      // 退出全屏修改canvas宽高
+      const width = document.documentElement.clientWidth - 460;
+      const height = window.outerHeight - 341 || 800;
+      handleWidGei(width, height);
+    } else {
+      setIsFull(false);
+      // 全屏查看修改canvas宽高
+      const width = document.documentElement.clientWidth;
+      const height = window.outerHeight;
+      handleWidGei(width, height);
+    }
+  };
+
+  // 全屏查看
+  const enterFullscreen = () => {
+    if (canvasRef.current.requestFullscreen) {
+      canvasRef.current.requestFullscreen();
+    } else if (canvasRef.current.mozRequestFullScreen) {
+      // Firefox
+      canvasRef.current.mozRequestFullScreen();
+    } else if (canvasRef.current.webkitRequestFullscreen) {
+      // Chrome, Safari and Opera
+      canvasRef.current.webkitRequestFullscreen();
+    } else if (canvasRef.current.msRequestFullscreen) {
+      // IE/Edge
+      canvasRef.current.msRequestFullscreen();
+    }
+  };
+
+  // 退出全屏
+  const exitFullscreen = () => {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      // Firefox
+      document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+      // Chrome, Safari and Opera
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+      // IE/Edge
+      document.msExitFullscreen();
+    }
+  };
 
   return (
     <>
