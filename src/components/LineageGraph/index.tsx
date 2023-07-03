@@ -29,6 +29,10 @@ import { dataTransform, initData } from '../../test/test';
 
 interface LineageGraphProps {
   /**
+   * 布局
+   */
+  layout: any;
+  /**
    * 血缘数据
    */
   lineageData: any;
@@ -43,6 +47,7 @@ interface LineageGraphProps {
 }
 
 const LineageGraph = ({
+  layout,
   lineageData,
   highlightColor,
   textWaterMarker,
@@ -224,6 +229,14 @@ const LineageGraph = ({
     );
   };
 
+  useEffect(() => {
+    if (graphRef.current && layout === 'preview') {
+      const windowSize = document.documentElement.clientWidth;
+      graphRef.current.changeSize(windowSize, 800);
+      graphRef.current.fitView();
+    }
+  }, [layout]);
+
   const bindEvents = (graph: any) => {
     // 监听节点点击事件
     graph.off('node:click').on('node:click', (evt: any) => {
@@ -257,8 +270,8 @@ const LineageGraph = ({
 
   // 更改canvas宽高
   const handleWidGei = (width: any, height: any) => {
-    // graphRef.current.changeSize(width, height);
-    // graphRef.current.fitView();
+    graphRef.current.changeSize(width, height);
+    graphRef.current.fitView();
   };
 
   useEffect(() => {
@@ -275,7 +288,7 @@ const LineageGraph = ({
       const grid = new G6.Grid();
       const container: any = ref.current;
       const width = container.scrollWidth - 340;
-      const height = container.scrollHeight || 672;
+      const height = container.scrollHeight || 800;
       // 实例化 Graph
       graphRef.current = new G6.Graph({
         container: container || '',

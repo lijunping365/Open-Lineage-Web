@@ -58,25 +58,6 @@ const Toolbar: React.FC<ToolBarProps> = (props: any) => {
   } = props;
 
   const options = [
-    isFull
-      ? {
-          key: 'fullscreenOutlined',
-          name: <FullscreenOutlined />,
-          description: '全屏查看',
-          action: () => {
-            setIsFull(!isFull);
-            enterFullscreen();
-          },
-        }
-      : {
-          key: 'fullscreenExitOutlined',
-          name: <FullscreenExitOutlined />,
-          description: '退出全屏',
-          action: () => {
-            setIsFull(!isFull);
-            exitFullscreen();
-          },
-        },
     {
       key: 'zoomOut',
       name: <ZoomInOutlined />,
@@ -125,6 +106,25 @@ const Toolbar: React.FC<ToolBarProps> = (props: any) => {
         handleDownloadImage();
       },
     },
+    isFull
+      ? {
+          key: 'fullscreenOutlined',
+          name: <FullscreenOutlined />,
+          description: '全屏查看',
+          action: () => {
+            setIsFull(!isFull);
+            enterFullscreen();
+          },
+        }
+      : {
+          key: 'fullscreenExitOutlined',
+          name: <FullscreenExitOutlined />,
+          description: '退出全屏',
+          action: () => {
+            setIsFull(!isFull);
+            exitFullscreen();
+          },
+        },
   ];
 
   useEffect(() => {
@@ -151,8 +151,8 @@ const Toolbar: React.FC<ToolBarProps> = (props: any) => {
     ) {
       setIsFull(true);
       // 退出全屏修改canvas宽高
-      const width = document.documentElement.clientWidth - 460;
-      const height = window.outerHeight - 341 || 800;
+      const width = document.documentElement.clientWidth - 340;
+      const height = window.outerHeight - 141 || 800;
       handleWidGei(width, height);
     } else {
       setIsFull(false);
@@ -183,14 +183,17 @@ const Toolbar: React.FC<ToolBarProps> = (props: any) => {
   const exitFullscreen = () => {
     if (document.exitFullscreen) {
       document.exitFullscreen();
+      // @ts-ignore
     } else if (document.mozCancelFullScreen) {
-      // Firefox
+      // @ts-ignore Firefox
       document.mozCancelFullScreen();
+      // @ts-ignore
     } else if (document.webkitExitFullscreen) {
-      // Chrome, Safari and Opera
+      // @ts-ignore Chrome, Safari and Opera
       document.webkitExitFullscreen();
+      // @ts-ignore
     } else if (document.msExitFullscreen) {
-      // IE/Edge
+      // @ts-ignore IE/Edge
       document.msExitFullscreen();
     }
   };

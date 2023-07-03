@@ -118,6 +118,7 @@ const App = () => {
           >
             <Spin spinning={loading}>
               <LineageGraph
+                layout={layout}
                 lineageData={lineageData}
                 highlightColor={highlightColor}
                 textWaterMarker={textWaterMarker}

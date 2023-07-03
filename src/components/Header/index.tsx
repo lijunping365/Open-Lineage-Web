@@ -7,8 +7,6 @@ import { sql } from '../../test/sql';
 import { format } from 'sql-formatter';
 import ColorPicker from '../ColorPicker';
 import clsx from 'classnames';
-import { IconFullScreen } from '../Icon/IconFullScreen';
-import { IconExitScreen } from '../Icon/IconExitScreen';
 import { IconSetting } from '../Icon/IconSetting';
 
 interface HeaderProps {
@@ -62,10 +60,11 @@ const Header = ({
             href={metadata.website}
             target='_blank'
           >
-            {/*<img*/}
-            {/*  src={logo}*/}
-            {/*  className='h-10'*/}
-            {/*/>*/}
+            <img
+              src={logo}
+              className='h-10'
+              alt='logo'
+            />
             <span className='ml-3 text-xl'>Lineage-Project</span>
           </a>
           <nav className='flex flex-wrap items-center justify-center space-x-2 text-base md:ml-4	md:mr-auto md:border-l md:border-gray-400 md:py-1 md:pl-4'>
@@ -181,30 +180,6 @@ const Header = ({
                 fill='none'
               />
             </HeaderButton>
-          </div>
-
-          <div className='ml-2 block dark:hidden'>
-            <button
-              type='button'
-              aria-label='Enter Full Screen Mode'
-              onClick={() => {}}
-              style={{ width: '36px', height: '36px' }}
-              className='hidden h-full items-center justify-center rounded-md border border-solid dark:bg-gray-800 lg:flex'
-            >
-              <IconFullScreen />
-            </button>
-          </div>
-
-          <div className='ml-2 hidden dark:block'>
-            <button
-              type='button'
-              aria-label='Exit Full Screen Mode'
-              onClick={() => {}}
-              style={{ width: '36px', height: '36px' }}
-              className='hidden h-full items-center justify-center rounded-md border border-solid dark:border-none dark:bg-gray-800 lg:flex'
-            >
-              <IconExitScreen />
-            </button>
           </div>
         </div>
       </header>
