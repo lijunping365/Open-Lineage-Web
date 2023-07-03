@@ -107,12 +107,47 @@ const Header = ({
           </nav>
           <Setting
             open={open}
-            textWaterMarker={textWaterMarker}
-            highlightColor={highlightColor}
             setOpen={() => setOpen(!open)}
-            changeTheme={(theme) => setTheme(theme)}
-            setTextWaterMarker={(marker) => setTextWaterMarker(marker)}
-            setHighlightColor={(color) => setHighlightColor(color)}
+            children={
+              <Form
+                labelCol={{ span: 12 }}
+                wrapperCol={{ span: 12 }}
+                style={{ width: 240 }}
+              >
+                <Form.Item
+                  label='设置代码主题颜色'
+                  name='codeTheme'
+                >
+                  <Select
+                    style={{ width: 120 }}
+                    onChange={(value) => setTheme(value)}
+                    defaultValue={'vs-light'}
+                    options={[
+                      { value: 'vs-light', label: 'light' },
+                      { value: 'vs-dark', label: 'dark' },
+                    ]}
+                  />
+                </Form.Item>
+                <Form.Item
+                  label='支持设置水印文字：'
+                  name='waterMaker'
+                >
+                  <Input
+                    defaultValue={textWaterMarker}
+                    onChange={(e) => setTextWaterMarker(e.target.value)}
+                  />
+                </Form.Item>
+                <Form.Item
+                  label='选择线条高亮颜色'
+                  name='highlight'
+                >
+                  <ColorPicker
+                    defaultColor={highlightColor}
+                    onChange={(value: string) => setHighlightColor(value)}
+                  />
+                </Form.Item>
+              </Form>
+            }
           />
           <div className='ml-2 hidden items-center rounded-md shadow-sm ring-1 ring-gray-900/5 lg:flex'>
             <HeaderButton
@@ -185,74 +220,16 @@ interface SettingProps {
   /** 关闭弹窗 */
   setOpen: () => void;
   /** 水印文字 */
-  textWaterMarker: string;
-  /** 高亮颜色 */
-  highlightColor: string;
-  /** 修改主题色 */
-  changeTheme: (theme: string) => void;
-  /** 设置文字水印 */
-  setTextWaterMarker: (waterMarker: string) => void;
-  /** 设置线条高亮色 */
-  setHighlightColor: (color: string) => void;
+  children: any;
 }
-const Setting = ({
-  open,
-  setOpen,
-  textWaterMarker,
-  highlightColor,
-  changeTheme,
-  setTextWaterMarker,
-  setHighlightColor,
-}: SettingProps) => {
+const Setting = ({ open, setOpen, children }: SettingProps) => {
   return (
     <Popover
       title='设置'
       trigger='click'
       open={open}
       onOpenChange={() => setOpen()}
-      content={
-        <Form
-          name='basic'
-          labelCol={{ span: 12 }}
-          wrapperCol={{ span: 12 }}
-          style={{ width: 240 }}
-          initialValues={{
-            codeTheme: 'vs-light',
-            waterMaker: textWaterMarker,
-            highlight: highlightColor,
-          }}
-          autoComplete='off'
-        >
-          <Form.Item
-            label='设置代码主题颜色'
-            name='codeTheme'
-          >
-            <Select
-              style={{ width: 120 }}
-              onChange={(value) => changeTheme(value)}
-              options={[
-                { value: 'vs-light', label: 'light' },
-                { value: 'vs-dark', label: 'dark' },
-              ]}
-            />
-          </Form.Item>
-          <Form.Item
-            label='支持设置水印文字：'
-            name='waterMaker'
-          >
-            <Input onChange={(e) => setTextWaterMarker(e.target.value)} />
-          </Form.Item>
-          <Form.Item
-            label='选择线条高亮颜色'
-            name='highlight'
-          >
-            <ColorPicker
-              defaultColor={highlightColor}
-              onChange={(value: string) => setHighlightColor(value)}
-            />
-          </Form.Item>
-        </Form>
-      }
+      content={children}
     >
       <button
         className={clsx(
