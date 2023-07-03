@@ -1,11 +1,7 @@
 import logo from '/logo.svg';
 import metadata from '../../config/metadata';
 import { Button, Form, Input, Popover, Select } from 'antd';
-import {
-  FileDoneOutlined,
-  RocketOutlined,
-  SettingOutlined,
-} from '@ant-design/icons';
+import { FileDoneOutlined, RocketOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
 import { sql } from '../../test/sql';
 import { format } from 'sql-formatter';
@@ -16,41 +12,23 @@ import { IconExitScreen } from '../Icon/IconExitScreen';
 import { IconSetting } from '../Icon/IconSetting';
 
 interface HeaderProps {
-  /**
-   * 编辑器主题色
-   */
+  /** 编辑器主题色 */
   theme: string;
-  /**
-   * 布局方式
-   */
+  /** 布局方式 */
   layout: string;
-  /**
-   * 水印文字
-   */
+  /** 水印文字 */
   textWaterMarker: string;
-  /**
-   * 高亮颜色
-   */
+  /** 高亮颜色 */
   highlightColor: string;
-  /**
-   * 设置编辑器主题色
-   */
+  /** 设置编辑器主题 */
   setTheme: (value: string) => void;
-  /**
-   * 设置布局方式
-   */
+  /** 设置布局方式 */
   setLayout: (value: string) => void;
-  /**
-   * 设置水印文字
-   */
+  /** 设置水印文字 */
   setTextWaterMarker: (text: string) => void;
-  /**
-   * 设置线条高亮色
-   */
+  /** 设置线条高亮色 */
   setHighlightColor: (color: string) => void;
-  /**
-   * 解析 sql
-   */
+  /** 解析 sql */
   handleParseSql: () => void;
 }
 
@@ -128,10 +106,11 @@ const Header = ({
             </Button>
           </nav>
           <Setting
+            open={open}
             textWaterMarker={textWaterMarker}
             highlightColor={highlightColor}
+            setOpen={() => setOpen(!open)}
             changeTheme={(theme) => setTheme(theme)}
-            close={() => setOpen(!open)}
             setTextWaterMarker={(marker) => setTextWaterMarker(marker)}
             setHighlightColor={(color) => setHighlightColor(color)}
           />
@@ -201,64 +180,36 @@ const Header = ({
 export default Header;
 
 interface SettingProps {
-  /**
-   * 水印文字
-   */
+  /** 弹窗开关 */
+  open: boolean;
+  /** 关闭弹窗 */
+  setOpen: () => void;
+  /** 水印文字 */
   textWaterMarker: string;
-  /**
-   * 高亮颜色
-   */
+  /** 高亮颜色 */
   highlightColor: string;
-  /**
-   * 修改主题色
-   */
+  /** 修改主题色 */
   changeTheme: (theme: string) => void;
-  /**
-   * 设置文字水印
-   */
+  /** 设置文字水印 */
   setTextWaterMarker: (waterMarker: string) => void;
-  /**
-   * 设置线条高亮色
-   */
+  /** 设置线条高亮色 */
   setHighlightColor: (color: string) => void;
-  /**
-   * 关闭设置框
-   */
-  close: () => void;
 }
 const Setting = ({
+  open,
+  setOpen,
   textWaterMarker,
   highlightColor,
   changeTheme,
   setTextWaterMarker,
   setHighlightColor,
-  close,
 }: SettingProps) => {
-  const [open, setOpen] = useState(false);
-  const handleChange = (value: string) => {
-    changeTheme(value);
-  };
-
-  const handleInputChange = (e: any) => {
-    const { value: inputValue } = e.target;
-    setTextWaterMarker(inputValue);
-  };
-
-  const handlePickerChange = (value: any) => {
-    setHighlightColor(value);
-  };
-
-  const onFinish = (values: any) => {
-    console.log('Success:', values);
-  };
-
   return (
     <Popover
       title='设置'
-      placement='rightTop'
       trigger='click'
       open={open}
-      onOpenChange={() => setOpen(!open)}
+      onOpenChange={() => setOpen()}
       content={
         <Form
           name='basic'
@@ -270,7 +221,6 @@ const Setting = ({
             waterMaker: textWaterMarker,
             highlight: highlightColor,
           }}
-          onFinish={onFinish}
           autoComplete='off'
         >
           <Form.Item
@@ -279,46 +229,27 @@ const Setting = ({
           >
             <Select
               style={{ width: 120 }}
-              onChange={handleChange}
+              onChange={(value) => changeTheme(value)}
               options={[
                 { value: 'vs-light', label: 'light' },
                 { value: 'vs-dark', label: 'dark' },
               ]}
             />
           </Form.Item>
-
           <Form.Item
             label='支持设置水印文字：'
             name='waterMaker'
           >
-            <Input onChange={handleInputChange} />
+            <Input onChange={(e) => setTextWaterMarker(e.target.value)} />
           </Form.Item>
-
           <Form.Item
             label='选择线条高亮颜色'
             name='highlight'
           >
             <ColorPicker
               defaultColor={highlightColor}
-              onChange={(value: string) => handlePickerChange(value)}
+              onChange={(value: string) => setHighlightColor(value)}
             />
-          </Form.Item>
-
-          <Form.Item wrapperCol={{ span: 16 }}>
-            <Button
-              type='primary'
-              htmlType='submit'
-              onClick={close}
-            >
-              确定
-            </Button>
-
-            <Button
-              htmlType='button'
-              onClick={close}
-            >
-              取消
-            </Button>
           </Form.Item>
         </Form>
       }
