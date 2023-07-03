@@ -13,6 +13,7 @@ import ColorPicker from '../ColorPicker';
 import clsx from 'classnames';
 import { IconFullScreen } from '../Icon/IconFullScreen';
 import { IconExitScreen } from '../Icon/IconExitScreen';
+import { IconSetting } from '../Icon/IconSetting';
 
 interface HeaderProps {
   /**
@@ -65,7 +66,6 @@ const Header = ({
   handleParseSql,
 }: HeaderProps) => {
   const [open, setOpen] = useState(false);
-
   const [code, setCode] = useState(sql());
   const handleFormatSql = () => {
     code && setCode(format(code));
@@ -77,10 +77,10 @@ const Header = ({
 
   return (
     <>
-      <header className='body-font text-gray-600'>
+      <header className='text-gray-600'>
         <div className='container mx-auto flex flex-col flex-wrap items-center p-5 md:flex-row'>
           <a
-            className='title-font mb-4 flex items-center font-medium text-gray-900 md:mb-0'
+            className='mb-4 flex items-center font-medium text-gray-900 md:mb-0'
             href={metadata.website}
             target='_blank'
           >
@@ -135,7 +135,7 @@ const Header = ({
             setTextWaterMarker={(marker) => setTextWaterMarker(marker)}
             setHighlightColor={(color) => setHighlightColor(color)}
           />
-          <div className='dark:shadow-highlight/4 ml-2 hidden items-center rounded-md shadow-sm ring-1 ring-gray-900/5 dark:bg-gray-800 dark:ring-0 lg:flex'>
+          <div className='ml-2 hidden items-center rounded-md shadow-sm ring-1 ring-gray-900/5 lg:flex'>
             <HeaderButton
               isActive={layout === 'vertical'}
               label='Switch to vertical split layout'
@@ -236,7 +236,6 @@ const Setting = ({
 }: SettingProps) => {
   const [open, setOpen] = useState(false);
   const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
     changeTheme(value);
   };
 
@@ -328,39 +327,19 @@ const Setting = ({
         className={clsx(
           'dark:shadow-highlight/4 block shadow-sm ring-1 ring-gray-900/5 hover:bg-gray-50 dark:bg-gray-800 dark:ring-0 dark:hover:bg-gray-700',
           'group rounded-md focus:outline-none focus-visible:ring-2',
-
           open
             ? 'focus-visible:ring-sky-500 dark:focus-visible:ring-sky-400'
             : 'focus-visible:ring-gray-400/70 dark:focus-visible:ring-gray-500'
         )}
       >
         <span className='sr-only'>设置</span>
-        <svg
-          width={36}
-          height={36}
-          viewBox='-6 -6 36 36'
-          strokeWidth='2'
-          strokeLinecap='round'
-          strokeLinejoin='round'
+        <IconSetting
           className={
             open
               ? 'fill-sky-100 stroke-sky-500 dark:fill-sky-400/50 dark:stroke-sky-400'
               : 'fill-gray-100 stroke-gray-400/70 hover:fill-gray-200 hover:stroke-gray-400 dark:fill-gray-400/20 dark:stroke-gray-500 dark:hover:fill-gray-400/30 dark:hover:stroke-gray-400'
           }
-        >
-          <path
-            strokeLinecap='round'
-            strokeLinejoin='round'
-            strokeWidth={2}
-            d='M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z'
-          />
-          <path
-            strokeLinecap='round'
-            strokeLinejoin='round'
-            strokeWidth={2}
-            d='M15 12a3 3 0 11-6 0 3 3 0 016 0z'
-          />
-        </svg>
+        />
       </button>
     </Popover>
   );
