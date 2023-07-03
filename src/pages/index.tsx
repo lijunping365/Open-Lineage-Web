@@ -57,17 +57,12 @@ const App = () => {
         if (layout !== 'preview') {
           const min = 340;
           const max = windowSize - min;
+          const current = layout === 'editor' ? windowSize : min;
           return {
             ...size,
             min,
             max,
-            current:
-              layout === 'editor'
-                ? document.documentElement.clientWidth
-                : Math.max(
-                    Math.min(Math.round(windowSize * size.percentage), max),
-                    min
-                  ),
+            current,
           };
         }
 
@@ -108,7 +103,7 @@ const App = () => {
           >
             {(layout === 'editor' || layout === 'vertical') && (
               <MonacoEditor
-                width='340'
+                width={size.current}
                 height='600'
                 language='sql'
                 theme={theme}
