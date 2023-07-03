@@ -12,8 +12,6 @@ import SplitPane from 'react-split-pane';
 import MonacoEditor from '../components/MonacoEditor';
 import { useIsomorphicLayoutEffect } from '../hooks/useIsomorphicLayoutEffect';
 
-const RESIZER_SIZE = 1;
-
 const App = () => {
   const [code, setCode] = useState(sql());
   const [loading, setLoading] = useState(false);
@@ -22,7 +20,7 @@ const App = () => {
   const [textWaterMarker, setTextWaterMarker] = useState<string>('OpenLineage');
   const ref1 = useRef(null);
   const ref2 = useRef(null);
-  const [size, setSize] = useState<any>({ percentage: 0.5 });
+  const [size, setSize] = useState<any>({ percentage: 0.25 });
   const [layout, setLayout] = useState('vertical');
   const [theme, setTheme] = useState<string>('vs-light');
 
@@ -31,7 +29,6 @@ const App = () => {
     minSize: size.min,
     maxSize: size.max,
     size: size.current,
-    defaultSize: '25%',
     onChange: (newSize: any) => console.log(newSize),
     onDragStarted: () => console.log('拖动开始'),
     onDragFinished: () => console.log('拖动结束'),
@@ -58,8 +55,8 @@ const App = () => {
       setSize((size: any) => {
         const windowSize = document.documentElement.clientWidth;
         if (layout !== 'preview') {
-          const min = 320;
-          const max = windowSize - min - RESIZER_SIZE;
+          const min = 340;
+          const max = windowSize - min;
           return {
             ...size,
             min,
