@@ -1,7 +1,7 @@
 import { Base } from '@antv/layout/lib/layout/base';
 
 import { DagreLayoutOptions, Node } from '@antv/layout/lib/layout/types';
-import { maxLevel, nodeWidth } from '../LineageGraph/registerShape';
+import { maxLevel, nodeWidth } from '../../registerShape';
 
 /**
  * 默认从左到右（maxLayer--->minLayer)

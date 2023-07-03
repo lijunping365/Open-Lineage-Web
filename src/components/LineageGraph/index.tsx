@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Toolbar from '../Toolbar';
-import Topbar from '../Topbar';
+import Toolbar from './components/Toolbar';
+import Topbar from './components/Topbar';
 import G6 from '@antv/g6';
 import './index.css';
 import './registerShape';
