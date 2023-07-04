@@ -1,10 +1,8 @@
 import logo from '/logo.svg';
 import metadata from '../../config/metadata';
 import { Button, Form, Input, Popover, Select } from 'antd';
-import { FileDoneOutlined, RocketOutlined } from '@ant-design/icons';
+import { RocketOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
-import { sql } from '../../test/sql';
-import { format } from 'sql-formatter';
 import ColorPicker from '../ColorPicker';
 import clsx from 'classnames';
 import { IconSetting } from '../Icon/IconSetting';
@@ -42,10 +40,6 @@ const Header = ({
   handleParseSql,
 }: HeaderProps) => {
   const [open, setOpen] = useState(false);
-  const [code, setCode] = useState(sql());
-  const handleFormatSql = () => {
-    code && setCode(format(code));
-  };
 
   const handleChange = (value: string) => {
     console.log(`selected ${value}`);
@@ -90,19 +84,6 @@ const Header = ({
             >
               解析血缘
             </Button>
-            <Button
-              type='primary'
-              icon={<FileDoneOutlined />}
-              className='bg-[#1677ff]'
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-              onClick={handleFormatSql}
-            >
-              美化SQL
-            </Button>
           </nav>
           <Setting
             open={open}
@@ -120,7 +101,7 @@ const Header = ({
                   <Select
                     style={{ width: 120 }}
                     onChange={(value) => setTheme(value)}
-                    defaultValue={'vs-light'}
+                    defaultValue={theme}
                     options={[
                       { value: 'vs-light', label: 'light' },
                       { value: 'vs-dark', label: 'dark' },
