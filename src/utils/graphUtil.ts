@@ -105,6 +105,45 @@ export const handleDownloadImage = (graph: any) => {
 };
 
 /**
+ * 全屏查看
+ */
+export const handleEnterFullscreen = (container: any) => {
+  if (container.requestFullscreen) {
+    container.requestFullscreen();
+  } else if (container.mozRequestFullScreen) {
+    // Firefox
+    container.mozRequestFullScreen();
+  } else if (container.webkitRequestFullscreen) {
+    // Chrome, Safari and Opera
+    container.webkitRequestFullscreen();
+  } else if (container.msRequestFullscreen) {
+    // IE/Edge
+    container.msRequestFullscreen();
+  }
+};
+
+/**
+ * 退出全屏
+ */
+export const handleExitFullscreen = () => {
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+    // @ts-ignore
+  } else if (document.mozCancelFullScreen) {
+    // @ts-ignore Firefox
+    document.mozCancelFullScreen();
+    // @ts-ignore
+  } else if (document.webkitExitFullscreen) {
+    // @ts-ignore Chrome, Safari and Opera
+    document.webkitExitFullscreen();
+    // @ts-ignore
+  } else if (document.msExitFullscreen) {
+    // @ts-ignore IE/Edge
+    document.msExitFullscreen();
+  }
+};
+
+/**
  * 渲染视图
  */
 export const renderGraph = (graph: any, lineageData: any) => {

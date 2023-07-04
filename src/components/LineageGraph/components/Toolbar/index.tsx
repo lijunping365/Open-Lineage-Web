@@ -41,6 +41,21 @@ export interface ToolBarProps {
    */
   handleDownloadImage: () => void;
 
+  /**
+   * 全屏查看
+   */
+  handleEnterFullscreen: () => void;
+
+  /**
+   * 退出全屏
+   */
+  handleExitFullscreen: () => void;
+
+  /**
+   * 改变画布大小
+   */
+  handleChangeSize: (width: number, height: number) => void;
+
   [key: string]: any;
 }
 
@@ -53,8 +68,9 @@ const Toolbar: React.FC<ToolBarProps> = (props: any) => {
     handleAutoZoom,
     handleRefreshLayout,
     handleDownloadImage,
-    handleWidGei,
-    canvasRef,
+    handleEnterFullscreen,
+    handleExitFullscreen,
+    handleChangeSize,
   } = props;
 
   const options = [
@@ -113,7 +129,7 @@ const Toolbar: React.FC<ToolBarProps> = (props: any) => {
           description: '全屏查看',
           action: () => {
             setIsFull(!isFull);
-            enterFullscreen();
+            handleEnterFullscreen();
           },
         }
       : {
@@ -122,7 +138,7 @@ const Toolbar: React.FC<ToolBarProps> = (props: any) => {
           description: '退出全屏',
           action: () => {
             setIsFull(!isFull);
-            exitFullscreen();
+            handleExitFullscreen();
           },
         },
   ];
@@ -153,48 +169,13 @@ const Toolbar: React.FC<ToolBarProps> = (props: any) => {
       // 退出全屏修改canvas宽高
       const width = document.documentElement.clientWidth - 340;
       const height = window.outerHeight - 141 || 800;
-      handleWidGei(width, height);
+      handleChangeSize(width, height);
     } else {
       setIsFull(false);
       // 全屏查看修改canvas宽高
       const width = document.documentElement.clientWidth;
       const height = window.outerHeight;
-      handleWidGei(width, height);
-    }
-  };
-
-  // 全屏查看
-  const enterFullscreen = () => {
-    if (canvasRef.current.requestFullscreen) {
-      canvasRef.current.requestFullscreen();
-    } else if (canvasRef.current.mozRequestFullScreen) {
-      // Firefox
-      canvasRef.current.mozRequestFullScreen();
-    } else if (canvasRef.current.webkitRequestFullscreen) {
-      // Chrome, Safari and Opera
-      canvasRef.current.webkitRequestFullscreen();
-    } else if (canvasRef.current.msRequestFullscreen) {
-      // IE/Edge
-      canvasRef.current.msRequestFullscreen();
-    }
-  };
-
-  // 退出全屏
-  const exitFullscreen = () => {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-      // @ts-ignore
-    } else if (document.mozCancelFullScreen) {
-      // @ts-ignore Firefox
-      document.mozCancelFullScreen();
-      // @ts-ignore
-    } else if (document.webkitExitFullscreen) {
-      // @ts-ignore Chrome, Safari and Opera
-      document.webkitExitFullscreen();
-      // @ts-ignore
-    } else if (document.msExitFullscreen) {
-      // @ts-ignore IE/Edge
-      document.msExitFullscreen();
+      handleChangeSize(width, height);
     }
   };
 

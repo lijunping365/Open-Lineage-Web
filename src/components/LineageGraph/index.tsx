@@ -15,6 +15,8 @@ import {
   clearAllStats,
   handleAutoZoom,
   handleDownloadImage,
+  handleEnterFullscreen,
+  handleExitFullscreen,
   handleHighlightColor,
   handleRealZoom,
   handleRefreshLayout,
@@ -230,9 +232,14 @@ const LineageGraph = ({
   };
 
   useEffect(() => {
-    if (graphRef.current && layout === 'preview') {
-      const windowSize = document.documentElement.clientWidth;
-      graphRef.current.changeSize(windowSize, 800);
+    if (graphRef.current) {
+      let width: number;
+      if (layout === 'preview') {
+        width = document.documentElement.clientWidth;
+      } else {
+        width = document.documentElement.clientWidth - 340;
+      }
+      graphRef.current.changeSize(width, 800);
       graphRef.current.fitView();
     }
   }, [layout]);
@@ -269,7 +276,7 @@ const LineageGraph = ({
   };
 
   // 更改canvas宽高
-  const handleWidGei = (width: any, height: any) => {
+  const handleChangeSize = (width: any, height: any) => {
     graphRef.current.changeSize(width, height);
     graphRef.current.fitView();
   };
@@ -363,14 +370,15 @@ const LineageGraph = ({
           className='g6-component-toolbar'
         >
           <Toolbar
-            canvasRef={ref}
-            handleWidGei={handleWidGei}
+            handleChangeSize={handleChangeSize}
             handleZoomOut={() => handleZoomOut(graphRef.current)}
             handleZoomIn={() => handleZoomIn(graphRef.current)}
             handleRealZoom={() => handleRealZoom(graphRef.current)}
             handleAutoZoom={() => handleAutoZoom(graphRef.current)}
             handleRefreshLayout={() => handleRefreshLayout(graphRef.current)}
             handleDownloadImage={() => handleDownloadImage(graphRef.current)}
+            handleEnterFullscreen={() => handleEnterFullscreen(ref.current)}
+            handleExitFullscreen={() => handleExitFullscreen()}
           />
         </div>
       </div>
