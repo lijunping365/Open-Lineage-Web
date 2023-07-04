@@ -8,7 +8,7 @@ const Footer = ({ nodeSize, nodeLevel }: FooterProps) => {
   return (
     <>
       <footer className='container body-font absolute bottom-0 bg-white z-[200]'>
-        <div className='mx-auto flex flex-col items-center px-5 py-2 sm:flex-row shadow-md'>
+        <div className='mx-auto flex flex-col items-center px-5 py-2 sm:flex-row shadow-md border-t'>
           <p className='text-sm space-x-4 font-medium'>
             <span>节点：{nodeSize}</span>
             <span>层数：{nodeLevel}</span>
