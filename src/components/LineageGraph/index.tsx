@@ -233,12 +233,8 @@ const LineageGraph = ({
 
   useEffect(() => {
     if (graphRef.current) {
-      let width: number;
-      if (layout === 'preview') {
-        width = document.documentElement.clientWidth;
-      } else {
-        width = document.documentElement.clientWidth - 340;
-      }
+      const windowWidth = document.documentElement.clientWidth;
+      const width = layout === 'preview' ? windowWidth : windowWidth - 340;
       graphRef.current.changeSize(width, 800);
       graphRef.current.fitView();
     }
@@ -370,6 +366,7 @@ const LineageGraph = ({
           className='g6-component-toolbar'
         >
           <Toolbar
+            layout={layout}
             handleChangeSize={handleChangeSize}
             handleZoomOut={() => handleZoomOut(graphRef.current)}
             handleZoomIn={() => handleZoomIn(graphRef.current)}

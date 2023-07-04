@@ -14,6 +14,10 @@ import { Button, Tooltip } from 'antd';
 
 export interface ToolBarProps {
   /**
+   * 布局
+   */
+  layout: string;
+  /**
    * 放大
    */
   handleZoomOut: () => void;
@@ -62,6 +66,7 @@ export interface ToolBarProps {
 const Toolbar: React.FC<ToolBarProps> = (props: any) => {
   const [isFull, setIsFull] = useState(true); // 判断显示全屏，退出全屏
   const {
+    layout,
     handleZoomOut,
     handleZoomIn,
     handleRealZoom,
@@ -157,9 +162,10 @@ const Toolbar: React.FC<ToolBarProps> = (props: any) => {
       document.removeEventListener('fullscreenchange', checkFull);
       document.removeEventListener('MSFullscreenChange', checkFull);
     };
-  }, []);
+  }, [layout]);
 
   const checkFull = () => {
+    const windowWidth = document.documentElement.clientWidth;
     if (
       // @ts-ignore
       !document.mozFullScreen &&
@@ -170,13 +176,13 @@ const Toolbar: React.FC<ToolBarProps> = (props: any) => {
     ) {
       setIsFull(true);
       // 退出全屏修改canvas宽高
-      const width = document.documentElement.clientWidth - 340;
+      const width = layout === 'preview' ? windowWidth : windowWidth - 340;
       const height = window.outerHeight - 141 || 800;
       handleChangeSize(width, height);
     } else {
       setIsFull(false);
       // 全屏查看修改canvas宽高
-      const width = document.documentElement.clientWidth;
+      const width = windowWidth;
       const height = window.outerHeight;
       handleChangeSize(width, height);
     }
