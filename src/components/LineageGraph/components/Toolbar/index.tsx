@@ -161,9 +161,12 @@ const Toolbar: React.FC<ToolBarProps> = (props: any) => {
 
   const checkFull = () => {
     if (
-      !document?.webkitIsFullScreen &&
-      !document?.mozFullScreen &&
-      !document?.msFullscreenElement
+      // @ts-ignore
+      !document.mozFullScreen &&
+      // @ts-ignore
+      !document.webkitIsFullScreen &&
+      // @ts-ignore
+      !document.msFullscreenElement
     ) {
       setIsFull(true);
       // 退出全屏修改canvas宽高
