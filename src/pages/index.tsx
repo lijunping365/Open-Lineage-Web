@@ -104,6 +104,7 @@ const App = () => {
             {(layout === 'editor' || layout === 'vertical') && (
               <MonacoEditor
                 width={size.current}
+                height={800}
                 language='sql'
                 theme={theme}
                 value={code}
