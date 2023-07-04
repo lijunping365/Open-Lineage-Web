@@ -23,6 +23,8 @@ const App = () => {
   const [size, setSize] = useState<any>({ percentage: 0.25 });
   const [layout, setLayout] = useState('vertical');
   const [theme, setTheme] = useState<string>('vs-light');
+  const [nodeSize, setNodeSize] = useState(0);
+  const [nodeLevel, setNodeLevel] = useState(0);
 
   const splitPaneProps: any = {
     split: 'vertical',
@@ -120,6 +122,8 @@ const App = () => {
               <LineageGraph
                 layout={layout}
                 lineageData={lineageData}
+                setNodeSize={setNodeSize}
+                setNodeLevel={setNodeLevel}
                 highlightColor={highlightColor}
                 textWaterMarker={textWaterMarker}
               />
@@ -127,7 +131,10 @@ const App = () => {
           </div>
         </SplitPane>
       </main>
-      <Footer />
+      <Footer
+        nodeSize={nodeSize}
+        nodeLevel={nodeLevel}
+      />
       {/*<ITour*/}
       {/*  ref1={ref1}*/}
       {/*  ref2={ref2}*/}

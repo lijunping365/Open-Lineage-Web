@@ -46,6 +46,14 @@ interface LineageGraphProps {
    * 高亮颜色
    */
   highlightColor: string;
+  /**
+   * 设置节点数量
+   */
+  setNodeSize: (size: number) => void;
+  /**
+   * 设置层数
+   */
+  setNodeLevel: (level: number) => void;
 }
 
 const LineageGraph = ({
@@ -53,6 +61,8 @@ const LineageGraph = ({
   lineageData,
   highlightColor,
   textWaterMarker,
+  setNodeSize,
+  setNodeLevel,
 }: LineageGraphProps) => {
   const ref = useRef<any>();
   const toolbarRef = useRef<any>();
@@ -71,11 +81,14 @@ const LineageGraph = ({
     topBarRef?.current?.setWholeChecked(true);
 
     if (lineageData) {
-      const wholeData = lineageData.withProcessData[0];
-      const partData = lineageData.noProcessData[0];
+      const wholeData = lineageData.withProcessData;
+      const partData = lineageData.noProcessData;
       setLineageWholeData(wholeData);
       setLineagePartData(partData);
-      const t1 = transformData(wholeData);
+      setNodeSize(wholeData.size);
+      setNodeLevel(wholeData.level);
+
+      const t1 = transformData(wholeData.data);
       renderGraph(graphRef.current, t1);
       //renderGraph(graphRef.current, dataTransform(initData(100)));
     }
@@ -99,19 +112,33 @@ const LineageGraph = ({
       return;
     }
     let data: any;
+    let size: number;
+    let level: number;
+
+    if (wholeCheckedRef.current) {
+      size = lineageWholeData.size;
+      level = lineageWholeData.level;
+    } else {
+      size = lineagePartData.size;
+      level = lineagePartData.level;
+    }
+
     if (checked) {
       if (wholeCheckedRef.current) {
-        data = transformData(lineageWholeData);
+        data = transformData(lineageWholeData.data);
       } else {
-        data = transformData(lineagePartData);
+        data = transformData(lineagePartData.data);
       }
     } else {
       if (wholeCheckedRef.current) {
-        data = collapseData(lineageWholeData);
+        data = collapseData(lineageWholeData.data);
       } else {
-        data = collapseData(lineagePartData);
+        data = collapseData(lineagePartData.data);
       }
     }
+
+    setNodeSize(size);
+    setNodeLevel(level);
     renderGraph(graphRef.current, data);
   };
 
@@ -124,19 +151,27 @@ const LineageGraph = ({
       return;
     }
     let data: any;
+    let size: number;
+    let level: number;
     if (checked) {
+      size = lineageWholeData.size;
+      level = lineageWholeData.level;
       if (fieldCheckedRef.current) {
-        data = transformData(lineageWholeData);
+        data = transformData(lineageWholeData.data);
       } else {
-        data = collapseData(lineageWholeData);
+        data = collapseData(lineageWholeData.data);
       }
     } else {
+      size = lineagePartData.size;
+      level = lineagePartData.level;
       if (fieldCheckedRef.current) {
-        data = transformData(lineagePartData);
+        data = transformData(lineagePartData.data);
       } else {
-        data = collapseData(lineagePartData);
+        data = collapseData(lineagePartData.data);
       }
     }
+    setNodeSize(size);
+    setNodeLevel(level);
     renderGraph(graphRef.current, data);
   };
 

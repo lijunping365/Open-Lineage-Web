@@ -1,8 +1,10 @@
 {
   "code": 0,
   "data": {
-    "withProcessData": [
-      [
+    "withProcessData": {
+      "size": 30,
+      "level": 5,
+      "data": [
         {
           "refFields": [
             {
@@ -8195,9 +8197,11 @@
           }
         }
       ]
-    ],
-    "noProcessData": [
-      [
+    },
+    "noProcessData": {
+      "size": 11,
+      "level": 2,
+      "data": [
         {
           "refFields": [],
           "targetField": {
@@ -9730,7 +9734,7 @@
           }
         }
       ]
-    ]
+    }
   },
   "errno": 0,
   "error": "",
