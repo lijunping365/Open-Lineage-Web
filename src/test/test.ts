@@ -1,10 +1,16 @@
+import {
+  itemHeight,
+  nodeWidth,
+} from '../components/LineageGraph/registerShape';
+
 export const initData = (count: number) => {
   const nodeArray = [];
   for (let i = 1; i < count; i++) {
     const obj: any = { id: '' + i, label: 'Employee' + i, attrs: [] };
     obj.key = 'Record' + i;
-    obj.x = 100 * i;
-    obj.y = 100 * i;
+    obj.x = 100;
+    obj.y = 100;
+    obj.level = i;
     obj.attrs = [
       {
         nodeId: '' + i,
@@ -143,6 +149,8 @@ export const initData = (count: number) => {
         ],
       },
     ];
+    const height = itemHeight * (obj.attrs.length + 1);
+    obj.size = [nodeWidth, height];
     nodeArray.push(obj);
   }
   return nodeArray;
