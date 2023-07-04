@@ -127,7 +127,7 @@ const App = () => {
           </div>
         </SplitPane>
       </main>
-      {/*<Footer />*/}
+      <Footer />
       {/*<ITour*/}
       {/*  ref1={ref1}*/}
       {/*  ref2={ref2}*/}

@@ -59,7 +59,7 @@ const Header = ({
               className='h-10'
               alt='logo'
             />
-            <span className='ml-3 text-xl'>Lineage-Project</span>
+            <span className='ml-3 text-xl'>Open-Lineage</span>
           </a>
           <nav className='flex flex-wrap items-center justify-center space-x-2 text-base md:ml-4	md:mr-auto md:border-l md:border-gray-400 md:py-1 md:pl-4'>
             <Select
