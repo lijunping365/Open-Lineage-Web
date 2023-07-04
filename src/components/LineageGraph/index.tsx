@@ -328,12 +328,10 @@ const LineageGraph = ({
       const grid = new G6.Grid();
       const container: any = ref.current;
       const width = container.scrollWidth - 340;
-      const height = container.scrollHeight || 800;
       // 实例化 Graph
       graphRef.current = new G6.Graph({
         container: container || '',
         width: width,
-        // height: height,
         plugins: [grid, minimap, toolbar],
         fitView: true,
         modes: {
