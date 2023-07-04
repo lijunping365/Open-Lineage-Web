@@ -95,7 +95,7 @@ const App = () => {
         setHighlightColor={setHighlightColor}
         handleParseSql={handleParseSql}
       />
-      <main className='flex-auto overflow-hidden border-t border-gray-200'>
+      <main className='h-screen flex-auto overflow-hidden border-t border-gray-200'>
         <SplitPane {...splitPaneProps}>
           <div
             className='flex flex-auto'
@@ -104,7 +104,7 @@ const App = () => {
             {(layout === 'editor' || layout === 'vertical') && (
               <MonacoEditor
                 width={size.current}
-                height={800}
+                height={'100vh'}
                 language='sql'
                 theme={theme}
                 value={code}

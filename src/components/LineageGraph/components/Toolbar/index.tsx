@@ -177,7 +177,8 @@ const Toolbar: React.FC<ToolBarProps> = (props: any) => {
       setIsFull(true);
       // 退出全屏修改canvas宽高
       const width = layout === 'preview' ? windowWidth : windowWidth - 340;
-      const height = window.outerHeight - 141 || 800;
+      const height =
+        window.outerHeight - 141 || document.documentElement.clientHeight;
       handleChangeSize(width, height);
     } else {
       setIsFull(false);

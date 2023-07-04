@@ -234,8 +234,10 @@ const LineageGraph = ({
   useEffect(() => {
     if (graphRef.current) {
       const windowWidth = document.documentElement.clientWidth;
+      const height =
+        window.outerHeight - 141 || document.documentElement.clientHeight;
       const width = layout === 'preview' ? windowWidth : windowWidth - 340;
-      graphRef.current.changeSize(width, 800);
+      graphRef.current.changeSize(width, height);
       graphRef.current.fitView();
     }
   }, [layout]);
@@ -296,7 +298,7 @@ const LineageGraph = ({
       graphRef.current = new G6.Graph({
         container: container || '',
         width: width,
-        height: height,
+        // height: height,
         plugins: [grid, minimap, toolbar],
         fitView: true,
         modes: {
