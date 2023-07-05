@@ -22,6 +22,8 @@ interface HeaderProps {
   setTheme: (value: string) => void;
   /** 设置布局方式 */
   setLayout: (value: string) => void;
+  /** 设置节点数量 */
+  setNodeSize: (value: number) => void;
   /** 设置水印文字 */
   setTextWaterMarker: (text: string) => void;
   /** 设置线条高亮色 */
@@ -38,6 +40,7 @@ const Header = ({
   layout,
   setLayout,
   setTheme,
+  setNodeSize,
   textWaterMarker,
   highlightColor,
   setTextWaterMarker,
@@ -49,6 +52,10 @@ const Header = ({
 
   const handleChange = (value: string) => {
     console.log(`selected ${value}`);
+  };
+
+  const handleChangeSize = (value: string) => {
+    setNodeSize(Number(value));
   };
 
   return (
@@ -102,6 +109,18 @@ const Header = ({
             >
               {test ? '退出测试' : '开始测试'}
             </Button>
+            {test && (
+              <Select
+                defaultValue='请选择'
+                style={{ width: 100 }}
+                onChange={handleChangeSize}
+                options={[
+                  { value: '100', label: '100节点' },
+                  { value: '500', label: '500节点' },
+                  { value: '1000', label: '1000节点' },
+                ]}
+              />
+            )}
           </nav>
           <Setting
             open={open}

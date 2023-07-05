@@ -43,11 +43,15 @@ const App = () => {
   const handleTesting = () => {
     setTesting(!testing);
     setLineageData(null);
+    setNodeSize(0);
+    setNodeLevel(0);
   };
 
   const handleParseSql = () => {
     if (testing) {
-      setLineageData(initData(100));
+      setNodeSize(nodeSize);
+      setNodeLevel(nodeSize);
+      setLineageData(initData(nodeSize));
     } else {
       setLineageData(sourceData.data);
     }
@@ -105,6 +109,7 @@ const App = () => {
         layout={layout}
         setTheme={setTheme}
         setLayout={setLayout}
+        setNodeSize={setNodeSize}
         handleTesting={handleTesting}
         textWaterMarker={textWaterMarker}
         setTextWaterMarker={setTextWaterMarker}
