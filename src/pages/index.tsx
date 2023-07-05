@@ -119,7 +119,7 @@ const App = () => {
         setHighlightColor={setHighlightColor}
         setTextWaterMarker={setTextWaterMarker}
       />
-      <main className='h-screen flex-auto overflow-hidden border-t border-gray-200'>
+      <main className='absolute bottom-8 top-16 w-full flex-auto overflow-hidden border-t border-gray-200'>
         <SplitPane {...splitPaneProps}>
           <div
             className='flex flex-auto'
@@ -166,10 +166,10 @@ const App = () => {
         nodeSize={nodeSize}
         nodeLevel={nodeLevel}
       />
-      {/*<ITour*/}
-      {/*  ref1={ref1}*/}
-      {/*  ref2={ref2}*/}
-      {/*/>*/}
+      <ITour
+        ref1={ref1}
+        ref2={ref2}
+      />
     </>
   );
 };
