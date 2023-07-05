@@ -1,16 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Toolbar from './components/Toolbar';
-import Topbar from './components/Topbar';
+import Toolbar from '../LineageGraph/components/Toolbar';
 import G6 from '@antv/g6';
-import './index.css';
-import './registerShape';
-import './registerLayout';
-import {
-  collapseData,
-  getLeftRelation,
-  getRightRelation,
-  transformData,
-} from '../../utils/common';
+import '../LineageGraph/index.css';
+import '../LineageGraph/registerShape';
+import '../LineageGraph/registerLayout';
+import { getLeftRelation, getRightRelation } from '../../utils/common';
 import {
   clearAllStats,
   handleAutoZoom,
@@ -27,7 +21,7 @@ import {
   setLeftStats,
   setRightStats,
 } from '../../utils/graphUtil';
-import { dataTransform, initData } from '../../test/test';
+import { dataTransform } from '../../test/test';
 
 interface LineageGraphProps {
   /**
@@ -46,23 +40,13 @@ interface LineageGraphProps {
    * 高亮颜色
    */
   highlightColor: string;
-  /**
-   * 设置节点数量
-   */
-  setNodeSize: (size: number) => void;
-  /**
-   * 设置层数
-   */
-  setNodeLevel: (level: number) => void;
 }
 
-const LineageGraph = ({
+const LineageGraphTest = ({
   layout,
   lineageData,
   highlightColor,
   textWaterMarker,
-  setNodeSize,
-  setNodeLevel,
 }: LineageGraphProps) => {
   const ref = useRef<any>();
   const toolbarRef = useRef<any>();
@@ -71,24 +55,10 @@ const LineageGraph = ({
   const fieldCheckedRef = useRef<any>(true);
   const wholeCheckedRef = useRef<any>(true);
   const currentHighlightColorRef = useRef<any>(highlightColor);
-  const [lineageWholeData, setLineageWholeData] = useState<any>();
-  const [lineagePartData, setLineagePartData] = useState<any>();
 
   useEffect(() => {
-    fieldCheckedRef.current = true;
-    wholeCheckedRef.current = true;
-    topBarRef?.current?.setFieldChecked(true);
-    topBarRef?.current?.setWholeChecked(true);
-
     if (lineageData) {
-      const wholeData = lineageData.withProcessData;
-      const partData = lineageData.noProcessData;
-      setLineageWholeData(wholeData);
-      setLineagePartData(partData);
-      setNodeSize(wholeData.size);
-      setNodeLevel(wholeData.level);
-
-      const data = transformData(wholeData.data);
+      const data = dataTransform(lineageData);
       renderGraph(graphRef.current, data);
     }
   }, [lineageData]);
@@ -101,78 +71,6 @@ const LineageGraph = ({
     currentHighlightColorRef.current = highlightColor;
     handleHighlightColor(graphRef.current, highlightColor);
   }, [highlightColor]);
-
-  /**
-   * 处理字段血缘切换
-   */
-  const onFieldLineage = (checked: boolean) => {
-    fieldCheckedRef.current = checked;
-    if (!lineageWholeData || !lineagePartData) {
-      return;
-    }
-    let data: any;
-    let size: number;
-    let level: number;
-
-    if (wholeCheckedRef.current) {
-      size = lineageWholeData.size;
-      level = lineageWholeData.level;
-    } else {
-      size = lineagePartData.size;
-      level = lineagePartData.level;
-    }
-
-    if (checked) {
-      if (wholeCheckedRef.current) {
-        data = transformData(lineageWholeData.data);
-      } else {
-        data = transformData(lineagePartData.data);
-      }
-    } else {
-      if (wholeCheckedRef.current) {
-        data = collapseData(lineageWholeData.data);
-      } else {
-        data = collapseData(lineagePartData.data);
-      }
-    }
-
-    setNodeSize(size);
-    setNodeLevel(level);
-    renderGraph(graphRef.current, data);
-  };
-
-  /**
-   * 处理完整血缘链路切换
-   */
-  const onWholeLineage = (checked: boolean) => {
-    wholeCheckedRef.current = checked;
-    if (!lineageWholeData || !lineagePartData) {
-      return;
-    }
-    let data: any;
-    let size: number;
-    let level: number;
-    if (checked) {
-      size = lineageWholeData.size;
-      level = lineageWholeData.level;
-      if (fieldCheckedRef.current) {
-        data = transformData(lineageWholeData.data);
-      } else {
-        data = collapseData(lineageWholeData.data);
-      }
-    } else {
-      size = lineagePartData.size;
-      level = lineagePartData.level;
-      if (fieldCheckedRef.current) {
-        data = transformData(lineagePartData.data);
-      } else {
-        data = collapseData(lineagePartData.data);
-      }
-    }
-    setNodeSize(size);
-    setNodeLevel(level);
-    renderGraph(graphRef.current, data);
-  };
 
   /**
    * 处理节点点击事件
@@ -388,13 +286,6 @@ const LineageGraph = ({
         ref={ref}
         className='canvas-wrapper'
       >
-        <div className='g6-component-topbar'>
-          <Topbar
-            ref={topBarRef}
-            handleFieldLineage={(checked: any) => onFieldLineage(checked)}
-            handleWholeLineage={(checked: any) => onWholeLineage(checked)}
-          />
-        </div>
         <div
           ref={toolbarRef}
           className='g6-component-toolbar'
@@ -417,4 +308,4 @@ const LineageGraph = ({
   );
 };
 
-export default LineageGraph;
+export default LineageGraphTest;

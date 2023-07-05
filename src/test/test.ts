@@ -1,148 +1,194 @@
+import {
+  itemHeight,
+  nodeWidth,
+} from '../components/LineageGraph/registerShape';
+
 export const initData = (count: number) => {
   const nodeArray = [];
-  for (let i = 1; i < count; i++) {
+  let level = count;
+  for (let i = 1; i <= count; i++) {
+    level = level - 1;
     const obj: any = { id: '' + i, label: 'Employee' + i, attrs: [] };
     obj.key = 'Record' + i;
-    obj.x = 100 * i;
-    obj.y = 100 * i;
+    obj.x = 100;
+    obj.y = 100;
+    obj.level = level;
     obj.attrs = [
       {
         nodeId: '' + i,
         key: 'id',
         type: 'number(6)',
-        relation: [
-          {
-            key: 'key',
-            nodeId: '' + (i + 1),
-          },
-          {
-            key: 'gender',
-            nodeId: '' + (i + 1),
-          },
-        ],
+        relation:
+          i !== count
+            ? [
+                {
+                  key: 'key',
+                  nodeId: '' + (i + 1),
+                },
+                {
+                  key: 'gender',
+                  nodeId: '' + (i + 1),
+                },
+              ]
+            : [],
       },
       {
         nodeId: '' + i,
         key: 'key',
         type: 'varchar(255)',
-        relation: [
-          {
-            key: 'id',
-            nodeId: '' + (i + 1),
-          },
-        ],
+        relation:
+          i !== count
+            ? [
+                {
+                  key: 'id',
+                  nodeId: '' + (i + 1),
+                },
+              ]
+            : [],
       },
       {
         nodeId: '' + i,
         key: 'gender',
         type: 'enum(M, F)',
-        relation: [
-          {
-            key: 'id',
-            nodeId: '' + (i + 1),
-          },
-        ],
+        relation:
+          i !== count
+            ? [
+                {
+                  key: 'id',
+                  nodeId: '' + (i + 1),
+                },
+              ]
+            : [],
       },
       {
         nodeId: '' + i,
         key: 'birthday',
         type: 'date',
-        relation: [
-          {
-            key: 'birthday',
-            nodeId: '' + (i + 1),
-          },
-        ],
+        relation:
+          i !== count
+            ? [
+                {
+                  key: 'birthday',
+                  nodeId: '' + (i + 1),
+                },
+              ]
+            : [],
       },
       {
         nodeId: '' + i,
         key: 'hometown',
         type: 'varchar(255)',
-        relation: [
-          {
-            key: 'hometown',
-            nodeId: '' + (i + 1),
-          },
-        ],
+        relation:
+          i !== count
+            ? [
+                {
+                  key: 'hometown',
+                  nodeId: '' + (i + 1),
+                },
+              ]
+            : [],
       },
       {
         nodeId: '' + i,
         key: 'country',
         type: 'varchar(255)',
-        relation: [
-          {
-            key: 'country',
-            nodeId: '' + (i + 1),
-          },
-        ],
+        relation:
+          i !== count
+            ? [
+                {
+                  key: 'country',
+                  nodeId: '' + (i + 1),
+                },
+              ]
+            : [],
       },
       {
         nodeId: '' + i,
         key: 'nation',
         type: 'varchar(255)',
-        relation: [
-          {
-            key: 'nation',
-            nodeId: '' + (i + 1),
-          },
-        ],
+        relation:
+          i !== count
+            ? [
+                {
+                  key: 'nation',
+                  nodeId: '' + (i + 1),
+                },
+              ]
+            : [],
       },
       {
         nodeId: '' + i,
         key: 'jobId',
         type: 'number(3)',
-        relation: [
-          {
-            key: 'jobId',
-            nodeId: '' + (i + 1),
-          },
-        ],
+        relation:
+          i !== count
+            ? [
+                {
+                  key: 'jobId',
+                  nodeId: '' + (i + 1),
+                },
+              ]
+            : [],
       },
       {
         nodeId: '' + i,
         key: 'phone',
         type: 'varchar(255)',
-        relation: [
-          {
-            key: 'phone',
-            nodeId: '' + (i + 1),
-          },
-        ],
+        relation:
+          i !== count
+            ? [
+                {
+                  key: 'phone',
+                  nodeId: '' + (i + 1),
+                },
+              ]
+            : [],
       },
       {
         nodeId: '' + i,
         key: 'deptId',
         type: 'number(6)',
-        relation: [
-          {
-            key: 'deptId',
-            nodeId: '' + (i + 1),
-          },
-        ],
+        relation:
+          i !== count
+            ? [
+                {
+                  key: 'deptId',
+                  nodeId: '' + (i + 1),
+                },
+              ]
+            : [],
       },
       {
         nodeId: '' + i,
         key: 'startTime',
         type: 'date',
-        relation: [
-          {
-            key: 'startTime',
-            nodeId: '' + (i + 1),
-          },
-        ],
+        relation:
+          i !== count
+            ? [
+                {
+                  key: 'startTime',
+                  nodeId: '' + (i + 1),
+                },
+              ]
+            : [],
       },
       {
         nodeId: '' + i,
         key: 'leaveTime',
         type: 'date',
-        relation: [
-          {
-            key: 'leaveTime',
-            nodeId: '' + (i + 1),
-          },
-        ],
+        relation:
+          i !== count
+            ? [
+                {
+                  key: 'leaveTime',
+                  nodeId: '' + (i + 1),
+                },
+              ]
+            : [],
       },
     ];
+    const height = itemHeight * (obj.attrs.length + 1);
+    obj.size = [nodeWidth, height];
     nodeArray.push(obj);
   }
   return nodeArray;
