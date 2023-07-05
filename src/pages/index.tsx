@@ -28,6 +28,7 @@ const App = () => {
   const [nodeSize, setNodeSize] = useState(0);
   const [nodeLevel, setNodeLevel] = useState(0);
   const [testing, setTesting] = useState(false);
+  const [testSize, setTestSize] = useState(0);
 
   const splitPaneProps: any = {
     split: 'vertical',
@@ -45,13 +46,14 @@ const App = () => {
     setLineageData(null);
     setNodeSize(0);
     setNodeLevel(0);
+    setTestSize(0);
   };
 
   const handleParseSql = () => {
     if (testing) {
-      setNodeSize(nodeSize);
-      setNodeLevel(nodeSize);
-      setLineageData(initData(nodeSize));
+      setNodeSize(testSize);
+      setNodeLevel(testSize);
+      setLineageData(initData(testSize));
     } else {
       setLineageData(sourceData.data);
     }
@@ -109,7 +111,7 @@ const App = () => {
         layout={layout}
         setTheme={setTheme}
         setLayout={setLayout}
-        setNodeSize={setNodeSize}
+        setNodeSize={setTestSize}
         handleTesting={handleTesting}
         textWaterMarker={textWaterMarker}
         setTextWaterMarker={setTextWaterMarker}
