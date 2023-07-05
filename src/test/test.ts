@@ -5,12 +5,14 @@ import {
 
 export const initData = (count: number) => {
   const nodeArray = [];
+  let level = count;
   for (let i = 1; i <= count; i++) {
+    level = level - 1;
     const obj: any = { id: '' + i, label: 'Employee' + i, attrs: [] };
     obj.key = 'Record' + i;
     obj.x = 100;
     obj.y = 100;
-    obj.level = i - 1;
+    obj.level = level;
     obj.attrs = [
       {
         nodeId: '' + i,
