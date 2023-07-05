@@ -40,6 +40,11 @@ const App = () => {
     allowResize: false,
   };
 
+  const handleTesting = () => {
+    setTesting(!testing);
+    setLineageData(null);
+  };
+
   const handleParseSql = () => {
     if (testing) {
       setLineageData(initData(100));
@@ -99,8 +104,8 @@ const App = () => {
         test={testing}
         layout={layout}
         setTheme={setTheme}
-        setTest={setTesting}
         setLayout={setLayout}
+        handleTesting={handleTesting}
         textWaterMarker={textWaterMarker}
         setTextWaterMarker={setTextWaterMarker}
         highlightColor={highlightColor}

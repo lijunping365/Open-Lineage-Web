@@ -18,8 +18,6 @@ interface HeaderProps {
   textWaterMarker: string;
   /** 高亮颜色 */
   highlightColor: string;
-  /** 修改测试状态 */
-  setTest: (value: boolean) => void;
   /** 设置编辑器主题 */
   setTheme: (value: string) => void;
   /** 设置布局方式 */
@@ -30,13 +28,14 @@ interface HeaderProps {
   setHighlightColor: (color: string) => void;
   /** 解析 sql */
   handleParseSql: () => void;
+  /** 切换测试状态 */
+  handleTesting: () => void;
 }
 
 const Header = ({
   test,
   theme,
   layout,
-  setTest,
   setLayout,
   setTheme,
   textWaterMarker,
@@ -44,6 +43,7 @@ const Header = ({
   setTextWaterMarker,
   setHighlightColor,
   handleParseSql,
+  handleTesting,
 }: HeaderProps) => {
   const [open, setOpen] = useState(false);
 
@@ -98,7 +98,7 @@ const Header = ({
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
-              onClick={() => setTest(!test)}
+              onClick={() => handleTesting()}
             >
               {test ? '退出测试' : '开始测试'}
             </Button>
