@@ -8,8 +8,8 @@ import clsx from 'classnames';
 import { IconSetting } from '../Icon/IconSetting';
 
 interface HeaderProps {
-  /** 是否开始测试 */
-  test: boolean;
+  /** 模式 */
+  model: string;
   /** 编辑器主题色 */
   theme: string;
   /** 布局方式 */
@@ -18,6 +18,8 @@ interface HeaderProps {
   textWaterMarker: string;
   /** 高亮颜色 */
   highlightColor: string;
+  /** 解析 sql */
+  handleParseSql: () => void;
   /** 设置编辑器主题 */
   setTheme: (value: string) => void;
   /** 设置布局方式 */
@@ -28,14 +30,12 @@ interface HeaderProps {
   setTextWaterMarker: (text: string) => void;
   /** 设置线条高亮色 */
   setHighlightColor: (color: string) => void;
-  /** 解析 sql */
-  handleParseSql: () => void;
-  /** 切换测试状态 */
-  handleTesting: () => void;
+  /** 切换模式 */
+  handleChangeModel: (model: string) => void;
 }
 
 const Header = ({
-  test,
+  model,
   theme,
   layout,
   setLayout,
@@ -46,7 +46,7 @@ const Header = ({
   setTextWaterMarker,
   setHighlightColor,
   handleParseSql,
-  handleTesting,
+  handleChangeModel,
 }: HeaderProps) => {
   const [open, setOpen] = useState(false);
 
@@ -105,11 +105,13 @@ const Header = ({
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
-              onClick={() => handleTesting()}
+              onClick={() =>
+                handleChangeModel(model === 'test' ? 'default' : 'test')
+              }
             >
-              {test ? '退出测试' : '开始测试'}
+              {model === 'test' ? '退出测试' : '开始测试'}
             </Button>
-            {test && (
+            {model === 'test' && (
               <Select
                 defaultValue='请选择'
                 style={{ width: 100 }}

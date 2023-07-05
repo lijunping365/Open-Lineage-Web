@@ -27,7 +27,7 @@ const App = () => {
   const [theme, setTheme] = useState<string>('vs-light');
   const [nodeSize, setNodeSize] = useState(0);
   const [nodeLevel, setNodeLevel] = useState(0);
-  const [testing, setTesting] = useState(false);
+  const [model, setModel] = useState('default');
   const [testSize, setTestSize] = useState(0);
 
   const splitPaneProps: any = {
@@ -41,8 +41,8 @@ const App = () => {
     allowResize: false,
   };
 
-  const handleTesting = () => {
-    setTesting(!testing);
+  const handleChangeModel = (model: string) => {
+    setModel(model);
     setLineageData(null);
     setNodeSize(0);
     setNodeLevel(0);
@@ -50,7 +50,7 @@ const App = () => {
   };
 
   const handleParseSql = () => {
-    if (testing) {
+    if (model === 'test') {
       setNodeSize(testSize);
       setNodeLevel(testSize);
       setLineageData(initData(testSize));
@@ -106,18 +106,18 @@ const App = () => {
   return (
     <>
       <Header
+        model={model}
         theme={theme}
-        test={testing}
         layout={layout}
         setTheme={setTheme}
         setLayout={setLayout}
         setNodeSize={setTestSize}
-        handleTesting={handleTesting}
-        textWaterMarker={textWaterMarker}
-        setTextWaterMarker={setTextWaterMarker}
-        highlightColor={highlightColor}
-        setHighlightColor={setHighlightColor}
         handleParseSql={handleParseSql}
+        highlightColor={highlightColor}
+        textWaterMarker={textWaterMarker}
+        handleChangeModel={handleChangeModel}
+        setHighlightColor={setHighlightColor}
+        setTextWaterMarker={setTextWaterMarker}
       />
       <main className='h-screen flex-auto overflow-hidden border-t border-gray-200'>
         <SplitPane {...splitPaneProps}>
@@ -141,7 +141,7 @@ const App = () => {
             ref={ref2}
           >
             <Spin spinning={loading}>
-              {testing ? (
+              {model === 'test' ? (
                 <LineageGraphTest
                   layout={layout}
                   lineageData={lineageData}
