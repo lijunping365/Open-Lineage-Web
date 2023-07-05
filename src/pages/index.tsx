@@ -11,6 +11,8 @@ import { sql } from '../test/sql';
 import SplitPane from 'react-split-pane';
 import MonacoEditor from '../components/MonacoEditor';
 import { useIsomorphicLayoutEffect } from '../hooks/useIsomorphicLayoutEffect';
+import LineageGraphTest from '../components/LineageGraphTest';
+import { initData } from '../test/test';
 
 const App = () => {
   const [code, setCode] = useState(sql());
@@ -25,6 +27,7 @@ const App = () => {
   const [theme, setTheme] = useState<string>('vs-light');
   const [nodeSize, setNodeSize] = useState(0);
   const [nodeLevel, setNodeLevel] = useState(0);
+  const [testing, setTesting] = useState(false);
 
   const splitPaneProps: any = {
     split: 'vertical',
@@ -38,7 +41,12 @@ const App = () => {
   };
 
   const handleParseSql = () => {
-    setLineageData(sourceData.data);
+    if (testing) {
+      setLineageData(initData(100));
+    } else {
+      setLineageData(sourceData.data);
+    }
+
     // if (!sql) return;
     //
     // setLoading(true);
@@ -88,8 +96,10 @@ const App = () => {
     <>
       <Header
         theme={theme}
+        test={testing}
         layout={layout}
         setTheme={setTheme}
+        setTest={setTesting}
         setLayout={setLayout}
         textWaterMarker={textWaterMarker}
         setTextWaterMarker={setTextWaterMarker}
@@ -119,14 +129,23 @@ const App = () => {
             ref={ref2}
           >
             <Spin spinning={loading}>
-              <LineageGraph
-                layout={layout}
-                lineageData={lineageData}
-                setNodeSize={setNodeSize}
-                setNodeLevel={setNodeLevel}
-                highlightColor={highlightColor}
-                textWaterMarker={textWaterMarker}
-              />
+              {testing ? (
+                <LineageGraphTest
+                  layout={layout}
+                  lineageData={lineageData}
+                  highlightColor={highlightColor}
+                  textWaterMarker={textWaterMarker}
+                />
+              ) : (
+                <LineageGraph
+                  layout={layout}
+                  lineageData={lineageData}
+                  setNodeSize={setNodeSize}
+                  setNodeLevel={setNodeLevel}
+                  highlightColor={highlightColor}
+                  textWaterMarker={textWaterMarker}
+                />
+              )}
             </Spin>
           </div>
         </SplitPane>

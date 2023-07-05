@@ -1,13 +1,15 @@
 import logo from '/logo.svg';
 import metadata from '../../config/metadata';
 import { Button, Form, Input, Popover, Select } from 'antd';
-import { RocketOutlined } from '@ant-design/icons';
+import { CodeSandboxOutlined, RocketOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
 import ColorPicker from '../ColorPicker';
 import clsx from 'classnames';
 import { IconSetting } from '../Icon/IconSetting';
 
 interface HeaderProps {
+  /** 是否开始测试 */
+  test: boolean;
   /** 编辑器主题色 */
   theme: string;
   /** 布局方式 */
@@ -16,6 +18,8 @@ interface HeaderProps {
   textWaterMarker: string;
   /** 高亮颜色 */
   highlightColor: string;
+  /** 修改测试状态 */
+  setTest: (value: boolean) => void;
   /** 设置编辑器主题 */
   setTheme: (value: string) => void;
   /** 设置布局方式 */
@@ -29,8 +33,10 @@ interface HeaderProps {
 }
 
 const Header = ({
+  test,
   theme,
   layout,
+  setTest,
   setLayout,
   setTheme,
   textWaterMarker,
@@ -83,6 +89,18 @@ const Header = ({
               onClick={() => handleParseSql()}
             >
               解析血缘
+            </Button>
+            <Button
+              type='default'
+              icon={<CodeSandboxOutlined />}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              onClick={() => setTest(!test)}
+            >
+              {test ? '退出测试' : '开始测试'}
             </Button>
           </nav>
           <Setting
