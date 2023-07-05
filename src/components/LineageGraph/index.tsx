@@ -88,9 +88,8 @@ const LineageGraph = ({
       setNodeSize(wholeData.size);
       setNodeLevel(wholeData.level);
 
-      const t1 = transformData(wholeData.data);
-      renderGraph(graphRef.current, t1);
-      //renderGraph(graphRef.current, dataTransform(initData(100)));
+      const data = transformData(wholeData.data);
+      renderGraph(graphRef.current, data);
     }
   }, [lineageData]);
 
