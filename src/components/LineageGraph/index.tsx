@@ -268,8 +268,8 @@ const LineageGraph = ({
   useEffect(() => {
     if (graphRef.current) {
       const windowWidth = document.documentElement.clientWidth;
-      const height =
-        window.outerHeight - 141 || document.documentElement.clientHeight;
+      const windowHeight = document.documentElement.clientHeight;
+      const height = window.outerHeight - 141 || windowHeight;
       const width = layout === 'preview' ? windowWidth : windowWidth - 340;
       graphRef.current.changeSize(width, height);
       graphRef.current.fitView();
@@ -326,9 +326,10 @@ const LineageGraph = ({
       //网格画布
       const grid = new G6.Grid();
       const container: any = ref.current;
-      const width = container.scrollWidth - 340;
-      const height =
-        window.outerHeight - 141 || document.documentElement.clientHeight;
+      const windowWidth = document.documentElement.clientWidth;
+      const windowHeight = document.documentElement.clientHeight;
+      const width = layout === 'preview' ? windowWidth : windowWidth - 340;
+      const height = window.outerHeight - 141 || windowHeight;
       // 实例化 Graph
       graphRef.current = new G6.Graph({
         container: container || '',
