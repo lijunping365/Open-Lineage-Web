@@ -60,7 +60,7 @@ const Header = ({
 
   return (
     <>
-      <header className='absolute left-0 top-0 h-16 min-w-full text-gray-600'>
+      <header className='absolute left-0 top-0 h-16 min-w-full text-gray-600 scrollbar-hide'>
         <div className='container mx-auto flex flex-col flex-wrap items-center px-5 py-3 shadow-md md:flex-row'>
           <a
             className='mb-4 flex items-center font-medium text-gray-900 md:mb-0'
