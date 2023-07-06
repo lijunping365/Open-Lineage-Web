@@ -119,7 +119,7 @@ const App = () => {
         setHighlightColor={setHighlightColor}
         setTextWaterMarker={setTextWaterMarker}
       />
-      <main className='scrollbar-hide absolute bottom-8 top-16 w-full flex-auto overflow-hidden border-t border-gray-200'>
+      <main className='absolute bottom-8 top-16 w-full flex-auto overflow-hidden border-t border-gray-200 scrollbar-hide'>
         <SplitPane {...splitPaneProps}>
           <div
             className='flex flex-auto'
