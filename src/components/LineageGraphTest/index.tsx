@@ -236,7 +236,20 @@ const LineageGraphTest = ({
         plugins: [grid, minimap, toolbar],
         fitView: true,
         modes: {
-          default: ['drag-canvas', 'zoom-canvas', 'drag-node'],
+          default: [
+            {
+              type: 'drag-canvas',
+              enableOptimize: true,
+            },
+            {
+              type: 'zoom-canvas',
+              enableOptimize: true,
+            },
+            {
+              type: 'drag-node',
+              enableOptimize: true,
+            },
+          ],
         },
         // 布局配置
         layout: {
