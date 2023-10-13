@@ -1,0 +1,19 @@
+name: deploy
+on:
+  push:
+    branches: [main]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: executing remote ssh commands
+
+        # 使用appleboy/ssh-action@master来执行命令
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{secrets.DEPLOY_HOST}}
+          username: ${{secrets.DEPLOY_USER}}
+          password: ${{secrets.DEPLOY_PASS_WORD}}
+          script: sh /data/server/open-official/Open-Lineage-Web/build.sh
