@@ -17,6 +17,6 @@ RUN pnpm run build
 # 产生静态文件
 FROM nginx:stable-alpine
 
-COPY --from=0 /app/dist /usr/share/nginx/html/
+COPY --from=0 /app/dist /usr/share/nginx/html/open-lineage
 
 COPY nginx.conf /etc/nginx/conf.d/
