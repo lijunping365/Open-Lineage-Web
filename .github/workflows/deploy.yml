@@ -16,4 +16,4 @@ jobs:
           host: ${{secrets.DEPLOY_HOST}}
           username: ${{secrets.DEPLOY_USER}}
           password: ${{secrets.DEPLOY_PASS_WORD}}
-          script: sh /data/server/open-official/Open-Lineage-Web/build.sh
+          script: sh /data/server/open-lineage/Open-Lineage-Web/build.sh
