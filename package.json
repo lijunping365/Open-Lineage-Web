@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build --base=/open-lineage/",
     "preview": "vite preview",
     "check-format": "prettier --check .",
     "format:prettier": "prettier --write ."
