@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@ant-design/icons': ^5.0.1
   '@antv/g6': ^4.8.9
+  '@types/node': ^20.8.6
   '@types/react': ^18.0.15
   '@types/react-color': ^3.0.6
   '@types/react-dom': ^18.0.6
@@ -49,6 +50,7 @@ dependencies:
   sql-formatter: 12.2.3
 
 devDependencies:
+  '@types/node': 20.8.6
   '@types/react': 18.2.14
   '@types/react-color': 3.0.6
   '@types/react-dom': 18.2.6
@@ -69,7 +71,7 @@ devDependencies:
   prettier: 2.8.8
   tailwindcss: 3.3.2
   typescript: 4.9.5
-  vite: 4.3.9
+  vite: 4.3.9_@types+node@20.8.6
   vite-plugin-eslint: 1.8.1_eslint@8.44.0+vite@4.3.9
 
 packages:
@@ -1094,6 +1096,12 @@ packages:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
     dev: true
 
+  /@types/node/20.8.6:
+    resolution: {integrity: sha512-eWO4K2Ji70QzKUqRy6oyJWUeB7+g2cRagT3T/nxYibYcT4y2BDL8lqolRXjTHmkZCdJfIPaY73KbJAZmcryxTQ==}
+    dependencies:
+      undici-types: 5.25.3
+    dev: true
+
   /@types/prop-types/15.7.5:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
     dev: true
@@ -1274,7 +1282,7 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.22.5_@babel+core@7.22.6
       magic-string: 0.27.0
       react-refresh: 0.14.0
-      vite: 4.3.9
+      vite: 4.3.9_@types+node@20.8.6
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -4264,6 +4272,10 @@ packages:
       which-boxed-primitive: 1.0.2
     dev: true
 
+  /undici-types/5.25.3:
+    resolution: {integrity: sha512-Ga1jfYwRn7+cP9v8auvEXN1rX3sWqlayd4HP7OKk4mZWylEmu3KzXDUGrQUN6Ol7qo1gPvB2e5gX6udnyEPgdA==}
+    dev: true
+
   /update-browserslist-db/1.0.11_browserslist@4.21.9:
     resolution: {integrity: sha512-dCwEFf0/oT85M1fHBg4F0jtLwJrutGoHSQXCh7u4o2t1drG+c0a9Flnqww6XUKSfQMPpJBRjU8d4RXB09qtvaA==}
     hasBin: true
@@ -4295,10 +4307,10 @@ packages:
       '@types/eslint': 8.40.2
       eslint: 8.44.0
       rollup: 2.79.1
-      vite: 4.3.9
+      vite: 4.3.9_@types+node@20.8.6
     dev: true
 
-  /vite/4.3.9:
+  /vite/4.3.9_@types+node@20.8.6:
     resolution: {integrity: sha512-qsTNZjO9NoJNW7KnOrgYwczm0WctJ8m/yqYAMAK9Lxt4SoySUfS5S8ia9K7JHpa3KEeMfyF8LoJ3c5NeBJy6pg==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -4323,6 +4335,7 @@ packages:
       terser:
         optional: true
     dependencies:
+      '@types/node': 20.8.6
       esbuild: 0.17.19
       postcss: 8.4.24
       rollup: 3.26.0
