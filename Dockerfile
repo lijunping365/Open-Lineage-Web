@@ -1,12 +1,20 @@
 # 安装Node.js
 FROM node:18-alpine
 
+# https://pnpm.io/docker
+# https://depot.dev/docs/languages/node-pnpm-dockerfile
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+RUN corepack prepare pnpm@latest --activate
+
 # 创建工作目录
 WORKDIR /app
 
 # 将node_modules添加到工作目录
 COPY .npmrc package.json pnpm-lock.yaml ./
-RUN npm install -g pnpm@7.30.5 && pnpm i
+
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install
 
 # 将所有文件复制到工作目录
 COPY . .
