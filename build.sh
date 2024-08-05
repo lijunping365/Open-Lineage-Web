@@ -12,7 +12,7 @@ IID=$(docker images | grep "$SERVER_NAME:$TAG" | awk '{print $3}')
 cd $SOURCE_PATH
 
 # 更新代码
-git pull
+git pull --rebase origin main
 
 # 容器存在则删除
 if [ -n "$CID" ]; then
