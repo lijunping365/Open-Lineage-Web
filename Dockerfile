@@ -13,7 +13,7 @@ RUN corepack prepare pnpm@latest --activate
 WORKDIR /app
 
 # 将node_modules添加到工作目录
-COPY .npmrc package.json pnpm-lock.yaml ./
+COPY .npmrc package.json pnpm-lock.yaml* ./
 
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install
 
